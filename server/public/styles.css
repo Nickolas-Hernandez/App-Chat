@@ -3,8 +3,14 @@
   padding: 0;
 }
 
-.body {
+body {
   color: #2f2f2f;
+  font-family: "Lato", sans-serif;
+}
+
+h1,
+h2 {
+  font-family: "Nunito", sans-serif;
 }
 
 .overlay {
@@ -24,7 +30,8 @@
   border-radius: 8px;
 }
 
-.new-chat-form h2 {
+.new-chat-form h3 {
   cursor: pointer;
   font-size: 24px;
+  font-weight: 400;
 }
