@@ -28,10 +28,17 @@ h2 {
   height: 240px;
   background-color: #dce2ec;
   border-radius: 8px;
+  color: white;
 }
 
-.new-chat-form h3 {
+.form-tab {
   cursor: pointer;
   font-size: 24px;
   font-weight: 400;
+  display: inline-block;
+}
+
+.form-tab.active {
+  color: #2f2f2f;
+  border-bottom: 1px solid #2f2f2f;
 }

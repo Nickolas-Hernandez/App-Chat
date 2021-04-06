@@ -7,7 +7,7 @@ export default class NewChatForm extends React.Component {
       <>
         <div className="overlay">
           <form className="new-chat-form">
-            <h3>Create</h3>
+            <h3 className="form-tab active">Create</h3>
           </form>
         </div>
       </>
