@@ -38,7 +38,7 @@ input {
   height: 250px;
   background-color: #dce2ec;
   border-radius: 8px;
-  padding: 0.8rem 1.8rem;
+  padding: 1rem 1.4rem;
   flex-direction: column;
   justify-content: space-between;
 }

@@ -1,6 +1,10 @@
 import React from 'react';
 
 export default class NewChatForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render() {
     return (
