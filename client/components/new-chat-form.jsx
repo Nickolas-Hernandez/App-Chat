@@ -3,7 +3,15 @@ import React from 'react';
 export default class NewChatForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      chatName: '',
+      userName: ''
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+
   }
 
   render() {
