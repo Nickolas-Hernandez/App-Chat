@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -29,6 +30,7 @@ h2 {
   background-color: #dce2ec;
   border-radius: 8px;
   color: white;
+  padding: 1rem;
 }
 
 .form-tab {
