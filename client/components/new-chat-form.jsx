@@ -7,7 +7,7 @@ export default class NewChatForm extends React.Component {
       chatName: '',
       userName: ''
     };
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -29,9 +29,15 @@ export default class NewChatForm extends React.Component {
     });
   }
 
-  // handleSubmit(event) {
-
-  // }
+  handleSubmit(event) {
+    event.preventDefault();
+    const chatRoomSetup = this.state.slice();
+    const init = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(chatRoomSetup)
+    };
+  }
 
   render() {
     return (
