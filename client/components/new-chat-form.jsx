@@ -7,17 +7,31 @@ export default class NewChatForm extends React.Component {
       chatName: '',
       userName: ''
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-
+    if (event.target.id === 'chat-name') {
+      this.setState(state => {
+        return ({
+          chatName: event.target.value,
+          userName: this.state.userName
+        });
+      });
+      return;
+    }
+    this.setState(state => {
+      return ({
+        chatName: this.state.chatName,
+        userName: event.target.value
+      });
+    });
   }
 
-  handleSubmit(event) {
+  // handleSubmit(event) {
 
-  }
+  // }
 
   render() {
     return (
@@ -40,7 +54,8 @@ export default class NewChatForm extends React.Component {
               id="users-name"
             />
             <input
-              type="submit" value="Submit"
+              type="submit"
+              value="Submit"
               className="submit-button"
             />
           </form>
