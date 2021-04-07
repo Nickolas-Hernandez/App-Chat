@@ -1,3 +1,8 @@
+const httpServer = require('http').createServer();
+const io = require('socket.io')(httpServer);
+
+console.log('server here!!!', io);
+
 require('dotenv/config');
 const express = require('express');
 const staticMiddleware = require('./static-middleware');
