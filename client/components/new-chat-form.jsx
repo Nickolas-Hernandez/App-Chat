@@ -31,7 +31,7 @@ export default class NewChatForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const chatRoomSetup = this.state.slice();
+    const chatRoomSetup = Object.assign({}, this.state);
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
