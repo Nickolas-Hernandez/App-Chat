@@ -37,7 +37,6 @@ app.post('/api/newRoom', (req, res, next) => {
       res.status(201).json(chatRoom);
     })
     .catch(err => next(err));
-
 });
 
 server.listen(process.env.PORT, () => {
