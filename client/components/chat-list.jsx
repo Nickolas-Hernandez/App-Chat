@@ -10,6 +10,7 @@ export default class ChatList extends React.Component {
             <i className="fas fa-plus plus-icon"></i>
           </div>
         </div>
+        <ul className="chat-list"></ul>
       </>
     );
   }
