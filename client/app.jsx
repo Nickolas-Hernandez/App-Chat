@@ -10,8 +10,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.socket = io();
-    console.log(this.socket);
-    this.socket.emit('newRoom', { room: 'room bitch' });
   }
 
   render() {

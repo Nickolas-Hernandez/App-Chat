@@ -3,18 +3,25 @@ const express = require('express');
 const staticMiddleware = require('./static-middleware');
 
 const app = express();
+const jsonMiddleware = express.json();
 
 app.use(staticMiddleware);
+app.use(jsonMiddleware);
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 io.on('connection', socket => {
   console.log('connected!');
-  console.log('ROOOOOOOOOMS ! ! ! !', socket.rooms);
-  socket.on('newRoom', room => {
-    console.log('room', room);
+  socket.on('getTimer', interval => {
+    setInterval(() => {
+      socket.emit('timer:', new Date());
+    }, interval);
   });
+});
+
+io.on('disconnect', () => {
+  console.log('user disconnected');
 });
 
 server.listen(process.env.PORT, () => {

@@ -37,6 +37,9 @@ export default class NewChatForm extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(chatRoomSetup)
     };
+    fetch('/api/newRoom', init)
+      .then(response => response.json())
+      .then(result => console.log(result));
   }
 
   render() {
