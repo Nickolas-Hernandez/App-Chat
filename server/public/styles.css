@@ -19,6 +19,10 @@ input {
   outline: none;
 }
 
+i {
+  color: #5fa7a0;
+}
+
 #root {
   max-width: 700px;
 }
@@ -95,6 +99,10 @@ label,
   width: 100%;
   justify-content: space-between;
   align-items: center;
+}
+
+.plus-icon {
+  font-size: 24px;
 }
 
 @media only screen and (min-width: 768px) {
