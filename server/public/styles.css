@@ -19,6 +19,10 @@ input {
   outline: none;
 }
 
+#root {
+  max-width: 700px;
+}
+
 .overlay {
   position: absolute;
   width: 100%;
@@ -76,4 +80,32 @@ label,
   background-color: #2567d9;
   color: white;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+  #root {
+    width: 100%;
+    max-width: 1440px;
+  }
+
+  .new-chat-form {
+    width: 400px;
+    height: 300px;
+  }
+
+  label {
+    font-size: 24px;
+    font-weight: normal;
+  }
+
+  #chat-name,
+  #users-name,
+  .submit-button {
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .form-tab {
+    font-size: 30px;
+  }
 }
