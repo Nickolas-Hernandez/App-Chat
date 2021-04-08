@@ -5,6 +5,7 @@ export default class ChatList extends React.Component {
     return (
       <>
         <div className="chat-list-header">
+          <h1>Chats</h1>
 
         </div>
       </>
