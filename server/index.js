@@ -25,7 +25,8 @@ io.on('disconnect', () => {
 });
 
 app.post('/api/newRoom', (req, res, next) => {
-
+  const { chatName, userName } = req.body;
+  console.log(req.body);
 });
 
 server.listen(process.env.PORT, () => {
