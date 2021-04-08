@@ -6,7 +6,7 @@ drop schema "public" cascade;
 
 create schema "public";
 
-create table "chat" (
+create table "chatRooms" (
   "chatId"    serial,
   "name"      text    not null,
   "host"      integer  not null,
