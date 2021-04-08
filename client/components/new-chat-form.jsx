@@ -40,9 +40,13 @@ export default class NewChatForm extends React.Component {
     fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
-        this.setState({ chatName: '', userName: '' });
+        this.resetForm();
       })
       .catch(err => console.error(err));
+  }
+
+  resetForm() {
+    this.setState({ chatName: '', userName: '' });
   }
 
   render() {
@@ -57,6 +61,7 @@ export default class NewChatForm extends React.Component {
               type="text"
               name="chat-name"
               id="chat-name"
+              value={this.state.chatName}
             />
             <label htmlFor="users-name">Enter your name:</label>
             <input
@@ -64,6 +69,7 @@ export default class NewChatForm extends React.Component {
               type="text"
               name="users-name"
               id="users-name"
+              value={this.state.userName}
             />
             <input
               type="submit"
