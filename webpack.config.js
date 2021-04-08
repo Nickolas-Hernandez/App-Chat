@@ -20,9 +20,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: [
-              '@babel/plugin-transform-react-jsx'
-            ]
+            plugins: ['@babel/plugin-transform-react-jsx']
           }
         }
       }
@@ -37,7 +35,8 @@ module.exports = {
     watchContentBase: true,
     stats: 'minimal',
     proxy: {
-      '/api': `http://localhost:${process.env.PORT}`
+      '/api': `http://localhost:${process.env.PORT}`,
+      '/socket.io': `http://localhost:${process.env.PORT}`
     }
   },
   performance: {
