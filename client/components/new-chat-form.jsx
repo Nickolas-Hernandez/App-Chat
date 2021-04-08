@@ -39,7 +39,10 @@ export default class NewChatForm extends React.Component {
     };
     fetch('/api/newRoom', init)
       .then(response => response.json())
-      .then(result => console.log(result));
+      .then(result => {
+        this.setState({ chatName: '', userName: '' });
+      })
+      .catch(err => console.error(err));
   }
 
   render() {
