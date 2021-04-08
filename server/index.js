@@ -5,28 +5,39 @@ const staticMiddleware = require('./static-middleware');
 const app = express();
 const jsonMiddleware = express.json();
 
-app.use(staticMiddleware);
-app.use(jsonMiddleware);
-
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-io.on('connection', socket => {
-  console.log('connected!');
-  socket.on('getTimer', interval => {
-    setInterval(() => {
-      socket.emit('timer:', new Date());
-    }, interval);
-  });
+const pg = require('pg');
+const db = new pg.Pool({
+  connectionString: process.env.DATABASE_URL
 });
 
-io.on('disconnect', () => {
-  console.log('user disconnected');
+app.use(staticMiddleware);
+app.use(jsonMiddleware);
+
+let sessionId;
+
+io.on('connection', socket => {
+  console.log('connected!');
+  sessionId = socket.id;
 });
 
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, userName } = req.body;
-  console.log(req.body);
+  const sql = `
+    insert into "chatRooms" ("name", "host", "sid")
+           values ($1, $2, $3)
+      returning *
+  `;
+  const params = [chatName, userName, sessionId];
+  db.query(sql, params)
+    .then(result => {
+      const chatRoom = result.rows[0];
+      res.status(201).json(chatRoom);
+    })
+    .catch(err => next(err));
+
 });
 
 server.listen(process.env.PORT, () => {
