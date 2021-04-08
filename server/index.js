@@ -24,6 +24,10 @@ io.on('disconnect', () => {
   console.log('user disconnected');
 });
 
+app.post('/api/newRoom', (req, res, next) => {
+
+});
+
 server.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`http server listening on port ${process.env.PORT}`);
