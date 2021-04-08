@@ -6,7 +6,7 @@ export default class ChatList extends React.Component {
       <>
         <div className="chat-list-header">
           <h1>Chats</h1>
-
+          <i className="fas fa-plus"></i>
         </div>
       </>
     );
