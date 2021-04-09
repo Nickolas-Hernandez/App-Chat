@@ -15,17 +15,13 @@ export default class ChatList extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    // this.closeNewChatForm = this.closeNewChatForm.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
 
   openNewChatForm() {
-    this.setState({
-      formIsOpen: true,
-      form: {
-        chatName: '',
-        userName: ''
-      }
-    });
+    const openForm = Object.assign({}, this.state);
+    openForm.formIsOpen = true;
+    this.setState(openForm);
   }
 
   handleChange(target) {
@@ -36,13 +32,6 @@ export default class ChatList extends React.Component {
       return;
     }
     newState.form.userName = target.value;
-    this.setState(newState);
-  }
-
-  closeForm(event) {
-    if (event.target.className !== 'overlay') return;
-    const newState = Object.assign({}, this.state);
-    newState.formIsOpen = false;
     this.setState(newState);
   }
 
@@ -59,6 +48,13 @@ export default class ChatList extends React.Component {
         this.resetForm();
       })
       .catch(err => console.error(err));
+  }
+
+  closeForm(event) {
+    if (event.target.className !== 'overlay') return;
+    const newState = Object.assign({}, this.state);
+    newState.formIsOpen = false;
+    this.setState(newState);
   }
 
   resetForm() {
