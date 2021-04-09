@@ -5,7 +5,7 @@ export default class ChatList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openForm: false,
+      formIsOpen: false,
       form: {
         chatName: '',
         userName: ''
@@ -13,12 +13,13 @@ export default class ChatList extends React.Component {
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.closeForm = this.closeForm.bind(this);
     // this.closeNewChatForm = this.closeNewChatForm.bind(this);
   }
 
   openNewChatForm() {
     this.setState({
-      openForm: true,
+      formIsOpen: true,
       form: {
         chatName: '',
         userName: ''
@@ -26,25 +27,33 @@ export default class ChatList extends React.Component {
     });
   }
 
-  handleChange(chatName) {
-    this.setState(state => {
-      return {
-        openForm: state.openForm,
-        form: {
-          chatName: chatName,
-          userName: state.userName
-        }
-      };
-    });
+  handleChange(target) {
+    const newState = Object.assign({}, this.state);
+    if (target.id === 'chat-name') {
+      newState.form.chatName = target.value;
+      this.setState(newState);
+      return;
+    }
+    newState.form.userName = target.value;
+    this.setState(newState);
+  }
+
+  closeForm(event) {
+    if (event.target.className !== 'overlay') return;
+    const newState = Object.assign({}, this.state);
+    newState.formIsOpen = false;
+    this.setState(newState);
   }
 
   render() {
-    const { openForm, form: formInput } = this.state;
-    const form = openForm
+    const { formIsOpen, form: formInput } = this.state;
+    const form = formIsOpen
       ? <NewChatForm
-          isOpen={openForm}
+          isOpen={formIsOpen}
           chatName={formInput.chatName}
+          userName={formInput.userName}
           onInputChange={this.handleChange}
+          handleFormClose={this.closeForm}
         />
       : <div></div>;
     return (
