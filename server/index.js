@@ -23,6 +23,14 @@ io.on('connection', socket => {
   sessionId = socket.id;
 });
 
+app.get('/api/chatRooms', (req, res, next) => {
+  const sql = `
+    select "name" as "chatRoom,
+      from "chatsRooms
+  `;
+
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, userName } = req.body;
   const sql = `
