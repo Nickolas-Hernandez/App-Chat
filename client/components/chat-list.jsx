@@ -25,22 +25,29 @@ export default class ChatList extends React.Component {
   }
 
   handleChange(target) {
-    const newState = Object.assign({}, this.state);
+    let newState;
     if (target.id === 'chat-name') {
-      newState.form.chatName = target.value;
+      newState = Object.assign({}, this.state, {
+        form: Object.assign({}, this.state.form, {
+          chatName: target.value
+        })
+      });
       this.setState(newState);
       return;
     }
-    newState.form.userName = target.value;
+    newState = Object.assign({}, this.state, {
+      form: Object.assign({}, this.state.form, {
+        userName: target.value
+      })
+    });
     this.setState(newState);
   }
 
   submitForm() {
-    const chatRoomSetup = Object.assign({}, this.state.form);
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(chatRoomSetup)
+      body: JSON.stringify(this.state.form)
     };
     fetch('/api/newRoom', init)
       .then(response => response.json())
