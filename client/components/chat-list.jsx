@@ -9,7 +9,8 @@ export default class ChatList extends React.Component {
       form: {
         chatName: '',
         userName: ''
-      }
+      },
+      chatRooms: []
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
