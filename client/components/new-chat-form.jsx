@@ -13,21 +13,22 @@ export default class NewChatForm extends React.Component {
   }
 
   handleChange(event) {
-    if (event.target.id === 'chat-name') {
-      this.setState(state => {
-        return ({
-          chatName: event.target.value,
-          userName: this.state.userName
-        });
-      });
-      return;
-    }
-    this.setState(state => {
-      return ({
-        chatName: this.state.chatName,
-        userName: event.target.value
-      });
-    });
+    this.props.onInputChange(event.target.value);
+    // if (event.target.id === 'chat-name') {
+    //   this.setState(state => {
+    //     return ({
+    //       chatName: event.target.value,
+    //       userName: this.state.userName
+    //     });
+    //   });
+    //   return;
+    // }
+    // this.setState(state => {
+    //   return ({
+    //     chatName: this.state.chatName,
+    //     userName: event.target.value
+    //   });
+    // });
   }
 
   handleSubmit(event) {
@@ -63,7 +64,7 @@ export default class NewChatForm extends React.Component {
               type="text"
               name="chat-name"
               id="chat-name"
-              value={this.state.chatName}
+              value={this.props.chatName}
             />
             <label htmlFor="users-name">Enter your name:</label>
             <input
