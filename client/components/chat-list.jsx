@@ -18,6 +18,12 @@ export default class ChatList extends React.Component {
     this.resetForm = this.resetForm.bind(this);
   }
 
+  componentDidMount() {
+    fetch('/api/chatRooms')
+      .then(response => response.json())
+      .catch(err => console.error(err));
+  }
+
   openNewChatForm() {
     const openForm = Object.assign({}, this.state);
     openForm.formIsOpen = true;
@@ -52,6 +58,7 @@ export default class ChatList extends React.Component {
     fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
+
         this.resetForm();
       })
       .catch(err => console.error(err));
