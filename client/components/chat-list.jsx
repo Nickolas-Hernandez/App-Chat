@@ -1,9 +1,11 @@
 import React from 'react';
+import NewChatForm from './new-chat-form';
 
 export default class ChatList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { openForm: false };
+    this.openNewChatForm = this.openNewChatForm.bind(this);
   }
 
   openNewChatForm() {
@@ -13,6 +15,7 @@ export default class ChatList extends React.Component {
   render() {
     return (
       <>
+       <NewChatForm isOpen={this.state.openForm} />
         <div className="chat-list-header">
           <div className="wrapper">
             <h1>Chats</h1>

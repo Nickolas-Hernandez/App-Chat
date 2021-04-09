@@ -9,6 +9,7 @@ export default class NewChatForm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+
   }
 
   handleChange(event) {
@@ -50,9 +51,10 @@ export default class NewChatForm extends React.Component {
   }
 
   render() {
+    const { isOpen } = this.props;
     return (
       <>
-        <div className="overlay">
+        <div className={isOpen ? 'overlay' : 'overlay hidden'}>
           <form onSubmit={this.handleSubmit} className="new-chat-form">
             <h3 className="form-tab active">Create</h3>
             <label htmlFor="chat-name">Enter chat name:</label>
