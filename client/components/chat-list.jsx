@@ -14,6 +14,7 @@ export default class ChatList extends React.Component {
     this.openNewChatForm = this.openNewChatForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
     // this.closeNewChatForm = this.closeNewChatForm.bind(this);
   }
 
@@ -45,6 +46,31 @@ export default class ChatList extends React.Component {
     this.setState(newState);
   }
 
+  submitForm() {
+    const chatRoomSetup = Object.assign({}, this.state.form);
+    const init = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(chatRoomSetup)
+    };
+    fetch('/api/newRoom', init)
+      .then(response => response.json())
+      .then(result => {
+        this.resetForm();
+      })
+      .catch(err => console.error(err));
+  }
+
+  resetForm() {
+    this.setState({
+      formIsOpen: false,
+      form: {
+        chatName: '',
+        userName: ''
+      }
+    });
+  }
+
   render() {
     const { formIsOpen, form: formInput } = this.state;
     const form = formIsOpen
@@ -54,6 +80,7 @@ export default class ChatList extends React.Component {
           userName={formInput.userName}
           onInputChange={this.handleChange}
           handleFormClose={this.closeForm}
+          onSubmission={this.submitForm}
         />
       : <div></div>;
     return (

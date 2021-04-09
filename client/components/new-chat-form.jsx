@@ -5,7 +5,7 @@ export default class NewChatForm extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.close = this.close.bind(this);
+    this.closeForm = this.closeForm.bind(this);
 
   }
 
@@ -15,25 +15,10 @@ export default class NewChatForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const chatRoomSetup = Object.assign({}, this.state);
-    const init = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(chatRoomSetup)
-    };
-    fetch('/api/newRoom', init)
-      .then(response => response.json())
-      .then(result => {
-        this.resetForm();
-      })
-      .catch(err => console.error(err));
+    this.props.onSubmission();
   }
 
-  resetForm() {
-    this.setState({ chatName: '', userName: '' });
-  }
-
-  close(event) {
+  closeForm(event) {
     this.props.handleFormClose(event);
   }
 
@@ -42,7 +27,7 @@ export default class NewChatForm extends React.Component {
     return (
       <>
         <div
-          onClick={this.close}
+          onClick={this.closeForm}
           className={isOpen ? 'overlay' : 'overlay hidden'}
         >
           <form onSubmit={this.handleSubmit} className="new-chat-form">
