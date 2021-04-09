@@ -3,56 +3,33 @@ import React from 'react';
 export default class NewChatForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      chatName: '',
-      userName: ''
-    };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.closeForm = this.closeForm.bind(this);
+
   }
 
   handleChange(event) {
-    if (event.target.id === 'chat-name') {
-      this.setState(state => {
-        return ({
-          chatName: event.target.value,
-          userName: this.state.userName
-        });
-      });
-      return;
-    }
-    this.setState(state => {
-      return ({
-        chatName: this.state.chatName,
-        userName: event.target.value
-      });
-    });
+    this.props.onInputChange(event.target);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const chatRoomSetup = Object.assign({}, this.state);
-    const init = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(chatRoomSetup)
-    };
-    fetch('/api/newRoom', init)
-      .then(response => response.json())
-      .then(result => {
-        this.resetForm();
-      })
-      .catch(err => console.error(err));
+    this.props.onSubmission();
   }
 
-  resetForm() {
-    this.setState({ chatName: '', userName: '' });
+  closeForm(event) {
+    this.props.handleFormClose(event);
   }
 
   render() {
+    const { isOpen } = this.props;
     return (
       <>
-        <div className="overlay">
+        <div
+          onClick={this.closeForm}
+          className={isOpen ? 'overlay' : 'overlay hidden'}
+        >
           <form onSubmit={this.handleSubmit} className="new-chat-form">
             <h3 className="form-tab active">Create</h3>
             <label htmlFor="chat-name">Enter chat name:</label>
@@ -61,7 +38,7 @@ export default class NewChatForm extends React.Component {
               type="text"
               name="chat-name"
               id="chat-name"
-              value={this.state.chatName}
+              value={this.props.chatName}
             />
             <label htmlFor="users-name">Enter your name:</label>
             <input
@@ -69,7 +46,7 @@ export default class NewChatForm extends React.Component {
               type="text"
               name="users-name"
               id="users-name"
-              value={this.state.userName}
+              value={this.props.userName}
             />
             <input
               type="submit"
