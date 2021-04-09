@@ -25,10 +25,16 @@ io.on('connection', socket => {
 
 app.get('/api/chatRooms', (req, res, next) => {
   const sql = `
-    select "name" as "chatRoom,
-      from "chatsRooms
+    select "name" as "chatRoom"
+      from "chatRooms";
   `;
-
+  db.query(sql)
+    .then(result => {
+      const chatRooms = result.rows;
+      console.log(chatRooms);
+      res.status(200).json(chatRooms);
+    })
+    .catch(err => console.error(err));
 });
 
 app.post('/api/newRoom', (req, res, next) => {

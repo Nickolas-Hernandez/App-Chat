@@ -21,6 +21,7 @@ export default class ChatList extends React.Component {
   componentDidMount() {
     fetch('/api/chatRooms')
       .then(response => response.json())
+      .then(result => console.log(result))
       .catch(err => console.error(err));
   }
 
