@@ -52,9 +52,7 @@ export default class ChatList extends React.Component {
 
   closeForm(event) {
     if (event.target.className !== 'overlay') return;
-    const newState = Object.assign({}, this.state);
-    newState.formIsOpen = false;
-    this.setState(newState);
+    this.resetForm();
   }
 
   resetForm() {
