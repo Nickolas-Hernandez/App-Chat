@@ -3,7 +3,11 @@ import React from 'react';
 export default class ChatList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { openForm: false };
+  }
+
+  openNewChatForm() {
+    this.setState({ openForm: true });
   }
 
   render() {
