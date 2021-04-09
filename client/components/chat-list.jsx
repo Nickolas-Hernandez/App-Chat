@@ -22,7 +22,12 @@ export default class ChatList extends React.Component {
   componentDidMount() {
     fetch('/api/chatRooms')
       .then(response => response.json())
-      .then(result => console.log(result))
+      .then(result => {
+        const rooms = { chatRooms: result };
+        const formInfo = { form: Object.assign({}, this.state.form) };
+        const newState = Object.assign({}, this.state, formInfo, rooms);
+        this.setState(newState);
+      })
       .catch(err => console.error(err));
   }
 
