@@ -23,6 +23,10 @@ i {
   color: #5fa7a0;
 }
 
+ul {
+  list-style: none;
+}
+
 #root {
   max-width: 700px;
 }
@@ -105,9 +109,14 @@ label,
   font-size: 24px;
 }
 
+.chat-list {
+  padding: 0 20px;
+}
+
 .chat-list-item {
-  height: 80px;
-  padding: 5px 20px;
+  height: 90px;
+  padding: 10px 0;
+  border-bottom: 1px solid #dce2ec;
 }
 
 @media only screen and (min-width: 768px) {
