@@ -32,7 +32,6 @@ app.get('/api/chatRooms', (req, res, next) => {
   db.query(sql)
     .then(result => {
       const chatRooms = result.rows;
-      console.log(chatRooms);
       res.status(200).json(chatRooms);
     })
     .catch(err => console.error(err));
