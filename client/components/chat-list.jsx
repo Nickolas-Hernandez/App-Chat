@@ -39,20 +39,16 @@ export default class ChatList extends React.Component {
 
   handleChange(target) {
     let newState;
+    const rooms = { chatRooms: this.state.chatRooms.slice() };
+    const form = { form: Object.assign({}, this.state.form) };
     if (target.id === 'chat-name') {
-      newState = Object.assign({}, this.state, {
-        form: Object.assign({}, this.state.form, {
-          chatName: target.value
-        })
-      });
+      form.form.chatName = target.value;
+      newState = Object.assign({}, this.state, form, rooms);
       this.setState(newState);
       return;
     }
-    newState = Object.assign({}, this.state, {
-      form: Object.assign({}, this.state.form, {
-        userName: target.value
-      })
-    });
+    form.form.userName = target.value;
+    newState = Object.assign({}, this.state, form, rooms);
     this.setState(newState);
   }
 
@@ -65,7 +61,6 @@ export default class ChatList extends React.Component {
     fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
-
         this.resetState();
       })
       .catch(err => console.error(err));
@@ -86,19 +81,16 @@ export default class ChatList extends React.Component {
 
   render() {
     const { formIsOpen, form: formInput } = this.state;
-    const form = formIsOpen
-      ? <NewChatForm
+    return (
+      <>
+       <NewChatForm
           isOpen={formIsOpen}
           chatName={formInput.chatName}
           userName={formInput.userName}
           onInputChange={this.handleChange}
           handleFormClose={this.closeForm}
           onSubmission={this.submitForm}
-        />
-      : <div></div>;
-    return (
-      <>
-       {form}
+       />
         <div className="chat-list-header">
           <div className="wrapper">
             <h1>Chats</h1>
