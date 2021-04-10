@@ -1,7 +1,11 @@
 import React from 'react';
 
 function ChatListItem(props) {
-  return <li><h2>{props.roomTitle}</h2></li>;
+  return (
+    <li className="chat-list-item">
+      <h2>{props.roomTitle}</h2>
+    </li>
+  );
 }
 
 export default function ChatList(props) {
