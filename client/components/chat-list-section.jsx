@@ -100,8 +100,7 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-
-        {/* <ul className="chat-list"></ul> */}
+        <ChatList rooms={this.state.chatRooms.slice()} />
       </>
     );
   }

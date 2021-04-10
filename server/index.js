@@ -25,7 +25,8 @@ io.on('connection', socket => {
 
 app.get('/api/chatRooms', (req, res, next) => {
   const sql = `
-    select "name" as "chatRoom"
+    select "name",
+           "chatId" as "id"
       from "chatRooms";
   `;
   db.query(sql)
