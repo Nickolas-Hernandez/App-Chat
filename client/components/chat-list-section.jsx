@@ -62,7 +62,7 @@ export default class ChatListSection extends React.Component {
     fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
-        this.resetState();
+        this.resetState(result);
       })
       .catch(err => console.error(err));
   }
@@ -72,8 +72,9 @@ export default class ChatListSection extends React.Component {
     this.resetState();
   }
 
-  resetState() {
+  resetState(newRoom) {
     const rooms = { chatRooms: this.state.chatRooms.slice() };
+    if (newRoom) rooms.chatRooms.unshift(newRoom);
     const formInfo = { form: { chatName: '', userName: '' } };
     const openForm = { formIsOpen: false };
     const newState = Object.assign({}, this.state, openForm, formInfo, rooms);
