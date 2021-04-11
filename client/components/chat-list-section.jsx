@@ -17,7 +17,7 @@ export default class ChatListSection extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.resetState = this.resetState.bind(this);
+    this.buildNewState = this.buildNewState.bind(this);
   }
 
   componentDidMount() {
@@ -25,15 +25,14 @@ export default class ChatListSection extends React.Component {
   }
 
   openNewChatForm() {
-    const newState = this.resetState();
+    const newState = this.buildNewState();
     newState.formIsOpen = true;
     this.setState(newState);
   }
 
   handleChange(target) {
-    const buildState = this.resetState();
-    const form = { form: Object.assign({}, this.state.form) };
-    const newState = Object.assign({}, buildState, form);
+    const newState = this.buildNewState();
+    newState.form = Object.assign({}, this.state.form);
     newState.formIsOpen = true;
     if (target.id === 'chat-name') {
       newState.form.chatName = target.value;
@@ -60,11 +59,11 @@ export default class ChatListSection extends React.Component {
 
   closeForm(event) {
     if (event.target.className !== 'overlay') return;
-    const newState = this.resetState();
+    const newState = this.buildNewState();
     this.setState(newState);
   }
 
-  resetState() {
+  buildNewState() {
     const rooms = { chatRooms: this.state.chatRooms.slice() };
     const formInfo = { form: { chatName: '', userName: '' } };
     const openForm = { formIsOpen: false };
@@ -76,7 +75,7 @@ export default class ChatListSection extends React.Component {
     fetch('/api/chatRooms')
       .then(response => response.json())
       .then(result => {
-        const newState = this.resetState();
+        const newState = this.buildNewState();
         newState.chatRooms = result;
         this.setState(newState);
       })
