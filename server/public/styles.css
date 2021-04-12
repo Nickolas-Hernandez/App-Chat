@@ -91,7 +91,8 @@ label,
   cursor: pointer;
 }
 
-.chat-list-header {
+.chat-list-header,
+.message-area-header {
   height: 84px;
   display: flex;
   align-items: flex-end;
@@ -99,14 +100,17 @@ label,
   border-bottom: 2px solid #dce2ec;
 }
 
-.chat-list-header > .wrapper {
+.chat-list-header > .wrapper,
+.message-area-header > .wrapper {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
 }
 
-.plus-icon {
+.plus-icon,
+.back-arrow,
+.details-icon {
   font-size: 24px;
 }
 
