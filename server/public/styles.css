@@ -110,7 +110,8 @@ label,
 
 .plus-icon,
 .back-arrow,
-.details-icon {
+.details-icon,
+.send-message-icon {
   font-size: 24px;
 }
 
@@ -147,12 +148,21 @@ label,
   position: absolute;
   bottom: 20px;
   width: 320px;
-  height: 36px;
+  min-height: 36px;
   background-color: white;
   border-radius: 4px;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 4px 4px 0 rgba(80, 80, 80, 0.3);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+#message-input {
+  flex-grow: 1;
+  height: 75%;
+  font-size: 18px;
 }
 
 @media only screen and (min-width: 768px) {
