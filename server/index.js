@@ -1,6 +1,8 @@
 require('dotenv/config');
 const express = require('express');
 const staticMiddleware = require('./static-middleware');
+const ClientError = require('./client-error');
+const errorMiddleware = require('./error-Middleware');
 
 const app = express();
 const jsonMiddleware = express.json();
@@ -9,6 +11,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const pg = require('pg');
+
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
@@ -23,8 +26,25 @@ io.on('connection', socket => {
   sessionId = socket.id;
 });
 
+app.get('/api/chatRooms', (req, res, next) => {
+  const sql = `
+    select "name",
+           "chatId" as "id"
+      from "chatRooms";
+  `;
+  db.query(sql)
+    .then(result => {
+      const chatRooms = result.rows;
+      res.status(200).json(chatRooms);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, userName } = req.body;
+  if (!chatName || !userName) {
+    throw new ClientError(400, 'Chat name and username are required');
+  }
   const sql = `
     insert into "chatRooms" ("name", "host", "sid")
            values ($1, $2, $3)
@@ -38,6 +58,8 @@ app.post('/api/newRoom', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
