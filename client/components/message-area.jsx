@@ -13,8 +13,10 @@ export default class MessageArea extends React.Component {
           </div>
         </div>
         <div className="messages-view">
-          <input type="text" name="send-message" id="send-message"/>
-          <i className="fas fa-chevron-circle-right send-message-icon"></i>
+          <div className="message-input-container">
+            <input type="text" name="send-message" id="send-message"/>
+            <i className="fas fa-chevron-circle-right send-message-icon"></i>
+          </div>
         </div>
       </div>
     );

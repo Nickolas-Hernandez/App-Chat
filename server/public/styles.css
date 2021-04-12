@@ -143,6 +143,18 @@ label,
   padding: 0 20px 20px;
 }
 
+.message-input-container {
+  position: absolute;
+  bottom: 20px;
+  width: 320px;
+  height: 36px;
+  background-color: white;
+  border-radius: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 4px 0 rgba(80, 80, 80, 0.3);
+}
+
 @media only screen and (min-width: 768px) {
   #root {
     width: 100%;
