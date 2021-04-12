@@ -52,7 +52,7 @@ export default class ChatListSection extends React.Component {
     fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
-        this.getAllChatRooms();
+        this.appendNewChatRoom(result);
       })
       .catch(err => console.error(err));
   }
@@ -82,6 +82,16 @@ export default class ChatListSection extends React.Component {
       .catch(err => console.error(err));
   }
 
+  appendNewChatRoom(chatRoomDetails) {
+    const chatRoom = {
+      id: chatRoomDetails.chatId,
+      name: chatRoomDetails.name
+    };
+    const newState = this.buildNewState();
+    newState.chatRooms.unshift(chatRoom);
+    this.setState(newState);
+  }
+
   render() {
     const { formIsOpen, form: formInput } = this.state;
     return (
@@ -102,7 +112,7 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-        <ChatList rooms={this.state.chatRooms.slice()} />
+        <ChatList rooms={this.state.chatRooms} />
       </>
     );
   }
