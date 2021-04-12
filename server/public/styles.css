@@ -125,14 +125,14 @@ label,
   cursor: pointer;
 }
 
-.message-area-header,
-.message-area {
-  background-color: #edf0f4;
+.message-area-header {
+  background-color: white;
 }
 
 .message-area {
   width: 100%;
   height: 100vh;
+  background-color: #edf0f4;
 }
 
 .messages-view {
