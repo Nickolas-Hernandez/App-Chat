@@ -40,6 +40,21 @@ app.get('/api/chatRooms', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/rooms/:roomId', (req, res, next) => {
+  const roomId = parseInt(req.params.roomId);
+  const sql = `
+    select *
+      from "chatRooms"
+      where "chatId" = $1;
+  `;
+  const params = [roomId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, userName } = req.body;
   if (!chatName || !userName) {

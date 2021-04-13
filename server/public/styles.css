@@ -27,6 +27,11 @@ ul {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+  color: #2f2f2f;
+}
+
 #root {
   max-width: 700px;
   margin: 0 auto;

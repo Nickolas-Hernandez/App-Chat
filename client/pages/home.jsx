@@ -1,34 +1,32 @@
 import React from 'react';
 import ChatListSection from '../components/chat-list-section';
 import MessageArea from '../components/message-area';
+import parseRoute from '../lib/parse-route';
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'chatList'
+      route: parseRoute(window.location.hash)
     };
-    this.swapViews = this.swapViews.bind(this);
   }
 
-  swapViews(target) {
-    if (target.closest('.chat-list-item')) {
-      const room = target.closest('.chat-list-item');
-      this.setState({ view: 'messageArea' });
-    }
-  }
-
-  getView() {
-    if (this.state.view === 'chatList') {
-      return <ChatListSection viewSwap={this.swapViews} />;
-    }
-    if (this.state.view === 'messageArea') {
-      return <MessageArea />;
-    }
+  componentDidMount() {
+    console.log('hash', window.location.hash);
+    window.addEventListener('hashchange', event => {
+      const parsedHash = parseRoute(window.location.hash);
+      this.setState({ route: parsedHash });
+    });
   }
 
   render() {
-    const view = this.getView();
-    return <>{view}</>;
+    const { route } = this.state;
+    if (route.path === '') {
+      return <ChatListSection />;
+    }
+    if (route.path === 'rooms') {
+      const roomId = route.params.get('roomId');
+      return <MessageArea roomId={roomId} />;
+    }
   }
 }

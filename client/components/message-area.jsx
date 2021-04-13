@@ -3,7 +3,24 @@ import React from 'react';
 export default class MessageArea extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      roomId: this.props.roomId,
+      roomName: '',
+      roomMessages: []
+    };
     this.adjustTextareaHeight = this.adjustTextareaHeight.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(`/api/rooms/${this.props.roomId}`)
+      .then(response => response.json())
+      .then(result => {
+        this.setState({
+          roomId: result.chatId,
+          roomName: result.name,
+          message: []
+        });
+      });
   }
 
   adjustTextareaHeight(event) {
@@ -19,7 +36,7 @@ export default class MessageArea extends React.Component {
         <div className="message-area-header">
           <div className="wrapper">
             <i className="fas fa-angle-left back-arrow"></i>
-            <h1>ChatRoom</h1>
+            <h1>{this.state.roomName}</h1>
             <i className="fas fa-sign details-icon"></i>
           </div>
         </div>
