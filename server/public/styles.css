@@ -160,8 +160,9 @@ label,
 }
 
 #message-input {
+  font-family: "Lato", sans-serif;
   flex-grow: 1;
-  height: 75%;
+  height: 24px;
   font-size: 18px;
 }
 

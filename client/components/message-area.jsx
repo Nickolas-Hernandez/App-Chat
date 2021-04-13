@@ -1,6 +1,16 @@
 import React from 'react';
 
 export default class MessageArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.adjustTextareaHeight = this.adjustTextareaHeight.bind(this);
+  }
+
+  adjustTextareaHeight(event) {
+    event.target.style.height = '24px';
+    event.target.style.height = `${event.target.scrollHeight}px`;
+
+  }
 
   render() {
     return (
@@ -14,7 +24,12 @@ export default class MessageArea extends React.Component {
         </div>
         <div className="messages-view">
           <div className="message-input-container">
-            <input type="text" name="message-input" id="message-input"/>
+            <textarea
+              name="message"
+              id="message-input"
+              onChange={this.adjustTextareaHeight}
+              placeholder="Send a message. . . ">
+            </textarea>
             <i className="fas fa-chevron-circle-right send-message-icon"></i>
           </div>
         </div>
