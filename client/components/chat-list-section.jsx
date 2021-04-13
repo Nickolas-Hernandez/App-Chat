@@ -18,6 +18,7 @@ export default class ChatListSection extends React.Component {
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.buildNewState = this.buildNewState.bind(this);
+    this.swapViews = this.swapViews.bind(this);
   }
 
   componentDidMount() {
@@ -92,6 +93,10 @@ export default class ChatListSection extends React.Component {
     this.setState(newState);
   }
 
+  swapViews(e) {
+    this.props.viewSwap(e.target);
+  }
+
   render() {
     const { formIsOpen, form: formInput } = this.state;
     return (
@@ -112,7 +117,7 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-        <ChatList rooms={this.state.chatRooms} />
+        <ChatList viewSwap={this.swapViews} rooms={this.state.chatRooms} />
       </>
     );
   }

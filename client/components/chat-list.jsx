@@ -12,5 +12,5 @@ export default function ChatList(props) {
   const allRooms = props.rooms.map(room => {
     return <ChatListItem key={room.id} roomTitle={room.name}/>;
   });
-  return <ul className="chat-list">{allRooms}</ul>;
+  return <ul onClick={event => props.viewSwap(event)} className="chat-list">{allRooms}</ul>;
 }
