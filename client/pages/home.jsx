@@ -12,16 +12,23 @@ export default class Home extends React.Component {
   }
 
   swapViews(target) {
-    console.log(target);
-    // if(target === )
+    if (target.closest('.chat-list-item')) {
+      const room = target.closest('.chat-list-item');
+      this.setState({ view: 'messageArea' });
+    }
+  }
+
+  getView() {
+    if (this.state.view === 'chatList') {
+      return <ChatListSection viewSwap={this.swapViews} />;
+    }
+    if (this.state.view === 'messageArea') {
+      return <MessageArea />;
+    }
   }
 
   render() {
-    return (
-      <>
-        <ChatListSection viewSwap={this.swapViews} />
-        {/* <MessageArea /> */}
-      </>
-    );
+    const view = this.getView();
+    return <>{view}</>;
   }
 }
