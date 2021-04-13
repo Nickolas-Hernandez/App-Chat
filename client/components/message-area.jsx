@@ -22,8 +22,8 @@ export default class MessageArea extends React.Component {
             <i className="fas fa-sign details-icon"></i>
           </div>
         </div>
-        <div className="messages-view">
-          <div className="message-input-container">
+        <div className="messages-view"></div>
+        <div className="message-input-container">
             <textarea
               name="message"
               id="message-input"
@@ -32,7 +32,6 @@ export default class MessageArea extends React.Component {
             </textarea>
             <i className="fas fa-chevron-circle-right send-message-icon"></i>
           </div>
-        </div>
       </div>
     );
   }
