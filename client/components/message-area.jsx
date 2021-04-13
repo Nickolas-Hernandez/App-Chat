@@ -7,7 +7,6 @@ export default class MessageArea extends React.Component {
   }
 
   adjustTextareaHeight(event) {
-    // console.log(event);
     event.target.style.height = '24px';
     event.target.style.height = `${event.target.scrollHeight}px`;
     event.target.parentElement.style.height = '36px';
