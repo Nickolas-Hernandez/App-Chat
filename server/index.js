@@ -30,12 +30,28 @@ app.get('/api/chatRooms', (req, res, next) => {
   const sql = `
     select "name",
            "chatId" as "id"
-      from "chatRooms";
+      from "chatRooms"
+      order by "chatId" desc;
   `;
   db.query(sql)
     .then(result => {
       const chatRooms = result.rows;
       res.status(200).json(chatRooms);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/rooms/:roomId', (req, res, next) => {
+  const roomId = parseInt(req.params.roomId);
+  const sql = `
+    select *
+      from "chatRooms"
+      where "chatId" = $1;
+  `;
+  const params = [roomId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
 });
