@@ -1,4 +1,5 @@
 import React from 'react';
+import TextAreaInput from './text-area-input';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
@@ -6,9 +7,8 @@ export default class MessageArea extends React.Component {
     this.state = {
       roomId: this.props.roomId,
       roomName: '',
-      roomMessages: []
+      messages: []
     };
-    this.adjustTextareaHeight = this.adjustTextareaHeight.bind(this);
   }
 
   componentDidMount() {
@@ -18,16 +18,9 @@ export default class MessageArea extends React.Component {
         this.setState({
           roomId: result.chatId,
           roomName: result.name,
-          message: []
+          messages: []
         });
       });
-  }
-
-  adjustTextareaHeight(event) {
-    event.target.style.height = '24px';
-    event.target.style.height = `${event.target.scrollHeight}px`;
-    event.target.parentElement.style.height = '36px';
-    event.target.parentElement.style.height = `${event.target.scrollHeight + 8}px`;
   }
 
   render() {
@@ -43,15 +36,7 @@ export default class MessageArea extends React.Component {
           </div>
         </div>
         <div className="messages-view"></div>
-        <div className="message-input-container">
-            <textarea
-              name="message"
-              id="message-input"
-              onChange={this.adjustTextareaHeight}
-              placeholder="Send a message. . . ">
-            </textarea>
-            <i className="fas fa-chevron-circle-right send-message-icon"></i>
-          </div>
+        <TextAreaInput />
       </div>
     );
   }

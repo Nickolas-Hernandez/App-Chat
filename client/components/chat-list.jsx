@@ -11,10 +11,7 @@ function ChatListItem(props) {
 }
 
 export default function ChatList(props) {
-  const sortedRooms = props.rooms.sort((a, b) => {
-    return b.id - a.id;
-  });
-  const allRooms = sortedRooms.map(room => {
+  const allRooms = props.rooms.map(room => {
     return <ChatListItem key={room.id} roomId={room.id} roomTitle={room.name}/>;
   });
   return <ul className="chat-list">{allRooms}</ul>;

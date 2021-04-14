@@ -30,7 +30,8 @@ app.get('/api/chatRooms', (req, res, next) => {
   const sql = `
     select "name",
            "chatId" as "id"
-      from "chatRooms";
+      from "chatRooms"
+      order by "chatId" desc;
   `;
   db.query(sql)
     .then(result => {
