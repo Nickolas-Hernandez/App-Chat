@@ -14,6 +14,10 @@ h2 {
   font-family: "Nunito", sans-serif;
 }
 
+h2 {
+  font-weight: 600;
+}
+
 input {
   border: none;
   outline: none;
@@ -205,7 +209,7 @@ label,
 
   .chat-list-header,
   .chat-list {
-    width: calc(100%/3);
+    width: calc(100% / 3);
     margin: 0 auto;
   }
 }
