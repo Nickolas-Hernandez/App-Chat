@@ -222,6 +222,8 @@ label,
   .message-input-container {
     width: 500px;
     height: 36px;
+    position: relative;
+    padding-right: 45px;
   }
 
   #message-input {
@@ -230,6 +232,9 @@ label,
 
   .send-message-icon {
     font-size: 32px;
+    position: absolute;
+    right: 10px;
+    bottom: 3px;
   }
 }
 
