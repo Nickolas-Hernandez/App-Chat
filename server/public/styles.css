@@ -202,6 +202,12 @@ label,
   .form-tab {
     font-size: 30px;
   }
+
+  .chat-list-header,
+  .chat-list {
+    width: calc(100%/3);
+    margin: 0 auto;
+  }
 }
 
 .hidden {
