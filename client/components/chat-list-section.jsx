@@ -18,7 +18,6 @@ export default class ChatListSection extends React.Component {
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.buildNewState = this.buildNewState.bind(this);
-    // this.swapViews = this.swapViews.bind(this);
   }
 
   componentDidMount() {
@@ -78,7 +77,6 @@ export default class ChatListSection extends React.Component {
       .then(result => {
         const newState = this.buildNewState();
         newState.chatRooms = result;
-        console.log(result);
         this.setState(newState);
       })
       .catch(err => console.error(err));

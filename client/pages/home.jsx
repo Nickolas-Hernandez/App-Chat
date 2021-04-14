@@ -12,7 +12,6 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
-    console.log('hash', window.location.hash);
     window.addEventListener('hashchange', event => {
       const parsedHash = parseRoute(window.location.hash);
       this.setState({ route: parsedHash });
