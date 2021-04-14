@@ -212,6 +212,10 @@ label,
     width: calc(100% / 3);
     margin: 0 auto;
   }
+
+  .message-area {
+    width: calc(150% / 2);
+  }
 }
 
 .hidden {
