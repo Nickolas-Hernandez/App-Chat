@@ -74,11 +74,18 @@ app.post('/api/newRoom', (req, res, next) => {
 
 app.post('/api/chat/:chatId', (req, res, next) => {
   console.log(req.body);
+  const { message } = req.body;
+  const roomId = req.params.chatId;
   const sql = `
-    insert into "chatRooms" ("message", "chatId")
+    insert into "messages" ("message", "chatId")
            values ($1, $2)
       returning *
   `;
+  const params = [message, roomId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    });
   // io.to();
 });
 
