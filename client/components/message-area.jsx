@@ -19,9 +19,22 @@ export default class MessageArea extends React.Component {
         this.setState({
           roomId: result.chatId,
           roomName: result.name,
-          messages: []
+          messages: [],
+          sendMessage: ''
         });
       });
+  }
+
+  buildNewState() {
+    const messages = { messages: this.state.messages.slice() };
+    const newState = Object.assign({}, this.state, messages);
+    return newState;
+  }
+
+  getMessageInput(value) {
+    const newState = this.buildNewState();
+    newState.sendMessage = value;
+    this.setState(newState);
   }
 
   render() {
