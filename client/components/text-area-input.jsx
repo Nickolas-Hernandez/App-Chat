@@ -7,6 +7,7 @@ export default class TextAreaInput extends React.Component {
       textAreaScrollHeight: 24
     };
     this.handleChange = this.handleChange.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   handleChange(event) {
@@ -19,6 +20,10 @@ export default class TextAreaInput extends React.Component {
     this.setState({
       textAreaScrollHeight: event.target.scrollHeight
     });
+  }
+
+  sendMessage() {
+    this.props.onSend();
   }
 
   render() {
@@ -39,7 +44,9 @@ export default class TextAreaInput extends React.Component {
             placeholder="Send a message. . . "
             onChange={this.handleChange}>
           </textarea>
-          <i className="fas fa-chevron-circle-right send-message-icon"></i>
+          <i
+          onClick={this.sendMessage}
+          className="fas fa-chevron-circle-right send-message-icon"></i>
         </div>
     );
   }

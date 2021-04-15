@@ -11,6 +11,7 @@ export default class MessageArea extends React.Component {
       sendMessage: ''
     };
     this.getMessageInput = this.getMessageInput.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   componentDidMount() {
@@ -44,7 +45,7 @@ export default class MessageArea extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: this.state.sendMessage })
     };
-    fetch(`/api/chat${this.state.roomId}`, init)
+    fetch(`/api/chat/${this.state.roomId}`, init)
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(err => console.error(err));
