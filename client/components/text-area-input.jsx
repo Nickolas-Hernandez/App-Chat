@@ -10,6 +10,7 @@ export default class TextAreaInput extends React.Component {
   }
 
   handleChange(event) {
+    this.props.onInputChange(event.target.value);
     const inputLength = event.target.value.length;
     if (inputLength === 0) {
       this.setState({ textAreaScrollHeight: 24 });

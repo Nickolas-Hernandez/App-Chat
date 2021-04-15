@@ -10,6 +10,7 @@ export default class MessageArea extends React.Component {
       messages: [],
       sendMessage: ''
     };
+    this.getMessageInput = this.getMessageInput.bind(this);
   }
 
   componentDidMount() {
@@ -50,7 +51,7 @@ export default class MessageArea extends React.Component {
           </div>
         </div>
         <div className="messages-view"></div>
-        <TextAreaInput />
+        <TextAreaInput onInputChange={this.getMessageInput}/>
       </div>
     );
   }
