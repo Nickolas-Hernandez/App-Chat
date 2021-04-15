@@ -38,6 +38,18 @@ export default class MessageArea extends React.Component {
     this.setState(newState);
   }
 
+  sendMessage() {
+    const init = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: this.state.sendMessage })
+    };
+    fetch(`/api/chat${this.state.roomId}`, init)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(err => console.error(err));
+  }
+
   render() {
     return (
       <div className="message-area">
