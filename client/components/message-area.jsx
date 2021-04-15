@@ -30,6 +30,9 @@ export default class MessageArea extends React.Component {
     socket.emit('join_chat', {
       chatRoomId: this.props.roomId
     });
+    socket.on('new_message', message => {
+      this.appendMessage(message);
+    });
   }
 
   buildNewState() {
@@ -54,6 +57,12 @@ export default class MessageArea extends React.Component {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(err => console.error(err));
+  }
+
+  appendMessage(message) {
+    const newState = this.buildNewState();
+    newState.messages.unshift(message);
+    this.setState(newState);
   }
 
   render() {

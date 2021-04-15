@@ -90,7 +90,7 @@ app.post('/api/chat/:chatId', (req, res, next) => {
   db.query(sql, params)
     .then(result => res.status(200))
     .catch(err => next(err));
-  io.to(roomId).emit('newMessage', message);
+  io.to(roomId).emit('new_message', message);
 });
 
 app.use(errorMiddleware);
