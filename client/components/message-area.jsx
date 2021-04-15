@@ -63,7 +63,10 @@ export default class MessageArea extends React.Component {
           </div>
         </div>
         <div className="messages-view"></div>
-        <TextAreaInput onInputChange={this.getMessageInput}/>
+        <TextAreaInput
+          onSend={this.sendMessage}
+          onInputChange={this.getMessageInput}
+        />
       </div>
     );
   }
