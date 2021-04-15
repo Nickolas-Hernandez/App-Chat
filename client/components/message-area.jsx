@@ -7,7 +7,8 @@ export default class MessageArea extends React.Component {
     this.state = {
       roomId: this.props.roomId,
       roomName: '',
-      messages: []
+      messages: [],
+      sendMessage: ''
     };
   }
 
