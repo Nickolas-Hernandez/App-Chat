@@ -19,11 +19,8 @@ const db = new pg.Pool({
 app.use(staticMiddleware);
 app.use(jsonMiddleware);
 
-let sessionId;
-
 io.on('connection', socket => {
   console.log('connected!');
-  sessionId = socket.id;
 });
 
 app.get('/api/chatRooms', (req, res, next) => {
@@ -62,11 +59,11 @@ app.post('/api/newRoom', (req, res, next) => {
     throw new ClientError(400, 'Chat name and username are required');
   }
   const sql = `
-    insert into "chatRooms" ("name", "host", "sid")
-           values ($1, $2, $3)
+    insert into "chatRooms" ("name", "host")
+           values ($1, $2)
       returning *
   `;
-  const params = [chatName, userName, sessionId];
+  const params = [chatName, userName];
   db.query(sql, params)
     .then(result => {
       const chatRoom = result.rows[0];
@@ -77,6 +74,12 @@ app.post('/api/newRoom', (req, res, next) => {
 
 app.post('/api/chat/:chatId', (req, res, next) => {
   console.log(req.body);
+  const sql = `
+    insert into "chatRooms" ("message", "chatId")
+           values ($1, $2)
+      returning *
+  `;
+  // io.to();
 });
 
 app.use(errorMiddleware);

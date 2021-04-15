@@ -49,6 +49,10 @@ export default class MessageArea extends React.Component {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(err => console.error(err));
+    // this.props.socket.emit('new message', {
+    //   message: this.state.sendMessage.slice,
+    //   user: 'nick'
+    // });
   }
 
   render() {
