@@ -75,6 +75,10 @@ app.post('/api/newRoom', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/chat/:chatId', (req, res, next) => {
+  console.log(req.body);
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
