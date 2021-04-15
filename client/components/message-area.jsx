@@ -1,5 +1,6 @@
 import React from 'react';
 import TextAreaInput from './text-area-input';
+import AppContext from '../lib/app-context';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
@@ -25,6 +26,10 @@ export default class MessageArea extends React.Component {
           sendMessage: ''
         });
       });
+    const { socket } = this.context;
+    socket.emit('join_chat', {
+      chatRoomId: this.props.roomId
+    });
   }
 
   buildNewState() {
@@ -49,10 +54,6 @@ export default class MessageArea extends React.Component {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(err => console.error(err));
-    // this.props.socket.emit('new message', {
-    //   message: this.state.sendMessage.slice,
-    //   user: 'nick'
-    // });
   }
 
   render() {
@@ -76,3 +77,5 @@ export default class MessageArea extends React.Component {
     );
   }
 }
+
+MessageArea.contextType = AppContext;
