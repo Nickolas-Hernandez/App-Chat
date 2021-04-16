@@ -42,6 +42,7 @@ export default class TextAreaInput extends React.Component {
             id="message-input"
             style={textAreaStyle}
             placeholder="Send a message. . . "
+            value={this.props.messageValue}
             onChange={this.handleChange}>
           </textarea>
           <i

@@ -2,7 +2,7 @@ require('dotenv/config');
 const express = require('express');
 const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
-const errorMiddleware = require('./error-Middleware');
+const errorMiddleware = require('./error-middleware');
 
 const app = express();
 const jsonMiddleware = express.json();
@@ -13,7 +13,10 @@ const io = require('socket.io')(server);
 const pg = require('pg');
 
 const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.use(staticMiddleware);
@@ -78,7 +81,6 @@ app.post('/api/newRoom', (req, res, next) => {
 });
 
 app.post('/api/chat/:chatId', (req, res, next) => {
-  console.log(req.body);
   const { message } = req.body;
   const roomId = req.params.chatId;
   const sql = `

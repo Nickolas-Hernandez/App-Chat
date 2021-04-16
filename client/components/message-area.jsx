@@ -57,11 +57,15 @@ export default class MessageArea extends React.Component {
       .then(response => response.json())
       .then(result => console.log(result))
       .catch(err => console.error(err));
+    const newState = this.buildNewState();
+    newState.sendMessage = '';
+    this.setState(newState);
   }
 
   appendMessage(message) {
+    const messageObject = { message: message };
     const newState = this.buildNewState();
-    newState.messages.unshift(message);
+    newState.messages.unshift(messageObject);
     this.setState(newState);
   }
 
@@ -80,6 +84,7 @@ export default class MessageArea extends React.Component {
         <div className="messages-view"></div>
         <TextAreaInput
           onSend={this.sendMessage}
+          messageValue={this.state.sendMessage}
           onInputChange={this.getMessageInput}
         />
       </div>
