@@ -24,7 +24,6 @@ app.use(jsonMiddleware);
 
 io.on('connection', socket => {
   console.log('connected!');
-
   socket.on('join_chat', data => {
     console.log('joined chat:', data.chatRoomId);
     socket.join(data.chatRoomId);
@@ -90,9 +89,11 @@ app.post('/api/chat/:chatId', (req, res, next) => {
   `;
   const params = [message, roomId];
   db.query(sql, params)
-    .then(result => res.status(200))
+    .then(result => {
+      io.to(roomId).emit('new_message', result.rows[0]);
+      res.status(200).send();
+    })
     .catch(err => next(err));
-  io.to(roomId).emit('new_message', message);
 });
 
 app.use(errorMiddleware);

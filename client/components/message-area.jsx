@@ -32,7 +32,10 @@ export default class MessageArea extends React.Component {
       chatRoomId: this.props.roomId
     });
     socket.on('new_message', message => {
-      this.appendMessage(message);
+      console.log('message', message);
+      const newState = this.buildNewState();
+      newState.messages.unshift(message);
+      this.setState(newState);
     });
   }
 
@@ -50,6 +53,7 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
+    console.log('sendMessage', sendMessage);
     if (sendMessage === '') return;
     const init = {
       method: 'POST',
@@ -58,17 +62,10 @@ export default class MessageArea extends React.Component {
     };
     fetch(`/api/chat/${this.state.roomId}`, init)
       .then(response => response.json())
-      .then(result => console.log(result))
+      .then(result => console.log('result', result))
       .catch(err => console.error(err));
     const newState = this.buildNewState();
     newState.sendMessage = '';
-    this.setState(newState);
-  }
-
-  appendMessage(message) {
-    const messageObject = { message: message };
-    const newState = this.buildNewState();
-    newState.messages.unshift(messageObject);
     this.setState(newState);
   }
 
