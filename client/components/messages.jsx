@@ -8,7 +8,6 @@ export default function Messages(props) {
       message={message.message} />
     );
   });
-  allMessages.reverse();
   return (
     <div className="messages-view">
       <ul className="list-of-messages">{allMessages}</ul>

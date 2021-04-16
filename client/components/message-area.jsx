@@ -35,7 +35,7 @@ export default class MessageArea extends React.Component {
     });
     socket.on('new_message', message => {
       const newState = this.buildNewState();
-      newState.messages.unshift(message);
+      newState.messages.push(message);
       this.setState(newState);
     });
   }
