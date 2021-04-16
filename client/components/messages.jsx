@@ -1,11 +1,12 @@
 import React from 'react';
 
 export default function Messages(props) {
-  let key = 0;
   const allMessages = props.messages.map(message => {
-    const item = <MessagesList key={key} message={message.message} />;
-    key++;
-    return item;
+    return (
+      <MessagesList
+      key={message.messageId}
+      message={message.message} />
+    );
   });
   allMessages.reverse();
   return (

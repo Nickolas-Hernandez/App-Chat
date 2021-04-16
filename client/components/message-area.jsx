@@ -1,11 +1,12 @@
 import React from 'react';
 import TextAreaInput from './text-area-input';
-import AppContext from '../lib/app-context';
 import Messages from './messages';
+import { io } from 'socket.io-client';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
     super(props);
+    this.socket = null;
     this.state = {
       roomId: this.props.roomId,
       roomName: '',
@@ -17,6 +18,7 @@ export default class MessageArea extends React.Component {
   }
 
   componentDidMount() {
+    this.socket = io();
     fetch(`/api/rooms/${this.props.roomId}`)
       .then(response => response.json())
       .then(result => {
@@ -27,12 +29,11 @@ export default class MessageArea extends React.Component {
           sendMessage: ''
         });
       });
-    const { socket } = this.context;
+    const { socket } = this;
     socket.emit('join_chat', {
       chatRoomId: this.props.roomId
     });
     socket.on('new_message', message => {
-      console.log('message', message);
       const newState = this.buildNewState();
       newState.messages.unshift(message);
       this.setState(newState);
@@ -53,17 +54,17 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
-    console.log('sendMessage', sendMessage);
     if (sendMessage === '') return;
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: sendMessage })
     };
-    fetch(`/api/chat/${this.state.roomId}`, init)
-      .then(response => response.json())
-      .then(result => console.log('result', result))
-      .catch(err => console.error(err));
+    fetch(`/api/chat/${this.state.roomId}`, init);
+    this.resetMessageBox();
+  }
+
+  resetMessageBox() {
     const newState = this.buildNewState();
     newState.sendMessage = '';
     this.setState(newState);
@@ -91,5 +92,3 @@ export default class MessageArea extends React.Component {
     );
   }
 }
-
-MessageArea.contextType = AppContext;
