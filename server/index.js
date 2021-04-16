@@ -13,7 +13,10 @@ const io = require('socket.io')(server);
 const pg = require('pg');
 
 const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 app.use(staticMiddleware);
