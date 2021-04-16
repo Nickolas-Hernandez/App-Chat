@@ -190,7 +190,8 @@ label,
 
 .message {
   color: white;
-  background-color: #2567D9;
+  font-weight: 400;
+  background-color: #2567d9;
   max-width: 280px;
   max-height: 80px;
   align-self: flex-end;
@@ -242,6 +243,7 @@ label,
     height: 100px;
     position: relative;
     padding-right: 45px;
+    margin-top: 0.5rem;
   }
 
   #message-input {
@@ -253,6 +255,15 @@ label,
     position: absolute;
     right: 10px;
     bottom: 3px;
+  }
+
+  .messages-view {
+    padding: 0 60px;
+  }
+
+  .message {
+    font-size: 20px;
+    padding: 12px;
   }
 }
 
