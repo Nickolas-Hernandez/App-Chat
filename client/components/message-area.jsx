@@ -1,6 +1,7 @@
 import React from 'react';
 import TextAreaInput from './text-area-input';
 import AppContext from '../lib/app-context';
+import Messages from './messages';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
@@ -81,7 +82,7 @@ export default class MessageArea extends React.Component {
             <i className="fas fa-sign details-icon"></i>
           </div>
         </div>
-        <div className="messages-view"></div>
+        <Messages messages={this.state.messages} />
         <TextAreaInput
           onSend={this.sendMessage}
           messageValue={this.state.sendMessage}

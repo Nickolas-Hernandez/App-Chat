@@ -90,7 +90,7 @@ app.post('/api/chat/:chatId', (req, res, next) => {
   `;
   const params = [message, roomId];
   db.query(sql, params)
-    .then(result => res.status(200))
+    .then(result => console.log(result))
     .catch(err => next(err));
   io.to(roomId).emit('new_message', message);
 });
