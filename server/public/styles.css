@@ -137,6 +137,7 @@ label,
 
 .message-area-header {
   background-color: white;
+  flex-shrink: 0;
 }
 
 .message-area {
@@ -151,7 +152,8 @@ label,
   width: 100%;
   height: 100%;
   padding: 0 20px 5px;
-  flex-shrink: 10;
+  flex-shrink: 5;
+  overflow: hidden;
 }
 
 .message-input-container {
@@ -178,6 +180,33 @@ label,
   border: none;
   outline: none;
   resize: none;
+}
+
+.send-message-icon {
+  border: none;
+  outline: none;
+  color: #5fa7a0;
+  background: none;
+}
+
+.list-of-messages {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.message {
+  color: white;
+  font-weight: 400;
+  background-color: #2567d9;
+  max-width: 280px;
+  max-height: 80px;
+  align-self: flex-end;
+  padding: 8px;
+  margin: 0.2rem;
+  border-radius: 4px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -223,6 +252,7 @@ label,
     height: 100px;
     position: relative;
     padding-right: 45px;
+    margin-top: 0.5rem;
   }
 
   #message-input {
@@ -234,6 +264,15 @@ label,
     position: absolute;
     right: 10px;
     bottom: 3px;
+  }
+
+  .messages-view {
+    padding: 0 60px;
+  }
+
+  .message {
+    font-size: 20px;
+    padding: 12px;
   }
 }
 

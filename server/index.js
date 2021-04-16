@@ -11,6 +11,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const pg = require('pg');
+const { disconnect } = require('process');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -22,11 +23,15 @@ const db = new pg.Pool({
 app.use(staticMiddleware);
 app.use(jsonMiddleware);
 
-let sessionId;
-
 io.on('connection', socket => {
   console.log('connected!');
-  sessionId = socket.id;
+  socket.on('join_chat', data => {
+    console.log('joined chat:', data.chatRoomId);
+    socket.join(data.chatRoomId);
+  });
+  socket.on('disconnect', socket => {
+    console.log('disconnecting!');
+  });
 });
 
 app.get('/api/chatRooms', (req, res, next) => {
@@ -65,15 +70,32 @@ app.post('/api/newRoom', (req, res, next) => {
     throw new ClientError(400, 'Chat name and username are required');
   }
   const sql = `
-    insert into "chatRooms" ("name", "host", "sid")
-           values ($1, $2, $3)
+    insert into "chatRooms" ("name", "host")
+           values ($1, $2)
       returning *
   `;
-  const params = [chatName, userName, sessionId];
+  const params = [chatName, userName];
   db.query(sql, params)
     .then(result => {
       const chatRoom = result.rows[0];
       res.status(201).json(chatRoom);
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/chat/:chatId', (req, res, next) => {
+  const { message } = req.body;
+  const roomId = req.params.chatId;
+  const sql = `
+    insert into "messages" ("message", "chatId")
+           values ($1, $2)
+      returning *
+  `;
+  const params = [message, roomId];
+  db.query(sql, params)
+    .then(result => {
+      io.to(roomId).emit('new_message', result.rows[0]);
+      res.status(200).send();
     })
     .catch(err => next(err));
 });
