@@ -40,6 +40,10 @@ export default class MessageArea extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.socket.disconnect();
+  }
+
   buildNewState() {
     const messages = { messages: this.state.messages.slice() };
     const newState = Object.assign({}, this.state, messages);

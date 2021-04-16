@@ -11,6 +11,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const pg = require('pg');
+const { disconnect } = require('process');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -27,6 +28,9 @@ io.on('connection', socket => {
   socket.on('join_chat', data => {
     console.log('joined chat:', data.chatRoomId);
     socket.join(data.chatRoomId);
+  });
+  socket.on('disconnect', socket => {
+    console.log('disconnecting!');
   });
 });
 
