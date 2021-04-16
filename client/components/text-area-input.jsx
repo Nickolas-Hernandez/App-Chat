@@ -22,7 +22,8 @@ export default class TextAreaInput extends React.Component {
     });
   }
 
-  sendMessage() {
+  sendMessage(event) {
+    event.preventDefault();
     this.props.onSend();
     this.setState({ textAreaScrollHeight: 24 });
   }
@@ -37,7 +38,10 @@ export default class TextAreaInput extends React.Component {
       height: `${textAreaScrollHeight}px`
     };
     return (
-        <div className="message-input-container" style={textAreaContainerStyle}>
+        <form
+        onSubmit={this.sendMessage}
+        className="message-input-container"
+        style={textAreaContainerStyle}>
           <textarea
             name="message"
             id="message-input"
@@ -46,10 +50,9 @@ export default class TextAreaInput extends React.Component {
             value={this.props.messageValue}
             onChange={this.handleChange}>
           </textarea>
-          <i
-          onClick={this.sendMessage}
-          className="fas fa-chevron-circle-right send-message-icon"></i>
-        </div>
+          <button
+          className="fas fa-chevron-circle-right send-message-icon"></button>
+        </form>
     );
   }
 }

@@ -182,6 +182,13 @@ label,
   resize: none;
 }
 
+.send-message-icon {
+  border: none;
+  outline: none;
+  color: #5fa7a0;
+  background: none;
+}
+
 .list-of-messages {
   width: 100%;
   height: 100%;
