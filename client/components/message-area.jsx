@@ -49,10 +49,12 @@ export default class MessageArea extends React.Component {
   }
 
   sendMessage() {
+    const { sendMessage } = this.state;
+    if (sendMessage === '') return;
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: this.state.sendMessage })
+      body: JSON.stringify({ message: sendMessage })
     };
     fetch(`/api/chat/${this.state.roomId}`, init)
       .then(response => response.json())

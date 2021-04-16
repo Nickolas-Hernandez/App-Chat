@@ -19,7 +19,7 @@ export default class App extends React.Component {
     const contextValue = { socket: this.state.socket };
     return (
       <AppContext.Provider value={contextValue}>
-        <Home />;
+        <Home />
       </AppContext.Provider>
     );
   }

@@ -24,6 +24,7 @@ export default class TextAreaInput extends React.Component {
 
   sendMessage() {
     this.props.onSend();
+    this.setState({ textAreaScrollHeight: 24 });
   }
 
   render() {
