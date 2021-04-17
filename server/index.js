@@ -100,6 +100,11 @@ app.post('/api/chat/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/createNewUser', (req, res, next) => {
+  const { userName } = req.body;
+  console.log(userName);
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
