@@ -49,15 +49,20 @@ a {
 }
 
 .overlay,
-.new-chat-form {
+.new-chat-form,
+.new-user-form {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .new-chat-form {
-  width: 335px;
   height: 250px;
+}
+
+.new-chat-form,
+.new-user-form {
+  width: 335px;
   background-color: #dce2ec;
   border-radius: 8px;
   padding: 1rem 1.4rem;
@@ -86,12 +91,15 @@ label,
 
 #chat-name,
 #users-name,
+#user-name,
 .submit-button {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   width: 100%;
   height: 30px;
   text-align: center;
+  border: none;
+  font-size: 18px;
 }
 
 .submit-button {
@@ -207,6 +215,16 @@ label,
   padding: 8px;
   margin: 0.2rem;
   border-radius: 4px;
+}
+
+.new-user-form {
+  text-align: center;
+  height: 180px;
+}
+
+.welcome-message {
+  font-size: 24px;
+  font-weight: 400;
 }
 
 @media only screen and (min-width: 768px) {

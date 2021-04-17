@@ -14,7 +14,7 @@ export default class CreateUserForm extends React.Component {
               name="user-name"
               id="user-name"
               required/>
-            <button>Submit</button>
+            <button className="submit-button">Submit</button>
           </form>
         </div>
       </>
