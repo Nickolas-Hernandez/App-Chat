@@ -28,6 +28,15 @@ export default class Home extends React.Component {
 
   submitUser(user) {
     console.log(user);
+    const init = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    };
+    fetch('/api/createNewUser', init)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(err => console.error(err));
   }
 
   render() {
