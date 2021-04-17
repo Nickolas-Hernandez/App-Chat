@@ -11,6 +11,7 @@ export default class Home extends React.Component {
       route: parseRoute(window.location.hash),
       user: {}
     };
+    this.submitUser = this.submitUser.bind(this);
   }
 
   componentDidMount() {
@@ -25,8 +26,12 @@ export default class Home extends React.Component {
     });
   }
 
+  submitUser(user) {
+    console.log(user);
+  }
+
   render() {
-    return <CreateUserForm />;
+    return <CreateUserForm createUser={this.submitUser} />;
     // const { route } = this.state;
     // if (route.path === '') {
     //   return <ChatListSection />;
