@@ -106,6 +106,7 @@ label,
   background-color: #2567d9;
   color: white;
   cursor: pointer;
+  outline: none;
 }
 
 .chat-list-header,
