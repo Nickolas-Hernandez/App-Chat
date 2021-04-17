@@ -21,3 +21,10 @@ create table "messages" (
   "createdAt" timestamptz(6) not null default now(),
   primary key ("messageId")
 );
+
+create table "users" (
+  "userId" serial,
+  "userName" text not null,
+  "createdAt" timestamptz(6) not null default now(),
+  primary key ("userId")
+);
