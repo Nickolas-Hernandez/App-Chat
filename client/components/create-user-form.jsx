@@ -1,6 +1,16 @@
 import React from 'react';
 
 export default class CreateUserForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { userName: '' };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ userName: event.target.value });
+  }
+
   render() {
     return (
       <>
@@ -13,6 +23,8 @@ export default class CreateUserForm extends React.Component {
               type="text"
               name="user-name"
               id="user-name"
+              onChange={this.handleChange}
+              value={this.state.userName}
               required/>
             <button className="submit-button">Submit</button>
           </form>

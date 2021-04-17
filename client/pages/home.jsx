@@ -8,14 +8,20 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      user: {}
     };
   }
 
   componentDidMount() {
     window.addEventListener('hashchange', event => {
       const parsedHash = parseRoute(window.location.hash);
-      this.setState({ route: parsedHash });
+      this.setState(state => {
+        return ({
+          route: parsedHash,
+          user: state.user
+        });
+      });
     });
   }
 
