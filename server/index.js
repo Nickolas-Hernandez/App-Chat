@@ -1,6 +1,7 @@
 require('dotenv/config');
 const express = require('express');
 const staticMiddleware = require('./static-middleware');
+const jwt = require('jsonwebtoken');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 
@@ -11,7 +12,6 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const pg = require('pg');
-const { disconnect } = require('process');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -103,6 +103,23 @@ app.post('/api/chat/:chatId', (req, res, next) => {
 app.post('/api/createNewUser', (req, res, next) => {
   const { userName } = req.body;
   console.log(userName);
+  const sql = `
+    insert into "users" ("userName")
+           values ($1)
+      returning *
+  `;
+  const params = [userName];
+  db.query(sql, params)
+    .then(result => {
+      const user = result.rows[0];
+      const payload = {
+        userId: user.userId,
+        userName: user.userName
+      };
+      const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+      res.status(201).json({ token: token, user: payload });
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
