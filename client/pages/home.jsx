@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatListSection from '../components/chat-list-section';
 import MessageArea from '../components/message-area';
+import CreateUserForm from '../components/create-user-form';
 import parseRoute from '../lib/parse-route';
 
 export default class Home extends React.Component {
@@ -19,13 +20,14 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const { route } = this.state;
-    if (route.path === '') {
-      return <ChatListSection />;
-    }
-    if (route.path === 'rooms') {
-      const roomId = route.params.get('roomId');
-      return <MessageArea roomId={roomId} />;
-    }
+    return <CreateUserForm />;
+    // const { route } = this.state;
+    // if (route.path === '') {
+    //   return <ChatListSection />;
+    // }
+    // if (route.path === 'rooms') {
+    //   const roomId = route.params.get('roomId');
+    //   return <MessageArea roomId={roomId} />;
+    // }
   }
 }
