@@ -23,12 +23,7 @@ export default class ChatListSection extends React.Component {
     fetch('/api/chatRooms')
       .then(response => response.json())
       .then(result => {
-        const usersRooms = [];
-        for (let i = 0; i < result.length; i++) {
-          if (this.props.user.chatRooms.includes(result[i].id)) {
-            usersRooms.push(result[i]);
-          }
-        }
+        const usersRooms = result.filter(room => this.props.user.chatRooms.includes(room.id));
         const newState = this.buildNewState();
         newState.chatRooms = usersRooms;
         this.setState(newState);
