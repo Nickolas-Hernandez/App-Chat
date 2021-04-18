@@ -8,8 +8,7 @@ export default class ChatListSection extends React.Component {
     this.state = {
       formIsOpen: false,
       form: {
-        chatName: '',
-        userName: ''
+        chatName: ''
       },
       chatRooms: []
     };
@@ -21,7 +20,23 @@ export default class ChatListSection extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllChatRooms();
+    fetch('/api/chatRooms')
+      .then(response => response.json())
+      .then(result => {
+        const usersRooms = result.filter(room => this.props.user.chatRooms.includes(room.id));
+        const newState = this.buildNewState();
+        newState.chatRooms = usersRooms;
+        this.setState(newState);
+      })
+      .catch(err => console.error(err));
+  }
+
+  buildNewState() {
+    const openForm = { formIsOpen: false };
+    const formInfo = { form: { chatName: '' } };
+    const chatRooms = { chatRooms: this.state.chatRooms.slice() };
+    const newState = Object.assign({}, this.state, openForm, formInfo, chatRooms);
+    return newState;
   }
 
   openNewChatForm() {
@@ -37,10 +52,7 @@ export default class ChatListSection extends React.Component {
     if (target.id === 'chat-name') {
       newState.form.chatName = target.value;
       this.setState(newState);
-      return;
     }
-    newState.form.userName = target.value;
-    this.setState(newState);
   }
 
   submitForm() {
@@ -63,25 +75,6 @@ export default class ChatListSection extends React.Component {
     this.setState(newState);
   }
 
-  buildNewState() {
-    const rooms = { chatRooms: this.state.chatRooms.slice() };
-    const formInfo = { form: { chatName: '', userName: '' } };
-    const openForm = { formIsOpen: false };
-    const newState = Object.assign({}, this.state, openForm, formInfo, rooms);
-    return newState;
-  }
-
-  getAllChatRooms() {
-    fetch('/api/chatRooms')
-      .then(response => response.json())
-      .then(result => {
-        const newState = this.buildNewState();
-        newState.chatRooms = result;
-        this.setState(newState);
-      })
-      .catch(err => console.error(err));
-  }
-
   appendNewChatRoom(chatRoomDetails) {
     const chatRoom = {
       id: chatRoomDetails.chatId,
@@ -89,6 +82,10 @@ export default class ChatListSection extends React.Component {
     };
     const newState = this.buildNewState();
     newState.chatRooms.unshift(chatRoom);
+    const updatedUser = Object.assign({}, this.props.user);
+    updatedUser.chatRooms = this.props.user.chatRooms.slice();
+    updatedUser.chatRooms.push(chatRoomDetails.chatId);
+    this.props.onRoomCreation(updatedUser);
     this.setState(newState);
   }
 
@@ -99,7 +96,6 @@ export default class ChatListSection extends React.Component {
        <NewChatForm
           isOpen={formIsOpen}
           chatName={formInput.chatName}
-          userName={formInput.userName}
           onInputChange={this.handleChange}
           handleFormClose={this.closeForm}
           onSubmission={this.submitForm}

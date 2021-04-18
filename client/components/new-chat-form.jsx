@@ -6,7 +6,6 @@ export default class NewChatForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
-
   }
 
   handleChange(event) {
@@ -39,15 +38,6 @@ export default class NewChatForm extends React.Component {
               name="chat-name"
               id="chat-name"
               value={this.props.chatName}
-              required
-            />
-            <label htmlFor="users-name">Enter your name:</label>
-            <input
-              onChange={this.handleChange}
-              type="text"
-              name="users-name"
-              id="users-name"
-              value={this.props.userName}
               required
             />
             <input
