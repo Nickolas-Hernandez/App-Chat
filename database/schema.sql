@@ -17,6 +17,7 @@ create table "messages" (
   "messageId" serial,
   "message"   text    not null,
   "chatId"    text    not null,
+  "sender"    text    not null,
   "createdAt" timestamptz(6) not null default now(),
   primary key ("messageId")
 );

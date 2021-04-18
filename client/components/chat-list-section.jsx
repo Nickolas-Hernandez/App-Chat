@@ -10,7 +10,8 @@ export default class ChatListSection extends React.Component {
       form: {
         chatName: ''
       },
-      user: this.props.user
+      user: this.props.user,
+      chatRooms: []
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -20,16 +21,29 @@ export default class ChatListSection extends React.Component {
   }
 
   componentDidMount() {
-    console.log('2', this.state.user);
-    this.getAllChatRooms();
+    fetch('/api/chatRooms')
+      .then(response => response.json())
+      .then(result => {
+        const usersRooms = [];
+        for (let i = 0; i < result.length; i++) {
+          if (this.state.user.chatRooms.includes(result[i].id)) {
+            usersRooms.push(result[i]);
+          }
+        }
+        const newState = this.buildNewState();
+        newState.chatRooms = usersRooms;
+        this.setState(newState);
+      })
+      .catch(err => console.error(err));
+
   }
 
   buildNewState() {
-    // console.log('rooms:', rooms, typeof rooms);
-    const user = { user: Object.assign({}, this.state.user) };
-    const formInfo = { form: { chatName: '' } };
     const openForm = { formIsOpen: false };
-    const newState = Object.assign({}, this.state, openForm, formInfo, user);
+    const formInfo = { form: { chatName: '' } };
+    const user = { user: Object.assign({}, this.state.user, { chatRooms: this.state.user.chatRooms.slice() }) };
+    const chatRooms = { chatRooms: this.state.chatRooms.slice() };
+    const newState = Object.assign({}, this.state, openForm, formInfo, user, chatRooms);
     return newState;
   }
 
@@ -70,24 +84,15 @@ export default class ChatListSection extends React.Component {
     this.setState(newState);
   }
 
-  getAllChatRooms() {
-    fetch('/api/chatRooms')
-      .then(response => response.json())
-      .then(result => {
-        const newState = this.buildNewState();
-        newState.user.chatRooms = result;
-        this.setState(newState);
-      })
-      .catch(err => console.error(err));
-  }
-
   appendNewChatRoom(chatRoomDetails) {
     const chatRoom = {
       id: chatRoomDetails.chatId,
       name: chatRoomDetails.name
     };
     const newState = this.buildNewState();
-    newState.user.chatRooms.unshift(chatRoom);
+    newState.user.chatRooms.push(chatRoomDetails.chatId);
+    newState.chatRooms.unshift(chatRoom);
+    this.props.onRoomCreation(newState.user);
     this.setState(newState);
   }
 
@@ -110,7 +115,7 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-        <ChatList rooms={this.state.user.chatRooms} />
+        <ChatList rooms={this.state.chatRooms} />
       </>
     );
   }

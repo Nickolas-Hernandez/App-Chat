@@ -77,7 +77,6 @@ app.post('/api/newRoom', (req, res, next) => {
   const params = [chatName];
   db.query(sql, params)
     .then(result => {
-      console.log(result);
       const chatRoom = result.rows[0];
       res.status(201).json(chatRoom);
     })
@@ -85,14 +84,14 @@ app.post('/api/newRoom', (req, res, next) => {
 });
 
 app.post('/api/chat/:chatId', (req, res, next) => {
-  const { message } = req.body;
+  const { message, sender } = req.body;
   const roomId = req.params.chatId;
   const sql = `
-    insert into "messages" ("message", "chatId")
-           values ($1, $2)
+    insert into "messages" ("message", "chatId", "sender")
+           values ($1, $2, $3)
       returning *
   `;
-  const params = [message, roomId];
+  const params = [message, roomId, sender];
   db.query(sql, params)
     .then(result => {
       io.to(roomId).emit('new_message', result.rows[0]);
@@ -103,7 +102,6 @@ app.post('/api/chat/:chatId', (req, res, next) => {
 
 app.post('/api/createNewUser', (req, res, next) => {
   const { userName } = req.body;
-  console.log(userName);
   const sql = `
     insert into "users" ("userName", "chatRooms")
            values ($1, $2)
@@ -114,7 +112,6 @@ app.post('/api/createNewUser', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];
-      console.log(user);
       const payload = {
         userId: user.userId,
         userName: user.userName,
@@ -122,6 +119,30 @@ app.post('/api/createNewUser', (req, res, next) => {
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
       res.status(201).json({ token: token, user: payload });
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/users/:userId', (req, res, next) => {
+  const updatedRooms = req.body.chatRooms;
+  const userId = req.params.userId;
+  const sql = `
+    update "users"
+       set "chatRooms" = $1
+     where "userId" = $2
+     returning *
+  `;
+  const params = [JSON.stringify(updatedRooms), userId];
+  db.query(sql, params)
+    .then(result => {
+      const user = result.rows[0];
+      const payload = {
+        userId: user.userId,
+        userName: user.userName,
+        chatRooms: user.chatRooms
+      };
+      const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+      res.status(200).json({ token: token, user: payload });
     })
     .catch(err => next(err));
 });

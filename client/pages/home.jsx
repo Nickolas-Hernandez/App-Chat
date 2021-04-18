@@ -2,9 +2,7 @@ import React from 'react';
 import ChatListSection from '../components/chat-list-section';
 import MessageArea from '../components/message-area';
 import CreateUserForm from '../components/create-user-form';
-import parseRoute from '../lib/parse-route';
-import decodeToken from '../lib/decode-token';
-import parseChatRooms from '../lib/parse-chat-rooms';
+import { parseRoute, decodeToken, parseChatRooms } from '../lib';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -13,7 +11,8 @@ export default class Home extends React.Component {
       route: parseRoute(window.location.hash),
       user: null
     };
-    this.submitUser = this.submitUser.bind(this);
+    this.submitNewUser = this.submitNewUser.bind(this);
+    this.addRoom = this.addRoom.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +33,7 @@ export default class Home extends React.Component {
     this.setState({ user: user });
   }
 
-  submitUser(user) {
-    console.log(user);
+  submitNewUser(user) {
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,7 +42,6 @@ export default class Home extends React.Component {
     fetch('/api/createNewUser', init)
       .then(response => response.json())
       .then(result => {
-        console.log(result);
         const { user, token } = result;
         window.localStorage.setItem('chat-app-jwt', token);
         user.chatRooms = JSON.parse(user.chatRooms);
@@ -53,16 +50,33 @@ export default class Home extends React.Component {
       .catch(err => console.error(err));
   }
 
+  addRoom(user) {
+    this.setState(state => {
+      return { route: state.route, user: user };
+    });
+    const init = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state.user)
+    };
+    fetch(`/api/users/${this.state.user.userId}`, init)
+      .then(response => response.json())
+      .then(result => {
+        const { user: updatedUser, token } = result;
+        window.localStorage.setItem('chat-app-jwt', token);
+        this.setState(updatedUser);
+      });
+  }
+
   render() {
     const { route, user } = this.state;
-    console.log('poo', this.state.user);
-    if (!user) return <CreateUserForm createUser={this.submitUser} />;
+    if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
     if (route.path === '') {
-      return <ChatListSection user={this.state.user}/>;
+      return <ChatListSection onRoomCreation={this.addRoom} user={this.state.user}/>;
     }
     if (route.path === 'rooms') {
       const roomId = route.params.get('roomId');
-      return <MessageArea roomId={roomId} />;
+      return <MessageArea user={this.state.user} roomId={roomId} />;
     }
   }
 }

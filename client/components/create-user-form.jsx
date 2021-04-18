@@ -14,7 +14,7 @@ export default class CreateUserForm extends React.Component {
 
   submitUser(event) {
     event.preventDefault();
-    this.props.createUser(this.state);
+    this.props.createNewUser(this.state);
     this.setState({ userName: '' });
   }
 

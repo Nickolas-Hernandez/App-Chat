@@ -11,7 +11,6 @@ function ChatListItem(props) {
 }
 
 export default function ChatList(props) {
-  // console.log()
   const allRooms = props.rooms.map(room => {
     return <ChatListItem key={room.id} roomId={room.id} roomTitle={room.name}/>;
   });
