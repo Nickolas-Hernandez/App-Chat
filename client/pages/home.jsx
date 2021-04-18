@@ -2,7 +2,7 @@ import React from 'react';
 import ChatListSection from '../components/chat-list-section';
 import MessageArea from '../components/message-area';
 import CreateUserForm from '../components/create-user-form';
-import { parseRoute, decodeToken, parseChatRooms } from '../lib';
+import { parseRoute, decodeToken } from '../lib';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -26,10 +26,7 @@ export default class Home extends React.Component {
       });
     });
     const token = window.localStorage.getItem('chat-app-jwt');
-    let user = token ? decodeToken(token) : null;
-    if (user) {
-      user = parseChatRooms(user);
-    }
+    const user = token ? decodeToken(token) : null;
     this.setState({ user: user });
   }
 
@@ -42,10 +39,9 @@ export default class Home extends React.Component {
     fetch('/api/createNewUser', init)
       .then(response => response.json())
       .then(result => {
-        const { user, token } = result;
+        const { user: retrievedUser, token } = result;
         window.localStorage.setItem('chat-app-jwt', token);
-        user.chatRooms = JSON.parse(user.chatRooms);
-        this.setState({ user });
+        this.setState({ user: retrievedUser });
       })
       .catch(err => console.error(err));
   }
