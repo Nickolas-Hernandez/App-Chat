@@ -10,7 +10,6 @@ export default class ChatListSection extends React.Component {
       form: {
         chatName: ''
       },
-      user: this.props.user,
       chatRooms: []
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
@@ -26,7 +25,7 @@ export default class ChatListSection extends React.Component {
       .then(result => {
         const usersRooms = [];
         for (let i = 0; i < result.length; i++) {
-          if (this.state.user.chatRooms.includes(result[i].id)) {
+          if (this.props.user.chatRooms.includes(result[i].id)) {
             usersRooms.push(result[i]);
           }
         }
@@ -35,15 +34,13 @@ export default class ChatListSection extends React.Component {
         this.setState(newState);
       })
       .catch(err => console.error(err));
-
   }
 
   buildNewState() {
     const openForm = { formIsOpen: false };
     const formInfo = { form: { chatName: '' } };
-    const user = { user: Object.assign({}, this.state.user, { chatRooms: this.state.user.chatRooms.slice() }) };
     const chatRooms = { chatRooms: this.state.chatRooms.slice() };
-    const newState = Object.assign({}, this.state, openForm, formInfo, user, chatRooms);
+    const newState = Object.assign({}, this.state, openForm, formInfo, chatRooms);
     return newState;
   }
 
@@ -60,7 +57,6 @@ export default class ChatListSection extends React.Component {
     if (target.id === 'chat-name') {
       newState.form.chatName = target.value;
       this.setState(newState);
-
     }
   }
 
@@ -90,9 +86,11 @@ export default class ChatListSection extends React.Component {
       name: chatRoomDetails.name
     };
     const newState = this.buildNewState();
-    newState.user.chatRooms.push(chatRoomDetails.chatId);
     newState.chatRooms.unshift(chatRoom);
-    this.props.onRoomCreation(newState.user);
+    const updatedUser = Object.assign({}, this.props.user);
+    updatedUser.chatRooms = this.props.user.chatRooms.slice();
+    updatedUser.chatRooms.push(chatRoomDetails.chatId);
+    this.props.onRoomCreation(updatedUser);
     this.setState(newState);
   }
 
