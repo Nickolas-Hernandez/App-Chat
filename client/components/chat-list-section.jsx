@@ -10,7 +10,7 @@ export default class ChatListSection extends React.Component {
       form: {
         chatName: ''
       },
-      chatRooms: []
+      user: this.props.user
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +20,17 @@ export default class ChatListSection extends React.Component {
   }
 
   componentDidMount() {
+    console.log('2', this.state.user);
     this.getAllChatRooms();
+  }
+
+  buildNewState() {
+    // console.log('rooms:', rooms, typeof rooms);
+    const user = { user: Object.assign({}, this.state.user) };
+    const formInfo = { form: { chatName: '' } };
+    const openForm = { formIsOpen: false };
+    const newState = Object.assign({}, this.state, openForm, formInfo, user);
+    return newState;
   }
 
   openNewChatForm() {
@@ -60,20 +70,12 @@ export default class ChatListSection extends React.Component {
     this.setState(newState);
   }
 
-  buildNewState() {
-    const rooms = { chatRooms: this.state.chatRooms.slice() };
-    const formInfo = { form: { chatName: '' } };
-    const openForm = { formIsOpen: false };
-    const newState = Object.assign({}, this.state, openForm, formInfo, rooms);
-    return newState;
-  }
-
   getAllChatRooms() {
     fetch('/api/chatRooms')
       .then(response => response.json())
       .then(result => {
         const newState = this.buildNewState();
-        newState.chatRooms = result;
+        newState.user.chatRooms = result;
         this.setState(newState);
       })
       .catch(err => console.error(err));
@@ -85,7 +87,7 @@ export default class ChatListSection extends React.Component {
       name: chatRoomDetails.name
     };
     const newState = this.buildNewState();
-    newState.chatRooms.unshift(chatRoom);
+    newState.user.chatRooms.unshift(chatRoom);
     this.setState(newState);
   }
 
@@ -108,7 +110,7 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-        <ChatList rooms={this.state.chatRooms} />
+        <ChatList rooms={this.state.user.chatRooms} />
       </>
     );
   }

@@ -65,18 +65,19 @@ app.get('/api/rooms/:roomId', (req, res, next) => {
 });
 
 app.post('/api/newRoom', (req, res, next) => {
-  const { chatName, userName } = req.body;
-  if (!chatName || !userName) {
+  const { chatName } = req.body;
+  if (!chatName) {
     throw new ClientError(400, 'Chat name and username are required');
   }
   const sql = `
-    insert into "chatRooms" ("name", "host")
-           values ($1, $2)
+    insert into "chatRooms" ("name")
+           values ($1)
       returning *
   `;
-  const params = [chatName, userName];
+  const params = [chatName];
   db.query(sql, params)
     .then(result => {
+      console.log(result);
       const chatRoom = result.rows[0];
       res.status(201).json(chatRoom);
     })
@@ -108,13 +109,16 @@ app.post('/api/createNewUser', (req, res, next) => {
            values ($1, $2)
       returning *
   `;
-  const params = [userName, []];
+  const chatRooms = [];
+  const params = [userName, JSON.stringify(chatRooms)];
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];
+      console.log(user);
       const payload = {
         userId: user.userId,
-        userName: user.userName
+        userName: user.userName,
+        chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
       res.status(201).json({ token: token, user: payload });

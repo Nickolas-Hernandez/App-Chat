@@ -4,6 +4,7 @@ import MessageArea from '../components/message-area';
 import CreateUserForm from '../components/create-user-form';
 import parseRoute from '../lib/parse-route';
 import decodeToken from '../lib/decode-token';
+import parseChatRooms from '../lib/parse-chat-rooms';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -26,7 +27,10 @@ export default class Home extends React.Component {
       });
     });
     const token = window.localStorage.getItem('chat-app-jwt');
-    const user = token ? decodeToken(token) : null;
+    let user = token ? decodeToken(token) : null;
+    if (user) {
+      user = parseChatRooms(user);
+    }
     this.setState({ user: user });
   }
 
@@ -43,6 +47,7 @@ export default class Home extends React.Component {
         console.log(result);
         const { user, token } = result;
         window.localStorage.setItem('chat-app-jwt', token);
+        user.chatRooms = JSON.parse(user.chatRooms);
         this.setState({ user });
       })
       .catch(err => console.error(err));
@@ -50,9 +55,10 @@ export default class Home extends React.Component {
 
   render() {
     const { route, user } = this.state;
+    console.log('poo', this.state.user);
     if (!user) return <CreateUserForm createUser={this.submitUser} />;
     if (route.path === '') {
-      return <ChatListSection />;
+      return <ChatListSection user={this.state.user}/>;
     }
     if (route.path === 'rooms') {
       const roomId = route.params.get('roomId');
