@@ -31,6 +31,7 @@ export default class Home extends React.Component {
   }
 
   submitUser(user) {
+    console.log(user);
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

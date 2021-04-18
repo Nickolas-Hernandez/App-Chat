@@ -104,11 +104,11 @@ app.post('/api/createNewUser', (req, res, next) => {
   const { userName } = req.body;
   console.log(userName);
   const sql = `
-    insert into "users" ("userName")
-           values ($1)
+    insert into "users" ("userName", "chatRooms")
+           values ($1, $2)
       returning *
   `;
-  const params = [userName];
+  const params = [userName, []];
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];

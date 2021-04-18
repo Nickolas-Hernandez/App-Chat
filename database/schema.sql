@@ -8,8 +8,7 @@ create schema "public";
 
 create table "chatRooms" (
   "chatId"    serial,
-  "name"      text    not null,
-  "host"      text    not null,
+  "name"      text  not null,
   "createdAt" timestamptz(6) not null default now(),
   primary key ("chatId")
 );
@@ -24,7 +23,8 @@ create table "messages" (
 
 create table "users" (
   "userId" serial,
-  "userName" text not null,
+  "userName"  text not null,
+  "chatRooms" text not null,
   "createdAt" timestamptz(6) not null default now(),
   primary key ("userId")
 );

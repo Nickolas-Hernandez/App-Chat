@@ -8,8 +8,7 @@ export default class ChatListSection extends React.Component {
     this.state = {
       formIsOpen: false,
       form: {
-        chatName: '',
-        userName: ''
+        chatName: ''
       },
       chatRooms: []
     };
@@ -37,10 +36,8 @@ export default class ChatListSection extends React.Component {
     if (target.id === 'chat-name') {
       newState.form.chatName = target.value;
       this.setState(newState);
-      return;
+
     }
-    newState.form.userName = target.value;
-    this.setState(newState);
   }
 
   submitForm() {
@@ -65,7 +62,7 @@ export default class ChatListSection extends React.Component {
 
   buildNewState() {
     const rooms = { chatRooms: this.state.chatRooms.slice() };
-    const formInfo = { form: { chatName: '', userName: '' } };
+    const formInfo = { form: { chatName: '' } };
     const openForm = { formIsOpen: false };
     const newState = Object.assign({}, this.state, openForm, formInfo, rooms);
     return newState;
@@ -99,7 +96,6 @@ export default class ChatListSection extends React.Component {
        <NewChatForm
           isOpen={formIsOpen}
           chatName={formInput.chatName}
-          userName={formInput.userName}
           onInputChange={this.handleChange}
           handleFormClose={this.closeForm}
           onSubmission={this.submitForm}

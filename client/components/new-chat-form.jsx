@@ -41,15 +41,6 @@ export default class NewChatForm extends React.Component {
               value={this.props.chatName}
               required
             />
-            {/* <label htmlFor="users-name">Enter your name:</label>
-            <input
-              onChange={this.handleChange}
-              type="text"
-              name="users-name"
-              id="users-name"
-              value={this.props.userName}
-              required
-            /> */}
             <input
               type="submit"
               value="Submit"
