@@ -20,8 +20,7 @@ export default class Home extends React.Component {
       const parsedHash = parseRoute(window.location.hash);
       this.setState(state => {
         return ({
-          route: parsedHash,
-          user: state.user
+          route: parsedHash
         });
       });
     });
