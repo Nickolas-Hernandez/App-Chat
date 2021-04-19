@@ -7,7 +7,7 @@ export default function ChatDetailsDrawer(props) {
         <div className="overlay details-drawer"></div>
           <div className="chat-details-drawer">
             <h3>Chat Room ID:</h3>
-            {/* <p>{this.props.id}</p> */}
+            <p>{props.id}</p>
           </div>
       </>
   );

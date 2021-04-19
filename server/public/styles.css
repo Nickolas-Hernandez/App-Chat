@@ -247,9 +247,15 @@ label,
   left: 0;
 }
 
-.chat-details-drawer > h3 {
+.chat-details-drawer > h3,
+.chat-details-drawer > p {
   font-size: 20px;
   font-weight: 400;
+  display: inline-block;
+}
+
+.chat-details-drawer > p {
+  margin-left: 1.2rem;
 }
 
 @media only screen and (min-width: 768px) {

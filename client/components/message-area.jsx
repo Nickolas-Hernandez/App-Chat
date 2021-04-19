@@ -9,7 +9,6 @@ export default class MessageArea extends React.Component {
     super(props);
     this.socket = null;
     this.state = {
-      roomId: this.props.roomId,
       roomName: '',
       messages: [],
       sendMessage: ''
@@ -88,7 +87,7 @@ export default class MessageArea extends React.Component {
                 <i className="fas fa-angle-left back-arrow"></i>
               </a>
               <h1>{this.state.roomName}</h1>
-              <ChatDetailsDrawer />
+              <ChatDetailsDrawer id={this.props.roomId} />
             </div>
           </div>
           <Messages messages={this.state.messages} />
