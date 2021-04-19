@@ -17,7 +17,6 @@ export default class ChatDetailsDrawer extends React.Component {
 
   render() {
     const { drawerIsOpen } = this.state;
-    console.log(drawerIsOpen);
     return (
       <>
         <i onClick={this.openDrawer} className="fas fa-sign details-icon"></i>

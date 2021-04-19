@@ -83,6 +83,25 @@ app.post('/api/newRoom', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/joinRoom/:chatId', (req, res, next) => {
+  const id = parseInt(req.params.chatId);
+  if (!id) {
+    throw new ClientError(400, 'Chat ID must be a number');
+  }
+  const sql = `
+    select *
+      from "chatRooms"
+     where "chatId" = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      const chatRoom = result.rows[0];
+      res.status(200).json(chatRoom);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/chat/:chatId', (req, res, next) => {
   const { message, sender } = req.body;
   const roomId = req.params.chatId;
