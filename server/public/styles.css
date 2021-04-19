@@ -70,6 +70,10 @@ a {
   justify-content: space-between;
 }
 
+.tabs-container {
+  align-self: flex-start;
+}
+
 .form-tab {
   cursor: pointer;
   font-size: 24px;
@@ -77,6 +81,10 @@ a {
   display: inline-block;
   color: white;
   align-self: start;
+}
+
+.form-tab:nth-child(2) {
+  margin-left: 0.8rem;
 }
 
 .form-tab.active {
@@ -92,6 +100,7 @@ label,
 #chat-name,
 #users-name,
 #user-name,
+#new-chat-id,
 .submit-button {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
@@ -273,7 +282,7 @@ label,
 
   .new-chat-form {
     width: 400px;
-    height: 300px;
+    height: 250px;
   }
 
   label {

@@ -8,7 +8,8 @@ export default class ChatListSection extends React.Component {
     this.state = {
       formIsOpen: false,
       form: {
-        chatName: ''
+        chatName: '',
+        chatId: ''
       },
       chatRooms: []
     };
@@ -33,7 +34,7 @@ export default class ChatListSection extends React.Component {
 
   buildNewState() {
     const openForm = { formIsOpen: false };
-    const formInfo = { form: { chatName: '' } };
+    const formInfo = { form: { chatName: '', chatId: '' } };
     const chatRooms = { chatRooms: this.state.chatRooms.slice() };
     const newState = Object.assign({}, this.state, openForm, formInfo, chatRooms);
     return newState;
@@ -52,14 +53,23 @@ export default class ChatListSection extends React.Component {
     if (target.id === 'chat-name') {
       newState.form.chatName = target.value;
       this.setState(newState);
+      return;
+    }
+    if (target.id === 'new-chat-id') {
+      newState.form.chatId = target.value;
+      this.setState(newState);
     }
   }
 
-  submitForm() {
+  submitForm(event) {
+    if (this.state.form.chatId !== '') {
+      this.joinRoom();
+      return;
+    }
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state.form)
+      body: JSON.stringify({ chatName: this.state.form.chatName })
     };
     fetch('/api/newRoom', init)
       .then(response => response.json())
@@ -67,6 +77,14 @@ export default class ChatListSection extends React.Component {
         this.appendNewChatRoom(result);
       })
       .catch(err => console.error(err));
+  }
+
+  joinRoom() {
+    fetch(`/api/joinRoom/${this.state.form.chatId}`)
+      .then(response => response.json())
+      .then(result => {
+        this.appendNewChatRoom(result);
+      });
   }
 
   closeForm(event) {
@@ -96,6 +114,7 @@ export default class ChatListSection extends React.Component {
        <NewChatForm
           isOpen={formIsOpen}
           chatName={formInput.chatName}
+          newChatId={formInput.chatId}
           onInputChange={this.handleChange}
           handleFormClose={this.closeForm}
           onSubmission={this.submitForm}
