@@ -1,6 +1,7 @@
 import React from 'react';
 import TextAreaInput from './text-area-input';
 import Messages from './messages';
+import ChatDetailsDrawer from './chat-details-drawer';
 import { io } from 'socket.io-client';
 
 export default class MessageArea extends React.Component {
@@ -80,23 +81,23 @@ export default class MessageArea extends React.Component {
 
   render() {
     return (
-      <div className="message-area">
-        <div className="message-area-header">
-          <div className="wrapper">
-            <a href="#">
-              <i className="fas fa-angle-left back-arrow"></i>
-            </a>
-            <h1>{this.state.roomName}</h1>
-            <i className="fas fa-sign details-icon"></i>
+        <div className="message-area">
+          <div className="message-area-header">
+            <div className="wrapper">
+              <a href="#">
+                <i className="fas fa-angle-left back-arrow"></i>
+              </a>
+              <h1>{this.state.roomName}</h1>
+              <ChatDetailsDrawer />
+            </div>
           </div>
+          <Messages messages={this.state.messages} />
+          <TextAreaInput
+            onSend={this.sendMessage}
+            messageValue={this.state.sendMessage}
+            onInputChange={this.getMessageInput}
+          />
         </div>
-        <Messages messages={this.state.messages} />
-        <TextAreaInput
-          onSend={this.sendMessage}
-          messageValue={this.state.sendMessage}
-          onInputChange={this.getMessageInput}
-        />
-      </div>
     );
   }
 }

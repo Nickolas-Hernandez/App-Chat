@@ -228,6 +228,30 @@ label,
   font-weight: 400;
 }
 
+.chat-details-drawer {
+  position: absolute;
+  width: 300px;
+  background-color: white;
+  right: 0;
+  padding-top: 20px;
+  padding-left: 15px;
+}
+
+.chat-details-drawer,
+.overlay.details-drawer {
+  bottom: 0;
+  height: calc(100% - 84px);
+}
+
+.overlay.details-drawer {
+  left: 0;
+}
+
+.chat-details-drawer > h3 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
 @media only screen and (min-width: 768px) {
   #root {
     width: 100%;

@@ -1,12 +1,14 @@
 import React from 'react';
 
-export default class ChatDetailsDrawer extends React.Component {
-  render() {
-    return (
-      <div className="chat-details-drawer">
-        <h3>Chat Room ID:</h3>
-        <p></p>
-      </div>
-    );
-  }
+export default function ChatDetailsDrawer(props) {
+  return (
+      <>
+        <i className="fas fa-sign details-icon"></i>
+        <div className="overlay details-drawer"></div>
+          <div className="chat-details-drawer">
+            <h3>Chat Room ID:</h3>
+            {/* <p>{this.props.id}</p> */}
+          </div>
+      </>
+  );
 }
