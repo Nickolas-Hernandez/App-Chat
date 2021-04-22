@@ -5,7 +5,9 @@ export default function Messages(props) {
     return (
       <Message
       key={message.messageId}
-      message={message.message} />
+      message={message.message}
+      sender={message.sender}
+      thisUser={props.user}/>
     );
   });
   return (
@@ -16,7 +18,10 @@ export default function Messages(props) {
 }
 
 function Message(props) {
+  const { thisUser, sender } = props;
   return (
-    <li className={'message'}>{props.message}</li>
+    <li className={thisUser === sender ? 'message' : 'recieved-message'}>
+      {props.message}
+    </li>
   );
 }
