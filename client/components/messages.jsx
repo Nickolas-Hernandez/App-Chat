@@ -20,8 +20,9 @@ export default function Messages(props) {
 function Message(props) {
   const { thisUser, sender } = props;
   return (
-    <li className={thisUser === sender ? 'message' : 'recieved-message'}>
-      {props.message}
+    <li className={thisUser === sender ? 'message sent' : 'message recieved'}>
+      <h4>{props.sender}</h4>
+      <p>{props.message}</p>
     </li>
   );
 }

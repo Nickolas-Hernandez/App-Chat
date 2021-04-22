@@ -219,18 +219,21 @@ label,
 
 .message,
 .recieved-message {
-  color: white;
   font-weight: 400;
-  background-color: #2567d9;
   max-width: 280px;
   max-height: 80px;
-  align-self: flex-end;
   padding: 8px;
   margin: 0.2rem;
   border-radius: 4px;
 }
 
-.recieved-message {
+.message.sent {
+  align-self: flex-end;
+  background-color: #2567d9;
+  color: white;
+}
+
+.message.recieved {
   align-self: flex-start;
   background-color: white;
   color: #2f2f2f;
