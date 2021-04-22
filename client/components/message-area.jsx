@@ -58,11 +58,11 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
+    if (sendMessage === '') return;
     const message = {
       message: sendMessage,
       sender: this.props.user.userName
     };
-    if (sendMessage === '') return;
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

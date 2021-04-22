@@ -3,7 +3,7 @@ import React from 'react';
 export default function Messages(props) {
   const allMessages = props.messages.map(message => {
     return (
-      <MessagesList
+      <Message
       key={message.messageId}
       message={message.message} />
     );
@@ -15,7 +15,7 @@ export default function Messages(props) {
   );
 }
 
-function MessagesList(props) {
+function Message(props) {
   return (
     <li className={'message'}>{props.message}</li>
   );
