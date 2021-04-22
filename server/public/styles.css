@@ -217,7 +217,8 @@ label,
   justify-content: flex-end;
 }
 
-.message {
+.message,
+.recieved-message {
   color: white;
   font-weight: 400;
   background-color: #2567d9;
@@ -227,6 +228,12 @@ label,
   padding: 8px;
   margin: 0.2rem;
   border-radius: 4px;
+}
+
+.recieved-message {
+  align-self: flex-start;
+  background-color: white;
+  color: #2f2f2f;
 }
 
 .new-user-form {
