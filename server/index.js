@@ -12,7 +12,6 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 const pg = require('pg');
-const { get } = require('http');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -165,42 +164,6 @@ app.put('/api/users/:userId', (req, res, next) => {
       res.status(200).json({ token: token, user: payload });
     })
     .catch(err => next(err));
-});
-
-app.put('/api/newUserInRoom/:roomId', (req, res, next) => {
-  const user = req.body.user;
-  const roomId = req.params.roomId;
-  const getRoomMembers = `
-    select "members"
-      from "chatRooms"
-     where "chatId" = $1
-  `;
-  const param = [roomId];
-  db.query(getRoomMembers, param)
-    .then(result => {
-      const members = result.rows[0].members;
-      JSON.parse(members);
-      return members;
-    })
-    .then(members => {
-      members.push(user);
-      const sql = `
-        update "chatRooms"
-           set "members" = $1
-         where "chatId" = $2
-        returning "members"
-      `;
-
-    });
-  // const sql = `
-  //   update "chatRooms"
-  //      set "members" = array_append("members", $1)
-  //    where "chatId" = $2;
-  //    returning "members";
-  // `;
-  // const params = [user, roomId];
-  // db.query(sql, params)
-  //   .then(result => console.log(result));
 });
 
 app.use(errorMiddleware);

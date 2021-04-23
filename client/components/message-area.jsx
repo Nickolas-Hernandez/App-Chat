@@ -48,7 +48,8 @@ export default class MessageArea extends React.Component {
 
   buildNewState() {
     const messages = { messages: this.state.messages.slice() };
-    const newState = Object.assign({}, this.state, messages);
+    const members = { members: this.state.members.slice() };
+    const newState = Object.assign({}, this.state, messages, members);
     return newState;
   }
 
