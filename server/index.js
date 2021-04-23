@@ -176,6 +176,9 @@ app.put('/api/newUserInRoom/:roomId', (req, res, next) => {
      where "chatId" = $2;
      returning "members";
   `;
+  const params = [user, roomId];
+  db.query(sql, params)
+    .then(result => console.log(result));
 });
 
 app.use(errorMiddleware);
