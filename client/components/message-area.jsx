@@ -58,11 +58,11 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
+    if (sendMessage === '') return;
     const message = {
       message: sendMessage,
       sender: this.props.user.userName
     };
-    if (sendMessage === '') return;
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -79,6 +79,7 @@ export default class MessageArea extends React.Component {
   }
 
   render() {
+    const { userName } = this.props.user;
     return (
         <div className="message-area">
           <div className="message-area-header">
@@ -90,7 +91,7 @@ export default class MessageArea extends React.Component {
               <ChatDetailsDrawer id={this.props.roomId} />
             </div>
           </div>
-          <Messages messages={this.state.messages} />
+          <Messages user={userName} messages={this.state.messages} />
           <TextAreaInput
             onSend={this.sendMessage}
             messageValue={this.state.sendMessage}

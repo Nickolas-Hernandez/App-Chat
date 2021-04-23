@@ -3,9 +3,11 @@ import React from 'react';
 export default function Messages(props) {
   const allMessages = props.messages.map(message => {
     return (
-      <MessagesList
+      <Message
       key={message.messageId}
-      message={message.message} />
+      message={message.message}
+      sender={message.sender}
+      thisUser={props.user}/>
     );
   });
   return (
@@ -15,8 +17,12 @@ export default function Messages(props) {
   );
 }
 
-function MessagesList(props) {
+function Message(props) {
+  const { thisUser, sender } = props;
   return (
-    <li className={'message'}>{props.message}</li>
+    <li className={thisUser === sender ? 'message sent' : 'message recieved'}>
+      <h4>{props.sender}</h4>
+      <p>{props.message}</p>
+    </li>
   );
 }
