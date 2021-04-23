@@ -166,6 +166,10 @@ app.put('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/newUserInRoom/:roomId', (req, res, next) => {
+  console.log('hello!');
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {

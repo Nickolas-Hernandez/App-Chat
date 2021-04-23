@@ -9,7 +9,7 @@ create schema "public";
 create table "chatRooms" (
   "chatId"    serial,
   "name"      text  not null,
-  "members"   json  not null,
+  "members"   text[] not null,
   "createdAt" timestamptz(6) not null default now(),
   primary key ("chatId")
 );
