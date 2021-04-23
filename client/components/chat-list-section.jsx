@@ -68,7 +68,7 @@ export default class ChatListSection extends React.Component {
     }
     const roomDetails = {
       chatName: this.state.form.chatName,
-      members: [this.props.user.userName]
+      members: JSON.stringify([this.props.user.userName])
     };
     const init = {
       method: 'POST',
