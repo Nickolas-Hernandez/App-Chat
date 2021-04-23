@@ -64,7 +64,7 @@ app.get('/api/rooms/:roomId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/joinRoom/:chatId', (req, res, next) => {
+app.post('/api/joinRoom/:chatId', (req, res, next) => {
   const id = parseInt(req.params.chatId);
   if (!id) {
     throw new ClientError(400, 'Chat ID must be a number');
