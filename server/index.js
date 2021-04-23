@@ -89,8 +89,8 @@ app.post('/api/newRoom', (req, res, next) => {
     throw new ClientError(400, 'Chat name and username are required');
   }
   const sql = `
-    insert into "chatRooms" ("name")
-           values ($1)
+    insert into "chatRooms" ("name", "members")
+           values ($1, $2)
       returning *
   `;
   const params = [chatName];
