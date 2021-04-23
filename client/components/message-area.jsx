@@ -10,6 +10,7 @@ export default class MessageArea extends React.Component {
     this.socket = null;
     this.state = {
       roomName: '',
+      member: [],
       messages: [],
       sendMessage: ''
     };
@@ -25,6 +26,7 @@ export default class MessageArea extends React.Component {
         this.setState({
           roomId: result.chatId,
           roomName: result.name,
+          members: result.members,
           messages: [],
           sendMessage: ''
         });
