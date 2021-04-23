@@ -66,6 +66,9 @@ export default class ChatListSection extends React.Component {
       this.joinRoom();
       return;
     }
+    const roomDetails = {
+      chatName: this.state.form.chatName
+    };
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
