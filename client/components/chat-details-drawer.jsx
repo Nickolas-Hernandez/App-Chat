@@ -25,9 +25,18 @@ export default class ChatDetailsDrawer extends React.Component {
             <h3>Chat Room ID:</h3>
             <p>{this.props.id}</p>
             <h3>Room Members:</h3>
-            <ul className="members-list"></ul>
+            <MembersList members={this.props.members}/>
           </div>
       </>
     );
   }
+}
+
+function MembersList(props) {
+  console.log(props.members);
+  const allMembers = props.members.map(member => {
+    const index = props.members.indexOf(member);
+    return <SingleMember key={index} name={member} />;
+  });
+  return <ul className="members-list">{allMembers}</ul>;
 }
