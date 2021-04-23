@@ -168,6 +168,14 @@ app.put('/api/users/:userId', (req, res, next) => {
 
 app.put('/api/newUserInRoom/:roomId', (req, res, next) => {
   console.log('hello!');
+  const user = req.body.user;
+  const roomId = req.params.roomId;
+  const sql = `
+    update "chatRooms"
+       set "members" = array_append("members", $1)
+     where "chatId" = $2;
+     returning "members";
+  `;
 });
 
 app.use(errorMiddleware);
