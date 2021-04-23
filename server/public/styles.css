@@ -280,6 +280,14 @@ label,
   display: inline-block;
 }
 
+.chat-details-drawer > h3:nth-child(3) {
+  margin-top: 2rem;
+}
+
+.members-list {
+  margin-top: 1rem;
+}
+
 .chat-details-drawer > p {
   margin-left: 1.2rem;
 }
