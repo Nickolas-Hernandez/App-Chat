@@ -84,7 +84,7 @@ app.get('/api/joinRoom/:chatId', (req, res, next) => {
 });
 
 app.post('/api/newRoom', (req, res, next) => {
-  const { chatName } = req.body;
+  const { chatName, members } = req.body;
   if (!chatName) {
     throw new ClientError(400, 'Chat name and username are required');
   }
@@ -93,7 +93,7 @@ app.post('/api/newRoom', (req, res, next) => {
            values ($1, $2)
       returning *
   `;
-  const params = [chatName];
+  const params = [chatName, members];
   db.query(sql, params)
     .then(result => {
       const chatRoom = result.rows[0];
