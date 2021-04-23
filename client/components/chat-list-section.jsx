@@ -84,13 +84,7 @@ export default class ChatListSection extends React.Component {
   }
 
   joinRoom() {
-    const body = { user: this.props.user.userName };
-    const init = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    };
-    fetch(`/api/joinRoom/${this.state.form.chatId}`, init)
+    fetch(`/api/joinRoom/${this.state.form.chatId}`)
       .then(response => response.json())
       .then(result => {
         this.appendNewChatRoom(result);
