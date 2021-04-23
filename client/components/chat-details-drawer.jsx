@@ -24,6 +24,8 @@ export default class ChatDetailsDrawer extends React.Component {
           <div className={drawerIsOpen ? 'chat-details-drawer active' : 'chat-details-drawer'}>
             <h3>Chat Room ID:</h3>
             <p>{this.props.id}</p>
+            <h3>Room Members:</h3>
+            <ul></ul>
           </div>
       </>
     );
