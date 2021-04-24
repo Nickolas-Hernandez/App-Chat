@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function Messages(props) {
+  console.log(props.messages);
   const allMessages = props.messages.map(message => {
     return (
       <Message
