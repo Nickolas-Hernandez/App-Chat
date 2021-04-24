@@ -170,6 +170,12 @@ app.put('/api/newRoomMember/:chatId', (req, res, next) => {
   const roomId = req.params.chatId;
   console.log('body', req.body);
   const name = req.body.user;
+  const getRoomMembersSQL = `
+    select "members"
+      from "chatRooms"
+     where "chatId" = $1
+  `;
+  const params1 = [roomId];
   console.log('poop', name);
 });
 
