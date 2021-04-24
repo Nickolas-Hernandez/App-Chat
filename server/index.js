@@ -166,6 +166,13 @@ app.put('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/newRoomMember/:chatId', (req, res, next) => {
+  const roomId = req.params.chatId;
+  console.log('body', req.body);
+  const name = req.body.user;
+  console.log('poop', name);
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
