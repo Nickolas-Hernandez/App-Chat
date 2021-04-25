@@ -5,6 +5,7 @@ export default class ChatDetailsDrawer extends React.Component {
     super(props);
     this.state = { drawerIsOpen: false };
     this.openDrawer = this.openDrawer.bind(this);
+    this.leaveRoom = this.leaveRoom.bind(this);
   }
 
   openDrawer(event) {
@@ -13,6 +14,10 @@ export default class ChatDetailsDrawer extends React.Component {
       return;
     }
     this.setState({ drawerIsOpen: false });
+  }
+
+  leaveRoom() {
+
   }
 
   render() {
@@ -27,7 +32,7 @@ export default class ChatDetailsDrawer extends React.Component {
               <p>{this.props.id}</p>
               <h3>Room Members:</h3>
               <MembersList members={this.props.members}/>
-              <button className='leave-room'>Leave Room</button>
+              <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
             </div>
           </div>
       </>
