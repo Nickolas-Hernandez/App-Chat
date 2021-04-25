@@ -26,6 +26,7 @@ export default class ChatDetailsDrawer extends React.Component {
             <p>{this.props.id}</p>
             <h3>Room Members:</h3>
             <MembersList members={this.props.members}/>
+            <button ></button>
           </div>
       </>
     );
