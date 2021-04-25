@@ -255,7 +255,6 @@ label,
   background-color: white;
   right: -300px;
   padding-top: 20px;
-  padding-left: 15px;
   transition: transform 0.1s linear;
 }
 
@@ -291,6 +290,29 @@ label,
 
 .chat-details-drawer > p {
   margin-left: 1.2rem;
+}
+
+.drawer-contents {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-left: 15px;
+}
+
+.leave-room {
+  border: none;
+  outline: none;
+  width: 200px;
+  height: 40px;
+  font-size: 18px;
+  border-radius: 8px;
+  background-color: #dd0909;
+  color: white;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 4px 0 rgba(80, 80, 80, 0.3);
 }
 
 @media only screen and (min-width: 768px) {

@@ -22,11 +22,13 @@ export default class ChatDetailsDrawer extends React.Component {
         <i onClick={this.openDrawer} className="fas fa-sign details-icon"></i>
         <div className={drawerIsOpen ? 'overlay details-drawer ' : 'hidden' }></div>
           <div className={drawerIsOpen ? 'chat-details-drawer active' : 'chat-details-drawer'}>
-            <h3>Chat Room ID:</h3>
-            <p>{this.props.id}</p>
-            <h3>Room Members:</h3>
-            <MembersList members={this.props.members}/>
-            <button className='leave-room'>Leave Room</button>
+            <div className='drawer-contents'>
+              <h3>Chat Room ID:</h3>
+              <p>{this.props.id}</p>
+              <h3>Room Members:</h3>
+              <MembersList members={this.props.members}/>
+              <button className='leave-room'>Leave Room</button>
+            </div>
           </div>
       </>
     );
