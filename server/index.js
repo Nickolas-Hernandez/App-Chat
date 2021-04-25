@@ -98,6 +98,17 @@ app.get('/api/newRoomMember/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/getUserRooms/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const sql = `
+    select "chatRooms"
+      from "users"
+     where "userId" = $1
+  `;
+  const params = [id];
+
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, members } = req.body;
   if (!chatName) {
@@ -195,10 +206,6 @@ app.put('/api/newRoomMember/:chatId', (req, res, next) => {
       res.status(200).send();
     })
     .catch(err => next(err));
-});
-
-app.delete('/api/deleteRoomFromUser/:chatId', (req, res, next) => {
-
 });
 
 app.use(errorMiddleware);
