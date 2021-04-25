@@ -197,6 +197,10 @@ app.put('/api/newRoomMember/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/deleteRoomFromUser/:chatId', (req, res, next) => {
+
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
