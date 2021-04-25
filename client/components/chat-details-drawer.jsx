@@ -24,6 +24,12 @@ export default class ChatDetailsDrawer extends React.Component {
         const rooms = result.chatRooms;
         const index = rooms.indexOf(id);
         rooms.splice(index, 1);
+        const init = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rooms: rooms })
+        };
+        fetch(`/api/updateUserRooms/${id}`, init);
       })
       .catch(err => console.error(err));
   }
