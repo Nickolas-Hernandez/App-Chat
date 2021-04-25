@@ -82,7 +82,7 @@ export default class MessageArea extends React.Component {
   }
 
   render() {
-    const { userName } = this.props.user;
+    const { userName, userId } = this.props.user;
     const { roomId, members } = this.state;
     return (
         <div className="message-area">
@@ -92,7 +92,7 @@ export default class MessageArea extends React.Component {
                 <i className="fas fa-angle-left back-arrow"></i>
               </a>
               <h1>{this.state.roomName}</h1>
-              <ChatDetailsDrawer id={roomId} members={members}/>
+              <ChatDetailsDrawer userId={userId} id={roomId} members={members}/>
             </div>
           </div>
           <Messages user={userName} messages={this.state.messages} />
