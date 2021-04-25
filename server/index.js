@@ -83,6 +83,21 @@ app.get('/api/joinRoom/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/newRoomMember/:chatId', (req, res, next) => {
+  const roomId = req.params.chatId;
+  const getRoomMembersSQL = `
+    select "members"
+      from "chatRooms"
+     where "chatId" = $1
+  `;
+  const params1 = [roomId];
+  db.query(getRoomMembersSQL, params1)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, members } = req.body;
   if (!chatName) {
@@ -167,19 +182,19 @@ app.put('/api/users/:userId', (req, res, next) => {
 });
 
 app.put('/api/newRoomMember/:chatId', (req, res, next) => {
+  const { members } = req.body;
   const roomId = req.params.chatId;
-  console.log('body', req.body);
-  const name = req.body.user;
-  const getRoomMembersSQL = `
-    select "members"
-      from "chatRooms"
-     where "chatId" = $1
+  const sql = `
+    update "chatRooms"
+       set "members" = $1
+     where "chatId" = $2
   `;
-  const params1 = [roomId];
-  db.query(getRoomMembersSQL, params1)
+  const params = [JSON.stringify(members), roomId];
+  db.query(sql, params)
     .then(result => {
-      res.status(200).json(result.rows[0]);
-    });
+      res.status(200).send();
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
