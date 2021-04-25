@@ -176,7 +176,10 @@ app.put('/api/newRoomMember/:chatId', (req, res, next) => {
      where "chatId" = $1
   `;
   const params1 = [roomId];
-  console.log('poop', name);
+  db.query(getRoomMembersSQL, params1)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    });
 });
 
 app.use(errorMiddleware);
