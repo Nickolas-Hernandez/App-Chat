@@ -17,7 +17,10 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
-    fetch(`/api/getUserRooms/${this.props.userId}`);
+    fetch(`/api/getUserRooms/${this.props.userId}`)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(err => console.error(err));
   }
 
   render() {
