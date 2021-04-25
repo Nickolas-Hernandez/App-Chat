@@ -10,6 +10,7 @@ export default class MessageArea extends React.Component {
     this.socket = null;
     this.state = {
       roomName: '',
+      members: [],
       messages: [],
       sendMessage: ''
     };
@@ -25,6 +26,7 @@ export default class MessageArea extends React.Component {
         this.setState({
           roomId: result.chatId,
           roomName: result.name,
+          members: result.members,
           messages: [],
           sendMessage: ''
         });
@@ -46,7 +48,8 @@ export default class MessageArea extends React.Component {
 
   buildNewState() {
     const messages = { messages: this.state.messages.slice() };
-    const newState = Object.assign({}, this.state, messages);
+    const members = { members: this.state.members.slice() };
+    const newState = Object.assign({}, this.state, messages, members);
     return newState;
   }
 
@@ -80,6 +83,7 @@ export default class MessageArea extends React.Component {
 
   render() {
     const { userName } = this.props.user;
+    const { roomId, members } = this.state;
     return (
         <div className="message-area">
           <div className="message-area-header">
@@ -88,7 +92,7 @@ export default class MessageArea extends React.Component {
                 <i className="fas fa-angle-left back-arrow"></i>
               </a>
               <h1>{this.state.roomName}</h1>
-              <ChatDetailsDrawer id={this.props.roomId} />
+              <ChatDetailsDrawer id={roomId} members={members}/>
             </div>
           </div>
           <Messages user={userName} messages={this.state.messages} />

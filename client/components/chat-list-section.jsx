@@ -66,10 +66,15 @@ export default class ChatListSection extends React.Component {
       this.joinRoom();
       return;
     }
+
+    const roomDetails = {
+      chatName: this.state.form.chatName,
+      members: [this.props.user.userName]
+    };
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatName: this.state.form.chatName })
+      body: JSON.stringify(roomDetails)
     };
     fetch('/api/newRoom', init)
       .then(response => response.json())
@@ -80,10 +85,26 @@ export default class ChatListSection extends React.Component {
   }
 
   joinRoom() {
+    this.addRoomMember();
     fetch(`/api/joinRoom/${this.state.form.chatId}`)
       .then(response => response.json())
       .then(result => {
         this.appendNewChatRoom(result);
+      });
+  }
+
+  addRoomMember() {
+    fetch(`/api/newRoomMember/${this.state.form.chatId}`)
+      .then(response => response.json())
+      .then(result => {
+        const updatedMembers = result.members;
+        updatedMembers.push(this.props.user.userName);
+        const init = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ members: updatedMembers })
+        };
+        fetch(`/api/newRoomMember/${this.state.form.chatId}`, init);
       });
   }
 

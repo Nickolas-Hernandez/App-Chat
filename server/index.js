@@ -83,17 +83,32 @@ app.get('/api/joinRoom/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/newRoomMember/:chatId', (req, res, next) => {
+  const roomId = req.params.chatId;
+  const getRoomMembersSQL = `
+    select "members"
+      from "chatRooms"
+     where "chatId" = $1
+  `;
+  const params1 = [roomId];
+  db.query(getRoomMembersSQL, params1)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/newRoom', (req, res, next) => {
-  const { chatName } = req.body;
+  const { chatName, members } = req.body;
   if (!chatName) {
     throw new ClientError(400, 'Chat name and username are required');
   }
   const sql = `
-    insert into "chatRooms" ("name")
-           values ($1)
+    insert into "chatRooms" ("name", "members")
+           values ($1, $2)
       returning *
   `;
-  const params = [chatName];
+  const params = [chatName, JSON.stringify(members)];
   db.query(sql, params)
     .then(result => {
       const chatRoom = result.rows[0];
@@ -162,6 +177,22 @@ app.put('/api/users/:userId', (req, res, next) => {
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
       res.status(200).json({ token: token, user: payload });
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/newRoomMember/:chatId', (req, res, next) => {
+  const { members } = req.body;
+  const roomId = req.params.chatId;
+  const sql = `
+    update "chatRooms"
+       set "members" = $1
+     where "chatId" = $2
+  `;
+  const params = [JSON.stringify(members), roomId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).send();
     })
     .catch(err => next(err));
 });
