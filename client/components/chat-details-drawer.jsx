@@ -17,7 +17,10 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
-
+    const init = {
+      method: 'DELETE'
+    };
+    fetch(`/api/deleteRoomFromUser/${this.props.id}`, init);
   }
 
   render() {
