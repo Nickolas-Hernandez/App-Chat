@@ -174,6 +174,7 @@ app.post('/api/createNewUser', (req, res, next) => {
 
 app.put('/api/users/:userId', (req, res, next) => {
   const updatedRooms = req.body.chatRooms;
+  console.log(updatedRooms);
   const userId = req.params.userId;
   const sql = `
     update "users"
@@ -185,12 +186,14 @@ app.put('/api/users/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];
+      console.log(result.rows[0]);
       const payload = {
         userId: user.userId,
         userName: user.userName,
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+      console.log('token', token);
       res.status(200).json({ token: token, user: payload });
     })
     .catch(err => next(err));

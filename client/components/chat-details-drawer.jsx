@@ -27,9 +27,14 @@ export default class ChatDetailsDrawer extends React.Component {
         const init = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ rooms: rooms })
+          body: JSON.stringify({ chatRooms: rooms })
         };
-        fetch(`/api/updateUserRooms/${id}`, init);
+        fetch(`/api/users/${id}`, init)
+          .then(response => response.json())
+          .then(result => {
+            const { user, token } = result;
+            window.localStorage.setItem('chat-app-jwt', token);
+          });
       })
       .catch(err => console.error(err));
   }

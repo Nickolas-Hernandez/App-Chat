@@ -66,7 +66,6 @@ export default class ChatListSection extends React.Component {
       this.joinRoom();
       return;
     }
-
     const roomDetails = {
       chatName: this.state.form.chatName,
       members: [this.props.user.userName]
