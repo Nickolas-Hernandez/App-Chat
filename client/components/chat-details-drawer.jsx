@@ -33,7 +33,6 @@ export default class ChatDetailsDrawer extends React.Component {
 }
 
 function MembersList(props) {
-  console.log(typeof props.members);
   const allMembers = props.members.map(member => {
     const index = props.members.indexOf(member);
     return <SingleMember key={index} name={member} />;
