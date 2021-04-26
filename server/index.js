@@ -114,7 +114,18 @@ app.get('/api/getUserRooms/:userId', (req, res, next) => {
 });
 
 app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
-
+  const id = req.params.chatId;
+  const sql = `
+    select "members"
+      from "chatRooms"
+     where "chatId' = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/newRoom', (req, res, next) => {
