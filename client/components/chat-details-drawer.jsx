@@ -43,12 +43,13 @@ export default class ChatDetailsDrawer extends React.Component {
     fetch(`/api/getRoomMembers/${this.props.id}`)
       .then(response => response.json())
       .then(result => {
-        const index = result.indexOf(this.props.user.userName);
-        result.splice(index, 1);
+        const { members } = result;
+        const index = members.indexOf(this.props.user.userName);
+        members.splice(index, 1);
         const init = {
           method: 'PUT',
           header: { 'Content-type': 'application/json' },
-          body: JSON.stringify(result)
+          body: JSON.stringify(members)
         };
         fetch(`/api/updateRoomMembers/${this.props.id}`, init);
       });
