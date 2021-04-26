@@ -34,7 +34,7 @@ export default class ChatDetailsDrawer extends React.Component {
           .then(result => {
             const { token } = result;
             window.localStorage.setItem('chat-app-jwt', token);
-            // location.reload();
+            location.reload();
           })
           .catch(err => console.error(err));
       })
@@ -44,7 +44,7 @@ export default class ChatDetailsDrawer extends React.Component {
       .then(response => response.json())
       .then(result => {
         const { members } = result;
-        const index = members.indexOf(this.props.user.userName);
+        const index = members.indexOf(this.props.userName);
         members.splice(index, 1);
         const init = {
           method: 'PUT',

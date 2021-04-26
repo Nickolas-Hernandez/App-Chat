@@ -92,7 +92,7 @@ export default class MessageArea extends React.Component {
                 <i className="fas fa-angle-left back-arrow"></i>
               </a>
               <h1>{this.state.roomName}</h1>
-              <ChatDetailsDrawer userId={userId} id={roomId} members={members}/>
+              <ChatDetailsDrawer userName={userName} userId={userId} id={roomId} members={members}/>
             </div>
           </div>
           <Messages user={userName} messages={this.state.messages} />
