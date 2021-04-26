@@ -49,7 +49,7 @@ export default class ChatDetailsDrawer extends React.Component {
         const init = {
           method: 'PUT',
           header: { 'Content-type': 'application/json' },
-          body: JSON.stringify(members)
+          body: JSON.stringify({ members: members })
         };
         fetch(`/api/updateRoomMembers/${this.props.id}`, init);
       });
