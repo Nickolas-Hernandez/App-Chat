@@ -48,11 +48,12 @@ export default class ChatDetailsDrawer extends React.Component {
         members.splice(index, 1);
         const init = {
           method: 'PUT',
-          header: { 'Content-type': 'application/json' },
+          headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({ updatedMembers: members })
         };
         fetch(`/api/updateRoomMembers/${this.props.id}`, init);
-      });
+      })
+      .catch(err => console.error(err));
 
   }
 

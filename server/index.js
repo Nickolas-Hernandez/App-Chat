@@ -235,7 +235,7 @@ app.put('/api/updateRoomMembers/:chatId', (req, res, next) => {
        set "members" = $1
      where "chatId" = $2
   `;
-  const params = [updatedMembers, id];
+  const params = [JSON.stringify(updatedMembers), id];
   db.query(sql, params)
     .then(result => {
       res.status(200).send();
