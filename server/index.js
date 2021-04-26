@@ -119,7 +119,7 @@ app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
   const sql = `
     select "members"
       from "chatRooms"
-     where "chatId' = $1
+     where "chatId" = $1
   `;
   const params = [id];
   db.query(sql, params)
