@@ -113,6 +113,10 @@ app.get('/api/getUserRooms/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
+
+});
+
 app.post('/api/newRoom', (req, res, next) => {
   const { chatName, members } = req.body;
   if (!chatName) {
@@ -186,7 +190,6 @@ app.put('/api/users/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];
-      console.log(result.rows[0]);
       const payload = {
         userId: user.userId,
         userName: user.userName,
