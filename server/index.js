@@ -115,7 +115,6 @@ app.get('/api/getUserRooms/:userId', (req, res, next) => {
 
 app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
   const id = req.params.chatId;
-  console.log(id);
   const sql = `
     select "members"
       from "chatRooms"
@@ -124,7 +123,6 @@ app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
   const params = [id];
   db.query(sql, params)
     .then(result => {
-      console.log(result.rows[0]);
       res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
@@ -238,7 +236,11 @@ app.put('/api/updateRoomMembers/:chatId', (req, res, next) => {
      where "chatId" = $2
   `;
   const params = [updatedMembers, id];
-  db.query(sql, params);
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).send();
+    })
+    .catch(err => next(err));
 
 });
 
