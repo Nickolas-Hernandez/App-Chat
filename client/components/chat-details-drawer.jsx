@@ -40,7 +40,8 @@ export default class ChatDetailsDrawer extends React.Component {
       })
       .catch(err => console.error(err));
     // Remove user from ChatRoom Members
-    //
+    fetch(`/api/getRoomMembers/${id}`);
+
   }
 
   render() {
