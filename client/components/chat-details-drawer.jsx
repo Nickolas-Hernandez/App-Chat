@@ -5,6 +5,7 @@ export default class ChatDetailsDrawer extends React.Component {
     super(props);
     this.state = { drawerIsOpen: false };
     this.openDrawer = this.openDrawer.bind(this);
+    this.leaveRoom = this.leaveRoom.bind(this);
   }
 
   openDrawer(event) {
@@ -15,6 +16,53 @@ export default class ChatDetailsDrawer extends React.Component {
     this.setState({ drawerIsOpen: false });
   }
 
+  leaveRoom() {
+    fetch(`/api/getRoomMembers/${this.props.id}`)
+      .then(response => response.json())
+      .then(result => {
+        const { members } = result;
+        const index = members.indexOf(this.props.userName);
+        members.splice(index, 1);
+        const init = {
+          method: 'PUT',
+          headers: { 'Content-type': 'application/json' },
+          body: JSON.stringify({ updatedMembers: members })
+        };
+        fetch(`/api/updateRoomMembers/${this.props.id}`, init)
+          .then(() => {
+            const id = this.props.userId;
+            fetch(`/api/getUserRooms/${id}`)
+              .then(response => response.json())
+              .then(result => {
+                const rooms = result.chatRooms;
+                const index = rooms.indexOf(id);
+                rooms.splice(index, 1);
+                const init = {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ chatRooms: rooms })
+                };
+                fetch(`/api/users/${id}`, init)
+                  .then(response => response.json())
+                  .then(result => {
+                    const { token } = result;
+                    window.localStorage.setItem('chat-app-jwt', token);
+                    location.reload();
+                  })
+                  .catch(err => console.error(err));
+              })
+              .catch(err => console.error(err));
+          })
+          .catch(err => console.error(err));
+      })
+      .catch(err => console.error(err));
+
+  }
+
+  removeUserFromMembers() {
+
+  }
+
   render() {
     const { drawerIsOpen } = this.state;
     return (
@@ -22,10 +70,15 @@ export default class ChatDetailsDrawer extends React.Component {
         <i onClick={this.openDrawer} className="fas fa-sign details-icon"></i>
         <div className={drawerIsOpen ? 'overlay details-drawer ' : 'hidden' }></div>
           <div className={drawerIsOpen ? 'chat-details-drawer active' : 'chat-details-drawer'}>
-            <h3>Chat Room ID:</h3>
-            <p>{this.props.id}</p>
-            <h3>Room Members:</h3>
-            <MembersList members={this.props.members}/>
+            <div className='drawer-contents'>
+              <h3>Chat Room ID:</h3>
+              <p>{this.props.id}</p>
+              <h3>Room Members:</h3>
+              <MembersList members={this.props.members}/>
+              <a href="#">
+                <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
+              </a>
+            </div>
           </div>
       </>
     );

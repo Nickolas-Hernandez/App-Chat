@@ -66,7 +66,6 @@ export default class ChatListSection extends React.Component {
       this.joinRoom();
       return;
     }
-
     const roomDetails = {
       chatName: this.state.form.chatName,
       members: [this.props.user.userName]
@@ -94,7 +93,8 @@ export default class ChatListSection extends React.Component {
   }
 
   addRoomMember() {
-    fetch(`/api/newRoomMember/${this.state.form.chatId}`)
+    const id = this.state.form.chatId;
+    fetch(`/api/newRoomMember/${id}`)
       .then(response => response.json())
       .then(result => {
         const updatedMembers = result.members;
@@ -104,7 +104,7 @@ export default class ChatListSection extends React.Component {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ members: updatedMembers })
         };
-        fetch(`/api/newRoomMember/${this.state.form.chatId}`, init);
+        fetch(`/api/newRoomMember/${id}`, init);
       });
   }
 
