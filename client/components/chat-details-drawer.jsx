@@ -34,13 +34,17 @@ export default class ChatDetailsDrawer extends React.Component {
           .then(result => {
             const { token } = result;
             window.localStorage.setItem('chat-app-jwt', token);
-            location.reload();
+            // location.reload();
           })
           .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
     // Remove user from ChatRoom Members
-    fetch(`/api/getRoomMembers/${id}`);
+    fetch(`/api/getRoomMembers/${this.props.id}`)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      });
 
   }
 

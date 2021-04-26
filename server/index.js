@@ -85,13 +85,13 @@ app.get('/api/joinRoom/:chatId', (req, res, next) => {
 
 app.get('/api/newRoomMember/:chatId', (req, res, next) => {
   const roomId = req.params.chatId;
-  const getRoomMembersSQL = `
+  const sql = `
     select "members"
       from "chatRooms"
      where "chatId" = $1
   `;
-  const params1 = [roomId];
-  db.query(getRoomMembersSQL, params1)
+  const params = [roomId];
+  db.query(sql, params)
     .then(result => {
       res.status(200).json(result.rows[0]);
     })
@@ -115,6 +115,7 @@ app.get('/api/getUserRooms/:userId', (req, res, next) => {
 
 app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
   const id = req.params.chatId;
+  console.log(id);
   const sql = `
     select "members"
       from "chatRooms"
@@ -123,6 +124,7 @@ app.get('/api/getRoomMembers/:chatId', (req, res, next) => {
   const params = [id];
   db.query(sql, params)
     .then(result => {
+      console.log(result.rows[0]);
       res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
@@ -189,7 +191,6 @@ app.post('/api/createNewUser', (req, res, next) => {
 
 app.put('/api/users/:userId', (req, res, next) => {
   const updatedRooms = req.body.chatRooms;
-  console.log(updatedRooms);
   const userId = req.params.userId;
   const sql = `
     update "users"
@@ -207,7 +208,6 @@ app.put('/api/users/:userId', (req, res, next) => {
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-      console.log('token', token);
       res.status(200).json({ token: token, user: payload });
     })
     .catch(err => next(err));
