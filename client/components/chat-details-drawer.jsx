@@ -17,29 +17,6 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
-    const id = this.props.userId;
-    fetch(`/api/getUserRooms/${id}`)
-      .then(response => response.json())
-      .then(result => {
-        const rooms = result.chatRooms;
-        const index = rooms.indexOf(id);
-        rooms.splice(index, 1);
-        const init = {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chatRooms: rooms })
-        };
-        fetch(`/api/users/${id}`, init)
-          .then(response => response.json())
-          .then(result => {
-            const { token } = result;
-            window.localStorage.setItem('chat-app-jwt', token);
-            location.reload();
-          })
-          .catch(err => console.error(err));
-      })
-      .catch(err => console.error(err));
-    // Remove user from ChatRoom Members
     fetch(`/api/getRoomMembers/${this.props.id}`)
       .then(response => response.json())
       .then(result => {
@@ -51,9 +28,38 @@ export default class ChatDetailsDrawer extends React.Component {
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({ updatedMembers: members })
         };
-        fetch(`/api/updateRoomMembers/${this.props.id}`, init);
+        fetch(`/api/updateRoomMembers/${this.props.id}`, init)
+          .then(() => {
+            const id = this.props.userId;
+            fetch(`/api/getUserRooms/${id}`)
+              .then(response => response.json())
+              .then(result => {
+                const rooms = result.chatRooms;
+                const index = rooms.indexOf(id);
+                rooms.splice(index, 1);
+                const init = {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ chatRooms: rooms })
+                };
+                fetch(`/api/users/${id}`, init)
+                  .then(response => response.json())
+                  .then(result => {
+                    const { token } = result;
+                    window.localStorage.setItem('chat-app-jwt', token);
+                    location.reload();
+                  })
+                  .catch(err => console.error(err));
+              })
+              .catch(err => console.error(err));
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
+
+  }
+
+  removeUserFromMembers() {
 
   }
 
