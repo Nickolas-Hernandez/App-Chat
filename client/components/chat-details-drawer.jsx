@@ -32,11 +32,15 @@ export default class ChatDetailsDrawer extends React.Component {
         fetch(`/api/users/${id}`, init)
           .then(response => response.json())
           .then(result => {
-            const { user, token } = result;
+            const { token } = result;
             window.localStorage.setItem('chat-app-jwt', token);
-          });
+            location.reload();
+          })
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
+    // Remove user from ChatRoom Members
+    //
   }
 
   render() {
@@ -51,7 +55,9 @@ export default class ChatDetailsDrawer extends React.Component {
               <p>{this.props.id}</p>
               <h3>Room Members:</h3>
               <MembersList members={this.props.members}/>
-              <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
+              <a href="#">
+                <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
+              </a>
             </div>
           </div>
       </>
