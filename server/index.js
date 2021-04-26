@@ -229,6 +229,19 @@ app.put('/api/newRoomMember/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.put('/api/updateRoomMembers/:chatId', (req, res, next) => {
+  const id = req.params.chatId;
+  const { updatedMembers } = req.body;
+  const sql = `
+    update "chatRooms"
+       set "members" = $1
+     where "chatId" = $2
+  `;
+  const params = [updatedMembers, id];
+  db.query(sql, params);
+
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {
