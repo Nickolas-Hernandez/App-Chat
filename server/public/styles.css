@@ -257,13 +257,18 @@ label,
 }
 
 .app-chat {
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
+  font-size: 28px;
 }
 
 .new-user-form label,
 .new-user-form input,
 .new-user-form button {
   margin-top: 1rem;
+}
+
+.new-user-form label {
+  font-size: 20px;
 }
 
 .chat-details-drawer {
