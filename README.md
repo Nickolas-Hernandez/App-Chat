@@ -1,6 +1,6 @@
 # App Chat
 
-A full-stack React, Node.js, Express, and PostgreSQL application for users who want to connect and chat online. This app utilizes web sockets from Socket.io to connect multiple users and allo for messages to be sent in real-time. 
+A full-stack React, Node.js, Express, and PostgreSQL application for users who want to connect and chat online. This app utilizes web sockets from Socket.io to connect multiple users and allow for messages to be sent in real-time. 
 
 ## Features 
 
@@ -19,7 +19,7 @@ A full-stack React, Node.js, Express, and PostgreSQL application for users who w
 
 As my first full-stack project, the building of this application helped me to solidify my foundational knowledge in React, Express, and PostgreSQL. This app has taught me the benefits of using a front-end framework and how one can be utilizied to make dynamic applicaitons. As for back-end development, being able to build a server side api and have that api interact with stored data has shown me the amazing posiblities of using a relational database to store and retrieve data. 
 
-However, building this application not only helped me to solidify my foundations but also showed my abilities as a developer to read, test, and implement new technologies. The implementation of Socket.io in this project was a task that was nearly done on my own, and was not included in my curriculm at LearningFuze. This has shown me that reaching for new technologies can be done through thorough reading and understanding of documentaion along with  testing by building small scale application utilizing such technology. 
+However, building this application not only helped me to solidify my foundations but also showed my abilities as a developer to read, test, and implement new technologies. The implementation of Socket.io in this project was a task that was done nearly on my own, and was not included in my curriculm at LearningFuze. This has shown me that reaching for new technologies can be done through thorough reading and understanding of documentaion along with testing by building small scale application utilizing such technology. 
 
 
 
