@@ -416,6 +416,21 @@ label,
   .overlay.details-drawer {
     z-index: 2;
   }
+
+  .new-user-form {
+    align-items: flex-start;
+  }
+
+  .new-user-form label,
+  .new-user-form input,
+  .new-user-form button {
+    max-width: 380px;
+  }
+
+  #user-name {
+    text-align: left;
+    padding-left: 1rem;
+  }
 }
 
 .hidden {
