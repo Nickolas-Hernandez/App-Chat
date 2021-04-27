@@ -21,10 +21,9 @@ export default class CreateUserForm extends React.Component {
   render() {
     return (
       <>
-        <div
-          className='overlay'>
           <form onSubmit={this.submitUser} className="new-user-form">
-            <h3 className="welcome-message">Hi! Welcome to Chat-App!</h3>
+            <h2 className="welcome-message">Hi! Welcome to </h2>
+            <h2 className="app-chat">App Chat</h2>
             <label htmlFor="user-name">Enter your name:</label>
             <input
               type="text"
@@ -35,7 +34,6 @@ export default class CreateUserForm extends React.Component {
               required/>
             <button className="submit-button">Submit</button>
           </form>
-        </div>
       </>
     );
   }

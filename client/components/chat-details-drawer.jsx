@@ -71,9 +71,11 @@ export default class ChatDetailsDrawer extends React.Component {
         <div className={drawerIsOpen ? 'overlay details-drawer ' : 'hidden' }></div>
           <div className={drawerIsOpen ? 'chat-details-drawer active' : 'chat-details-drawer'}>
             <div className='drawer-contents'>
-              <h3>Chat Room ID:</h3>
-              <p>{this.props.id}</p>
-              <h3>Room Members:</h3>
+              <div className="chat-id-wrapper">
+                <h3 className="id-label">Chat Room ID:</h3>
+                <p className="room-id">{this.props.id}</p>
+              </div>
+              <h3 className="members-label">Room Members:</h3>
               <MembersList members={this.props.members}/>
               <a href="#">
                 <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
