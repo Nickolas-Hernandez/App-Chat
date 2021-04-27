@@ -272,14 +272,22 @@ label,
   left: 0;
 }
 
-.chat-details-drawer > h3,
-.chat-details-drawer > p {
-  font-size: 20px;
-  font-weight: 400;
-  display: inline-block;
+.chat-id-wrapper {
+  display: flex;
 }
 
-.chat-details-drawer > h3:nth-child(3) {
+.id-label,
+.room-id,
+.members-label {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.room-id {
+  margin-left: 2rem;
+}
+
+.members-label {
   margin-top: 2rem;
 }
 
