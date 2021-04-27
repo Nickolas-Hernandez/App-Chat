@@ -1,6 +1,6 @@
 # App Chat
 
-A full-stack React, Node.js, Express, and PostgreSQL application for users who want to connect and chat online. This app utilizes web sockets from Socket.io to connect multiple users and allo for messages to be sent in real time. 
+A full-stack React, Node.js, Express, and PostgreSQL application for users who want to connect and chat online. This app utilizes web sockets from Socket.io to connect multiple users and allo for messages to be sent in real-time. 
 
 ## Features 
 
