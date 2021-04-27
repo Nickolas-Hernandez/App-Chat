@@ -32,3 +32,14 @@ Overall, this app has expanded my capablities and I look forward to building new
 
 ## Demo
 
+User creates a profile and a chat room:
+
+![Animated GIF-downsized_large (4)](https://user-images.githubusercontent.com/75342275/116310805-52558480-a75f-11eb-9813-b9c57a5bb42f.gif)
+
+User recieves and sends a message:
+
+![Animated GIF-downsized_large (5)](https://user-images.githubusercontent.com/75342275/116310964-8630aa00-a75f-11eb-9f71-f6f7edf86664.gif)
+
+User leaving a chat room:
+
+![Animated GIF-downsized_large (6)](https://user-images.githubusercontent.com/75342275/116311000-9052a880-a75f-11eb-9c03-d8283317bb89.gif)
