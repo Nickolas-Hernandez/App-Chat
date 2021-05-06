@@ -148,7 +148,11 @@ export default class ChatListSection extends React.Component {
             className="fas fa-plus plus-icon"></i>
           </div>
         </div>
-        <ChatList rooms={this.state.chatRooms} />
+        {
+        this.state.chatRooms.length === 0
+          ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
+          : <ChatList rooms={this.state.chatRooms} />
+      }
       </>
     );
   }
