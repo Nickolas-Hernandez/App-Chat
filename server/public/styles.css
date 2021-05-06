@@ -44,7 +44,7 @@ a {
 .overlay {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -150,7 +150,6 @@ label,
 
 .message-area-header {
   background-color: white;
-  flex-shrink: 0;
 }
 
 .message-area {
@@ -356,7 +355,21 @@ label,
   color: #5fa7a0;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 600px) {
+  .message-area {
+    padding-bottom: 0.5rem;
+  }
+
+  .message-input-container {
+    width: 550px;
+  }
+
+  .message {
+    max-width: 550px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
   #root {
     width: 100%;
     max-width: 1440px;
@@ -386,7 +399,7 @@ label,
   .chat-list-header,
   .chat-list,
   .empty-list-message {
-    width: calc(100% / 3);
+    width: 50%;
     margin: 0 auto;
   }
 
