@@ -212,11 +212,14 @@ label,
   justify-content: flex-end;
 }
 
+.list-of-messages p {
+  overflow-wrap: break-word;
+}
+
 .message,
 .recieved-message {
   font-weight: 400;
-  max-width: 280px;
-  max-height: 80px;
+  max-width: 300px;
   padding: 8px;
   margin: 0.2rem;
   border-radius: 4px;
@@ -418,6 +421,7 @@ label,
   .message {
     font-size: 20px;
     padding: 12px;
+    max-width: 600px;
   }
 
   .chat-details-drawer,
