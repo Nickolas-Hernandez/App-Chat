@@ -13,6 +13,7 @@ export default class Home extends React.Component {
     };
     this.submitNewUser = this.submitNewUser.bind(this);
     this.addRoom = this.addRoom.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
   componentDidMount() {
@@ -63,15 +64,22 @@ export default class Home extends React.Component {
       });
   }
 
+  updateUser(userInfo) {
+    this.setState({ user: userInfo });
+  }
+
   render() {
     const { route, user } = this.state;
     if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
     if (route.path === '') {
-      return <ChatListSection onRoomCreation={this.addRoom} user={this.state.user}/>;
+      return <ChatListSection
+      userUpdate={this.updateUser}
+      onRoomCreation={this.addRoom}
+      user={this.state.user}/>;
     }
     if (route.path === 'rooms') {
       const roomId = route.params.get('roomId');
-      return <MessageArea user={this.state.user} roomId={roomId} />;
+      return <MessageArea userUpdate={this.updateUser} user={this.state.user} roomId={roomId} />;
     }
   }
 }

@@ -162,7 +162,8 @@ export default class ChatListSection extends React.Component {
             onClick={this.openNewChatForm}
             className="fas fa-plus plus-icon"></i>
             <UserProfile
-            user={this.props.user.userId}
+            updateUser={this.props.userUpdate}
+            user={this.props.user}
             userName={this.props.user.userName}
             handleDrawer={this.openUserProfile}
             isOpen={profileIsOpen}/>

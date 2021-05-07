@@ -34,8 +34,9 @@ export default class ChatDetailsDrawer extends React.Component {
             fetch(`/api/getUserRooms/${id}`)
               .then(response => response.json())
               .then(result => {
+                const roomId = this.props.id;
                 const rooms = result.chatRooms;
-                const index = rooms.indexOf(id);
+                const index = rooms.indexOf(roomId);
                 rooms.splice(index, 1);
                 const init = {
                   method: 'PUT',
@@ -45,9 +46,10 @@ export default class ChatDetailsDrawer extends React.Component {
                 fetch(`/api/users/${id}`, init)
                   .then(response => response.json())
                   .then(result => {
-                    const { token } = result;
+                    const { token, user } = result;
                     window.localStorage.setItem('chat-app-jwt', token);
-                    location.reload();
+                    this.props.updateUser(user);
+                    window.location.hash = '';
                   })
                   .catch(err => console.error(err));
               })
@@ -73,9 +75,7 @@ export default class ChatDetailsDrawer extends React.Component {
               </div>
               <h3 className="members-label">Room Members:</h3>
               <MembersList members={this.props.members}/>
-              <a href="#">
-                <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
-              </a>
+              <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
             </div>
           </div>
       </>
