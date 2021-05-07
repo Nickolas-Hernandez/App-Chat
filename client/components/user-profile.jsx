@@ -40,11 +40,39 @@ export default class UserProfileDrawer extends React.Component {
       .then(response => response.json())
       .then(result => {
         const { token, user } = result;
+        this.updateNameInRooms(this.props.user.userName, user.userName);
         window.localStorage.setItem('chat-app-jwt', token);
         this.setState({ userName: user.userName });
         this.props.updateUser(user);
-      });
+      })
+      .catch(err => console.error(err));
+
     this.setState({ newUserName: '', formIsOpen: false });
+  }
+
+  updateNameInRooms(oldName, newName) {
+    const chatRooms = this.props.user.chatRooms;
+    chatRooms.forEach(chatRoom => {
+      fetch(`/api/getRoomMembers/${chatRoom}`)
+        .then(response => response.json())
+        .then(result => {
+          const { members } = result;
+          const updated = members.map(member => {
+            if (member === oldName) {
+              return newName;
+            }
+            return member;
+          });
+          const init = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ updatedMembers: updated })
+          };
+          fetch(`/api/updateRoomMembers/${chatRoom}`, init)
+            .catch(err => console.error(err));
+        })
+        .catch(err => console.error(err));
+    });
   }
 
   render() {
