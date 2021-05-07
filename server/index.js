@@ -241,6 +241,29 @@ app.put('/api/updateRoomMembers/:chatId', (req, res, next) => {
 
 });
 
+app.put('/api/username/:userId', (req, res, next) => {
+  const { userId } = req.params;
+  const { userName } = req.body;
+  const sql = `
+    update "users"
+       set "userName" = $1
+     where "userId" = $2
+     returning *
+  `;
+  const params = [userName, userId];
+  db.query(sql, params)
+    .then(result => {
+      const user = result.rows[0];
+      const payload = {
+        userId: user.userId,
+        userName: user.userName,
+        chatRooms: user.chatRooms
+      };
+      const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+      res.status(200).json({ token: token, user: payload });
+    });
+});
+
 app.use(errorMiddleware);
 
 server.listen(process.env.PORT, () => {

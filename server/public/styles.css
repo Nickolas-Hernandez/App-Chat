@@ -44,7 +44,7 @@ a {
 .overlay {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -96,6 +96,7 @@ label,
 #users-name,
 #user-name,
 #new-chat-id,
+.name-input,
 .submit-button {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
@@ -104,6 +105,11 @@ label,
   text-align: center;
   border: none;
   font-size: 18px;
+}
+
+.name-input {
+  margin: 1rem 0 0.5rem;
+  background-color: #edf0f4;
 }
 
 .submit-button {
@@ -130,9 +136,16 @@ label,
   align-items: center;
 }
 
+.plus-icon {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
 .plus-icon,
+.cog-icon,
 .back-arrow,
 .details-icon,
+.edit-icon,
 .send-message-icon {
   font-size: 24px;
 }
@@ -150,7 +163,12 @@ label,
 
 .message-area-header {
   background-color: white;
-  flex-shrink: 0;
+}
+
+.chat-rooms {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .message-area {
@@ -212,11 +230,14 @@ label,
   justify-content: flex-end;
 }
 
+.list-of-messages p {
+  overflow-wrap: break-word;
+}
+
 .message,
 .recieved-message {
   font-weight: 400;
-  max-width: 280px;
-  max-height: 80px;
+  max-width: 300px;
   padding: 8px;
   margin: 0.2rem;
   border-radius: 4px;
@@ -298,7 +319,15 @@ label,
   display: flex;
 }
 
+.profile {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .id-label,
+.username-label,
+.username,
 .room-id,
 .members-label {
   font-size: 20px;
@@ -307,6 +336,11 @@ label,
 
 .room-id {
   margin-left: 2rem;
+}
+
+.username {
+  margin-left: 1rem;
+  margin-right: auto;
 }
 
 .members-label {
@@ -327,6 +361,7 @@ label,
   height: 100%;
   position: relative;
   padding-left: 15px;
+  padding-right: 20px;
 }
 
 .leave-room {
@@ -345,7 +380,29 @@ label,
   box-shadow: 0 4px 4px 0 rgba(80, 80, 80, 0.3);
 }
 
-@media only screen and (min-width: 768px) {
+.empty-list-message {
+  max-width: 90%;
+  margin: 1rem auto;
+  font-size: 18px;
+  text-align: center;
+  color: #5fa7a0;
+}
+
+@media only screen and (min-width: 600px) {
+  .message-area {
+    padding-bottom: 0.5rem;
+  }
+
+  .message-input-container {
+    width: 550px;
+  }
+
+  .message {
+    max-width: 550px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
   #root {
     width: 100%;
     max-width: 1440px;
@@ -373,8 +430,9 @@ label,
   }
 
   .chat-list-header,
-  .chat-list {
-    width: calc(100% / 3);
+  .chat-list,
+  .empty-list-message {
+    width: 50%;
     margin: 0 auto;
   }
 
@@ -409,6 +467,7 @@ label,
   .message {
     font-size: 20px;
     padding: 12px;
+    max-width: 600px;
   }
 
   .chat-details-drawer,
@@ -429,6 +488,11 @@ label,
   #user-name {
     text-align: left;
     padding-left: 1rem;
+  }
+
+  .empty-list-message {
+    font-size: 20px;
+    margin: 1rem auto;
   }
 }
 

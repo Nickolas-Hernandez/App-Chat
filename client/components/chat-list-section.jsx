@@ -1,12 +1,14 @@
 import React from 'react';
 import NewChatForm from './new-chat-form';
 import ChatList from './chat-list';
+import UserProfile from './user-profile';
 
 export default class ChatListSection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       formIsOpen: false,
+      profileIsOpen: false,
       form: {
         chatName: '',
         chatId: ''
@@ -18,6 +20,7 @@ export default class ChatListSection extends React.Component {
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.buildNewState = this.buildNewState.bind(this);
+    this.openUserProfile = this.openUserProfile.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +44,9 @@ export default class ChatListSection extends React.Component {
   }
 
   openNewChatForm() {
+    if (this.state.profileIsOpen) {
+      return;
+    }
     const newState = this.buildNewState();
     newState.formIsOpen = true;
     this.setState(newState);
@@ -128,10 +134,18 @@ export default class ChatListSection extends React.Component {
     this.setState(newState);
   }
 
+  openUserProfile(event) {
+    if (!this.state.profileIsOpen) {
+      this.setState({ profileIsOpen: true });
+      return;
+    }
+    this.setState({ profileIsOpen: false });
+  }
+
   render() {
-    const { formIsOpen, form: formInput } = this.state;
+    const { formIsOpen, form: formInput, profileIsOpen } = this.state;
     return (
-      <>
+      <div className="chat-rooms">
        <NewChatForm
           isOpen={formIsOpen}
           chatName={formInput.chatName}
@@ -140,16 +154,26 @@ export default class ChatListSection extends React.Component {
           handleFormClose={this.closeForm}
           onSubmission={this.submitForm}
        />
+
         <div className="chat-list-header">
           <div className="wrapper">
             <h1>Chats</h1>
             <i
             onClick={this.openNewChatForm}
             className="fas fa-plus plus-icon"></i>
+            <UserProfile
+            user={this.props.user.userId}
+            userName={this.props.user.userName}
+            handleDrawer={this.openUserProfile}
+            isOpen={profileIsOpen}/>
           </div>
         </div>
-        <ChatList rooms={this.state.chatRooms} />
-      </>
+        {
+        this.state.chatRooms.length === 0
+          ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
+          : <ChatList rooms={this.state.chatRooms} />
+      }
+      </div>
     );
   }
 }

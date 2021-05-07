@@ -59,10 +59,6 @@ export default class ChatDetailsDrawer extends React.Component {
 
   }
 
-  removeUserFromMembers() {
-
-  }
-
   render() {
     const { drawerIsOpen } = this.state;
     return (
