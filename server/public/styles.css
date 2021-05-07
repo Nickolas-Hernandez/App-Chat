@@ -96,6 +96,7 @@ label,
 #users-name,
 #user-name,
 #new-chat-id,
+.name-input,
 .submit-button {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
@@ -104,6 +105,11 @@ label,
   text-align: center;
   border: none;
   font-size: 18px;
+}
+
+.name-input {
+  margin: 1rem 0 0.5rem;
+  background-color: #edf0f4;
 }
 
 .submit-button {
@@ -130,9 +136,16 @@ label,
   align-items: center;
 }
 
+.plus-icon {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
 .plus-icon,
+.cog-icon,
 .back-arrow,
 .details-icon,
+.edit-icon,
 .send-message-icon {
   font-size: 24px;
 }
@@ -150,6 +163,12 @@ label,
 
 .message-area-header {
   background-color: white;
+}
+
+.chat-rooms {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .message-area {
@@ -300,7 +319,15 @@ label,
   display: flex;
 }
 
+.profile {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .id-label,
+.username-label,
+.username,
 .room-id,
 .members-label {
   font-size: 20px;
@@ -309,6 +336,11 @@ label,
 
 .room-id {
   margin-left: 2rem;
+}
+
+.username {
+  margin-left: 1rem;
+  margin-right: auto;
 }
 
 .members-label {
@@ -329,6 +361,7 @@ label,
   height: 100%;
   position: relative;
   padding-left: 15px;
+  padding-right: 20px;
 }
 
 .leave-room {
