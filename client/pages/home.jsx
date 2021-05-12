@@ -9,14 +9,11 @@ export default class Home extends React.Component {
     this.state = {
       formIsOpen: false,
       profileIsOpen: false,
-      form: {
-        chatName: '',
-        chatId: ''
-      },
+      form: { chatName: '', chatId: '' },
       chatRooms: []
     };
     this.openNewChatForm = this.openNewChatForm.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.openUserProfile = this.openUserProfile.bind(this);
@@ -42,41 +39,32 @@ export default class Home extends React.Component {
     this.setState({ formIsOpen: false });
   }
 
-  handleChange(target) {
+  handleFormChange(target) {
+    const formInput = Object.assign({}, this.state.form);
     if (target.id === 'chat-name') {
-      this.setState(state => {
-        return ({
-          form: {
-            chatName: target.value,
-            chatId: state.form.chatId
-          }
-        });
-      });
-      return;
-    }
-    this.setState(state => {
-      return ({
-        form: {
-          chatName: state.form.chatName,
-          chatId: target.value
-        }
-      });
-    });
+      formInput.chatName = target.value;
+    } else formInput.chatId = target.value;
+    this.setState({ form: formInput });
   }
 
-  submitForm(event) {
+  submitForm() {
+    const formValues = Object.assign({}, this.state.form);
+    formValues.chatName = '';
+    formValues.chatId = '';
     if (this.state.form.chatId !== '') {
       this.joinRoom();
-      return;
-    }
-    const roomDetails = {
-      chatName: this.state.form.chatName,
-      members: [this.props.user.userName]
-    };
+    } else this.createRoom();
+    this.setState({ formIsOpen: false, form: formValues });
+  }
+
+  createRoom() {
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(roomDetails)
+      body: JSON.stringify({
+        chatName: this.state.form.chatName,
+        members: [this.props.user.userName]
+      })
     };
     fetch('/api/newRoom', init)
       .then(response => response.json())
@@ -84,7 +72,6 @@ export default class Home extends React.Component {
         this.appendNewChatRoom(result);
       })
       .catch(err => console.error(err));
-    this.setState({ formIsOpen: false });
   }
 
   joinRoom() {
@@ -136,35 +123,34 @@ export default class Home extends React.Component {
 
   render() {
     const { formIsOpen, form: formInput, profileIsOpen } = this.state;
+    const chatList = (this.state.chatRooms.length === 0
+      ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
+      : <ChatList rooms={this.state.chatRooms} />);
     return (
       <div className="chat-rooms">
         <NewChatForm
-            isOpen={formIsOpen}
-            chatName={formInput.chatName}
-            newChatId={formInput.chatId}
-            onInputChange={this.handleChange}
-            handleFormClose={this.closeForm}
-            onSubmission={this.submitForm}
+          isOpen={formIsOpen}
+          chatName={formInput.chatName}
+          newChatId={formInput.chatId}
+          onInputChange={this.handleFormChange}
+          handleFormClose={this.closeForm}
+          onSubmission={this.submitForm}
         />
         <div className="chat-list-header">
           <div className="wrapper">
             <h1>Chats</h1>
             <i
-            onClick={this.openNewChatForm}
-            className="fas fa-plus plus-icon"></i>
+              onClick={this.openNewChatForm}
+              className="fas fa-plus plus-icon"></i>
             <UserProfile
-            updateUser={this.props.userUpdate}
-            user={this.props.user}
-            userName={this.props.user.userName}
-            handleDrawer={this.openUserProfile}
-            isOpen={profileIsOpen}/>
+              updateUser={this.props.userUpdate}
+              user={this.props.user}
+              userName={this.props.user.userName}
+              handleDrawer={this.openUserProfile}
+              isOpen={profileIsOpen}/>
           </div>
         </div>
-        {
-        this.state.chatRooms.length === 0
-          ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
-          : <ChatList rooms={this.state.chatRooms} />
-        }
+        { chatList }
       </div>
     );
   }
