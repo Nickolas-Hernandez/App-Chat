@@ -1,7 +1,7 @@
 import React from 'react';
 import Home from './pages/home';
+import MessageArea from './pages/message-area';
 import CreateUserForm from './components/create-user-form';
-import MessageArea from './components/message-area';
 import { parseRoute, decodeToken } from './lib';
 
 export default class App extends React.Component {
