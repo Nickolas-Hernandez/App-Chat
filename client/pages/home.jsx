@@ -1,85 +1,180 @@
 import React from 'react';
-import ChatListSection from '../components/chat-list-section';
-import MessageArea from '../components/message-area';
-import CreateUserForm from '../components/create-user-form';
-import { parseRoute, decodeToken } from '../lib';
+import NewChatForm from '../components/new-chat-form';
+import ChatList from '../components/chat-list';
+import UserProfile from '../components/user-profile';
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash),
-      user: null
+      formIsOpen: false,
+      profileIsOpen: false,
+      form: {
+        chatName: '',
+        chatId: ''
+      },
+      chatRooms: []
     };
-    this.submitNewUser = this.submitNewUser.bind(this);
-    this.addRoom = this.addRoom.bind(this);
-    this.updateUser = this.updateUser.bind(this);
+    this.openNewChatForm = this.openNewChatForm.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.closeForm = this.closeForm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.buildNewState = this.buildNewState.bind(this);
+    this.openUserProfile = this.openUserProfile.bind(this);
   }
 
   componentDidMount() {
-    window.addEventListener('hashchange', event => {
-      const parsedHash = parseRoute(window.location.hash);
-      this.setState(state => {
-        return ({
-          route: parsedHash
-        });
-      });
-    });
-    const token = window.localStorage.getItem('chat-app-jwt');
-    const user = token ? decodeToken(token) : null;
-    this.setState({ user: user });
-  }
-
-  submitNewUser(user) {
-    const init = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
-    };
-    fetch('/api/createNewUser', init)
+    fetch('/api/chatRooms')
       .then(response => response.json())
       .then(result => {
-        const { user: retrievedUser, token } = result;
-        window.localStorage.setItem('chat-app-jwt', token);
-        this.setState({ user: retrievedUser });
+        const usersRooms = result.filter(room => this.props.user.chatRooms.includes(room.id));
+        const newState = this.buildNewState();
+        newState.chatRooms = usersRooms;
+        this.setState(newState);
       })
       .catch(err => console.error(err));
   }
 
-  addRoom(user) {
-    this.setState(state => {
-      return { route: state.route, user: user };
-    });
-    const init = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state.user)
+  buildNewState() {
+    const openForm = { formIsOpen: false };
+    const formInfo = { form: { chatName: '', chatId: '' } };
+    const chatRooms = { chatRooms: this.state.chatRooms.slice() };
+    const newState = Object.assign({}, this.state, openForm, formInfo, chatRooms);
+    return newState;
+  }
+
+  openNewChatForm() {
+    if (this.state.profileIsOpen) {
+      return;
+    }
+    const newState = this.buildNewState();
+    newState.formIsOpen = true;
+    this.setState(newState);
+  }
+
+  handleChange(target) {
+    const newState = this.buildNewState();
+    newState.form = Object.assign({}, this.state.form);
+    newState.formIsOpen = true;
+    if (target.id === 'chat-name') {
+      newState.form.chatName = target.value;
+      this.setState(newState);
+      return;
+    }
+    if (target.id === 'new-chat-id') {
+      newState.form.chatId = target.value;
+      this.setState(newState);
+    }
+  }
+
+  submitForm(event) {
+    if (this.state.form.chatId !== '') {
+      this.joinRoom();
+      return;
+    }
+    const roomDetails = {
+      chatName: this.state.form.chatName,
+      members: [this.props.user.userName]
     };
-    fetch(`/api/users/${this.state.user.userId}`, init)
+    const init = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(roomDetails)
+    };
+    fetch('/api/newRoom', init)
       .then(response => response.json())
       .then(result => {
-        const { user: updatedUser, token } = result;
-        window.localStorage.setItem('chat-app-jwt', token);
-        this.setState(updatedUser);
+        this.appendNewChatRoom(result);
+      })
+      .catch(err => console.error(err));
+  }
+
+  joinRoom() {
+    this.addRoomMember();
+    fetch(`/api/joinRoom/${this.state.form.chatId}`)
+      .then(response => response.json())
+      .then(result => {
+        this.appendNewChatRoom(result);
       });
   }
 
-  updateUser(userInfo) {
-    this.setState({ user: userInfo });
+  addRoomMember() {
+    const id = this.state.form.chatId;
+    fetch(`/api/newRoomMember/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        const updatedMembers = result.members;
+        updatedMembers.push(this.props.user.userName);
+        const init = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ members: updatedMembers })
+        };
+        fetch(`/api/newRoomMember/${id}`, init);
+      });
+  }
+
+  closeForm(event) {
+    if (event.target.className !== 'overlay') return;
+    const newState = this.buildNewState();
+    this.setState(newState);
+  }
+
+  appendNewChatRoom(chatRoomDetails) {
+    const chatRoom = {
+      id: chatRoomDetails.chatId,
+      name: chatRoomDetails.name
+    };
+    const newState = this.buildNewState();
+    newState.chatRooms.unshift(chatRoom);
+    const updatedUser = Object.assign({}, this.props.user);
+    updatedUser.chatRooms = this.props.user.chatRooms.slice();
+    updatedUser.chatRooms.push(chatRoomDetails.chatId);
+    this.props.onRoomCreation(updatedUser);
+    this.setState(newState);
+  }
+
+  openUserProfile(event) {
+    if (!this.state.profileIsOpen) {
+      this.setState({ profileIsOpen: true });
+      return;
+    }
+    this.setState({ profileIsOpen: false });
   }
 
   render() {
-    const { route, user } = this.state;
-    if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
-    if (route.path === '') {
-      return <ChatListSection
-      userUpdate={this.updateUser}
-      onRoomCreation={this.addRoom}
-      user={this.state.user}/>;
-    }
-    if (route.path === 'rooms') {
-      const roomId = route.params.get('roomId');
-      return <MessageArea userUpdate={this.updateUser} user={this.state.user} roomId={roomId} />;
-    }
+    const { formIsOpen, form: formInput, profileIsOpen } = this.state;
+    return (
+      <div className="chat-rooms">
+       <NewChatForm
+          isOpen={formIsOpen}
+          chatName={formInput.chatName}
+          newChatId={formInput.chatId}
+          onInputChange={this.handleChange}
+          handleFormClose={this.closeForm}
+          onSubmission={this.submitForm}
+       />
+
+        <div className="chat-list-header">
+          <div className="wrapper">
+            <h1>Chats</h1>
+            <i
+            onClick={this.openNewChatForm}
+            className="fas fa-plus plus-icon"></i>
+            <UserProfile
+            updateUser={this.props.userUpdate}
+            user={this.props.user}
+            userName={this.props.user.userName}
+            handleDrawer={this.openUserProfile}
+            isOpen={profileIsOpen}/>
+          </div>
+        </div>
+        {
+        this.state.chatRooms.length === 0
+          ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
+          : <ChatList rooms={this.state.chatRooms} />
+      }
+      </div>
+    );
   }
 }
