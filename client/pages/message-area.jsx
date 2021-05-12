@@ -36,9 +36,9 @@ export default class MessageArea extends React.Component {
       chatRoomId: this.props.roomId
     });
     socket.on('new_message', message => {
-      const newState = this.buildNewState();
-      newState.messages.push(message);
-      this.setState(newState);
+      const updateMessages = this.state.messages.slice();
+      updateMessages.push(message);
+      this.setState({ messages: updateMessages });
     });
   }
 
@@ -46,17 +46,8 @@ export default class MessageArea extends React.Component {
     this.socket.disconnect();
   }
 
-  buildNewState() {
-    const messages = { messages: this.state.messages.slice() };
-    const members = { members: this.state.members.slice() };
-    const newState = Object.assign({}, this.state, messages, members);
-    return newState;
-  }
-
   getMessageInput(value) {
-    const newState = this.buildNewState();
-    newState.sendMessage = value;
-    this.setState(newState);
+    this.setState({ sendMessage: value });
   }
 
   sendMessage() {
@@ -76,9 +67,7 @@ export default class MessageArea extends React.Component {
   }
 
   resetMessageBox() {
-    const newState = this.buildNewState();
-    newState.sendMessage = '';
-    this.setState(newState);
+    this.setState({ sendMessage: '' });
   }
 
   render() {
