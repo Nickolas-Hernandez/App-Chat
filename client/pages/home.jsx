@@ -19,7 +19,6 @@ export default class Home extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.closeForm = this.closeForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.buildNewState = this.buildNewState.bind(this);
     this.openUserProfile = this.openUserProfile.bind(this);
   }
 
@@ -28,43 +27,41 @@ export default class Home extends React.Component {
       .then(response => response.json())
       .then(result => {
         const usersRooms = result.filter(room => this.props.user.chatRooms.includes(room.id));
-        const newState = this.buildNewState();
-        newState.chatRooms = usersRooms;
-        this.setState(newState);
+        this.setState({ chatRooms: usersRooms });
       })
       .catch(err => console.error(err));
   }
 
-  buildNewState() {
-    const openForm = { formIsOpen: false };
-    const formInfo = { form: { chatName: '', chatId: '' } };
-    const chatRooms = { chatRooms: this.state.chatRooms.slice() };
-    const newState = Object.assign({}, this.state, openForm, formInfo, chatRooms);
-    return newState;
+  openNewChatForm() {
+    if (this.state.profileIsOpen) return;
+    this.setState({ formIsOpen: true });
   }
 
-  openNewChatForm() {
-    if (this.state.profileIsOpen) {
-      return;
-    }
-    const newState = this.buildNewState();
-    newState.formIsOpen = true;
-    this.setState(newState);
+  closeForm(event) {
+    if (event.target.className !== 'overlay') return;
+    this.setState({ formIsOpen: false });
   }
 
   handleChange(target) {
-    const newState = this.buildNewState();
-    newState.form = Object.assign({}, this.state.form);
-    newState.formIsOpen = true;
     if (target.id === 'chat-name') {
-      newState.form.chatName = target.value;
-      this.setState(newState);
+      this.setState(state => {
+        return ({
+          form: {
+            chatName: target.value,
+            chatId: state.form.chatId
+          }
+        });
+      });
       return;
     }
-    if (target.id === 'new-chat-id') {
-      newState.form.chatId = target.value;
-      this.setState(newState);
-    }
+    this.setState(state => {
+      return ({
+        form: {
+          chatName: state.form.chatName,
+          chatId: target.value
+        }
+      });
+    });
   }
 
   submitForm(event) {
@@ -87,6 +84,7 @@ export default class Home extends React.Component {
         this.appendNewChatRoom(result);
       })
       .catch(err => console.error(err));
+    this.setState({ formIsOpen: false });
   }
 
   joinRoom() {
@@ -114,24 +112,18 @@ export default class Home extends React.Component {
       });
   }
 
-  closeForm(event) {
-    if (event.target.className !== 'overlay') return;
-    const newState = this.buildNewState();
-    this.setState(newState);
-  }
-
   appendNewChatRoom(chatRoomDetails) {
     const chatRoom = {
       id: chatRoomDetails.chatId,
       name: chatRoomDetails.name
     };
-    const newState = this.buildNewState();
-    newState.chatRooms.unshift(chatRoom);
+    const updatedRooms = this.state.chatRooms.slice();
+    updatedRooms.unshift(chatRoom);
     const updatedUser = Object.assign({}, this.props.user);
     updatedUser.chatRooms = this.props.user.chatRooms.slice();
     updatedUser.chatRooms.push(chatRoomDetails.chatId);
     this.props.onRoomCreation(updatedUser);
-    this.setState(newState);
+    this.setState({ chatRooms: updatedRooms });
   }
 
   openUserProfile(event) {
@@ -146,15 +138,14 @@ export default class Home extends React.Component {
     const { formIsOpen, form: formInput, profileIsOpen } = this.state;
     return (
       <div className="chat-rooms">
-       <NewChatForm
-          isOpen={formIsOpen}
-          chatName={formInput.chatName}
-          newChatId={formInput.chatId}
-          onInputChange={this.handleChange}
-          handleFormClose={this.closeForm}
-          onSubmission={this.submitForm}
-       />
-
+        <NewChatForm
+            isOpen={formIsOpen}
+            chatName={formInput.chatName}
+            newChatId={formInput.chatId}
+            onInputChange={this.handleChange}
+            handleFormClose={this.closeForm}
+            onSubmission={this.submitForm}
+        />
         <div className="chat-list-header">
           <div className="wrapper">
             <h1>Chats</h1>
@@ -173,7 +164,7 @@ export default class Home extends React.Component {
         this.state.chatRooms.length === 0
           ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
           : <ChatList rooms={this.state.chatRooms} />
-      }
+        }
       </div>
     );
   }
