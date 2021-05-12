@@ -58,9 +58,8 @@ export default class NewChatForm extends React.Component {
     return (
       <>
         <div
-          onClick={this.closeForm}
-          className={isOpen ? 'overlay' : 'overlay hidden'}
-        >
+        onClick={this.closeForm}
+        className={isOpen ? 'overlay' : 'overlay hidden'}>
           <form onSubmit={this.handleSubmit} className="new-chat-form">
             <div onClick={this.swapForms} className="tabs-container">
               <h3 className={createChat ? 'form-tab active' : 'form-tab'}>Create</h3>

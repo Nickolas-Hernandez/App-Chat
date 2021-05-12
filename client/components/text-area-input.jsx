@@ -43,15 +43,16 @@ export default class TextAreaInput extends React.Component {
         className="message-input-container"
         style={textAreaContainerStyle}>
           <textarea
-            name="message"
-            id="message-input"
-            style={textAreaStyle}
-            placeholder="Send a message. . . "
-            value={this.props.messageValue}
-            onChange={this.handleChange}>
+          name="message"
+          id="message-input"
+          style={textAreaStyle}
+          placeholder="Send a message. . . "
+          value={this.props.messageValue}
+          onChange={this.handleChange}>
           </textarea>
           <button
-          className="fas fa-chevron-circle-right send-message-icon"></button>
+          className="fas fa-chevron-circle-right send-message-icon">
+          </button>
         </form>
     );
   }
