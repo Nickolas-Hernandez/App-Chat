@@ -1,7 +1,7 @@
 import React from 'react';
-import TextAreaInput from './text-area-input';
-import Messages from './messages';
-import ChatDetailsDrawer from './chat-details-drawer';
+import TextAreaInput from '../components/text-area-input';
+import Messages from '../components/messages';
+import ChatDetailsDrawer from '../components/chat-details-drawer';
 import { io } from 'socket.io-client';
 
 export default class MessageArea extends React.Component {
