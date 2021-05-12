@@ -1,16 +1,13 @@
 require('dotenv/config');
 const express = require('express');
-const staticMiddleware = require('./static-middleware');
-const jwt = require('jsonwebtoken');
-const ClientError = require('./client-error');
-const errorMiddleware = require('./error-middleware');
-
 const app = express();
 const jsonMiddleware = express.json();
-
+const staticMiddleware = require('./static-middleware');
+const ClientError = require('./client-error');
+const errorMiddleware = require('./error-middleware');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-
+const jwt = require('jsonwebtoken');
 const pg = require('pg');
 
 const db = new pg.Pool({
