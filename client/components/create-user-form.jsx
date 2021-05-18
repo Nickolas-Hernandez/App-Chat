@@ -21,19 +21,19 @@ export default class CreateUserForm extends React.Component {
   render() {
     return (
       <>
-          <form onSubmit={this.submitUser} className="new-user-form">
-            <h2 className="welcome-message">Hi! Welcome to </h2>
-            <h2 className="app-chat">App Chat</h2>
-            <label htmlFor="user-name">Enter your name:</label>
-            <input
-              type="text"
-              name="user-name"
-              id="user-name"
-              onChange={this.handleChange}
-              value={this.state.userName}
-              required/>
-            <button className="submit-button">Submit</button>
-          </form>
+        <form onSubmit={this.submitUser} className="new-user-form">
+          <h2 className="welcome-message">Hi! Welcome to </h2>
+          <h2 className="app-chat">App Chat</h2>
+          <label htmlFor="user-name">Enter your name:</label>
+          <input
+            type="text"
+            name="user-name"
+            id="user-name"
+            onChange={this.handleChange}
+            value={this.state.userName}
+            required/>
+          <button className="submit-button">Submit</button>
+        </form>
       </>
     );
   }

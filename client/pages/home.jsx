@@ -19,14 +19,15 @@ export default class Home extends React.Component {
     this.openUserProfile = this.openUserProfile.bind(this);
   }
 
-  componentDidMount() {
-    fetch('/api/chatRooms')
-      .then(response => response.json())
-      .then(result => {
-        const usersRooms = result.filter(room => this.props.user.chatRooms.includes(room.id));
-        this.setState({ chatRooms: usersRooms });
-      })
-      .catch(err => console.error(err));
+  async componentDidMount() {
+    try {
+      const response = await fetch('/api/chatRooms');
+      const resultJSON = await response.json();
+      const userRooms = resultJSON.filter(room => this.props.user.chatRooms.includes(room.id));
+      this.setState({ chatRooms: userRooms });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   openNewChatForm() {
@@ -57,46 +58,51 @@ export default class Home extends React.Component {
     this.setState({ formIsOpen: false, form: formValues });
   }
 
-  createRoom() {
-    const init = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chatName: this.state.form.chatName,
-        members: [this.props.user.userName]
-      })
-    };
-    fetch('/api/newRoom', init)
-      .then(response => response.json())
-      .then(result => {
-        this.appendNewChatRoom(result);
-      })
-      .catch(err => console.error(err));
+  async createRoom() {
+    try {
+      const init = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chatName: this.state.form.chatName,
+          members: [this.props.user.userName]
+        })
+      };
+      const response = await fetch('/api/newRoom', init);
+      const resultJSON = await response.json();
+      this.appendNewChatRoom(resultJSON);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  joinRoom() {
-    this.addRoomMember();
-    fetch(`/api/joinRoom/${this.state.form.chatId}`)
-      .then(response => response.json())
-      .then(result => {
-        this.appendNewChatRoom(result);
-      });
+  async joinRoom() {
+    try {
+      this.addRoomMember();
+      const response = await fetch(`/api/joinRoom/${this.state.form.chatId}`);
+      const resultJSON = await response.json();
+      this.appendNewChatRoom(resultJSON);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  addRoomMember() {
-    const id = this.state.form.chatId;
-    fetch(`/api/newRoomMember/${id}`)
-      .then(response => response.json())
-      .then(result => {
-        const updatedMembers = result.members;
-        updatedMembers.push(this.props.user.userName);
-        const init = {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ members: updatedMembers })
-        };
-        fetch(`/api/newRoomMember/${id}`, init);
-      });
+  async addRoomMember() {
+    try {
+      const id = this.state.form.chatId;
+      const response = await fetch(`/api/newRoomMember/${id}`);
+      const resultJSON = await response.json();
+      const updatedMembers = resultJSON.members;
+      updatedMembers.push(this.props.user.userName);
+      const init = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ members: updatedMembers })
+      };
+      fetch(`/api/newRoomMember/${id}`, init);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   appendNewChatRoom(chatRoomDetails) {
@@ -123,7 +129,7 @@ export default class Home extends React.Component {
 
   render() {
     const { formIsOpen, form: formInput, profileIsOpen } = this.state;
-    const chatList = (this.state.chatRooms.length === 0
+    const chatList = (this.props.user.chatRooms.length === 0
       ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
       : <ChatList rooms={this.state.chatRooms} />);
     return (

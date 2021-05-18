@@ -29,25 +29,25 @@ export default class UserProfileDrawer extends React.Component {
     this.setState({ newUserName: event.target.value });
   }
 
-  updateUserName(event) {
+  async updateUserName(event) {
     event.preventDefault();
     const init = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userName: this.state.newUserName })
     };
-    fetch(`/api/username/${this.props.user.userId}`, init)
-      .then(response => response.json())
-      .then(result => {
-        const { token, user } = result;
-        this.updateNameInRooms(this.props.user.userName, user.userName);
-        window.localStorage.setItem('chat-app-jwt', token);
-        this.setState({ userName: user.userName });
-        this.props.updateUser(user);
-      })
-      .catch(err => console.error(err));
-
-    this.setState({ newUserName: '', formIsOpen: false });
+    try {
+      const response = await fetch(`/api/username/${this.props.user.userId}`, init);
+      const resultJSON = await response.json();
+      const { token, user } = resultJSON;
+      this.updateNameInRooms(this.props.user.userName, user.userName);
+      window.localStorage.setItem('chat-app-jwt', token);
+      this.setState({ userName: user.userName });
+      this.props.updateUser(user);
+      this.setState({ newUserName: '', formIsOpen: false });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   updateNameInRooms(oldName, newName) {
