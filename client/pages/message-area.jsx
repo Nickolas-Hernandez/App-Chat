@@ -20,6 +20,15 @@ export default class MessageArea extends React.Component {
 
   async componentDidMount() {
     this.socket = io();
+    const { socket } = this;
+    socket.emit('join_chat', {
+      chatRoomId: this.props.roomId
+    });
+    socket.on('new_message', message => {
+      const updateMessages = this.state.messages.slice();
+      updateMessages.push(message);
+      this.setState({ messages: updateMessages });
+    });
     try {
       const response = await fetch(`/api/rooms/${this.props.roomId}`);
       const resultJSON = await response.json();
@@ -33,15 +42,6 @@ export default class MessageArea extends React.Component {
     } catch (err) {
       console.error(err);
     }
-    const { socket } = this;
-    socket.emit('join_chat', {
-      chatRoomId: this.props.roomId
-    });
-    socket.on('new_message', message => {
-      const updateMessages = this.state.messages.slice();
-      updateMessages.push(message);
-      this.setState({ messages: updateMessages });
-    });
   }
 
   componentWillUnmount() {
