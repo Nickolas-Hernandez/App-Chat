@@ -2,45 +2,19 @@ import React from 'react';
 import TextAreaInput from '../components/text-area-input';
 import Messages from '../components/messages';
 import ChatDetailsDrawer from '../components/chat-details-drawer';
-import { io } from 'socket.io-client';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
     super(props);
     this.socket = null;
-    this.state = {
-      roomName: '',
-      members: [],
-      messages: [],
-      sendMessage: ''
-    };
+    this.state = { };
     this.getMessageInput = this.getMessageInput.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
-  async componentDidMount() {
-    this.socket = io();
-    const { socket } = this;
-    socket.emit('join_chat', {
-      chatRoomId: this.props.roomId
-    });
-    socket.on('new_message', message => {
-      const updateMessages = this.state.messages.slice();
-      updateMessages.push(message);
-      this.setState({ messages: updateMessages });
-    });
-    try {
-      const response = await fetch(`/api/rooms/${this.props.roomId}`);
-      const resultJSON = await response.json();
-      this.setState({
-        roomId: resultJSON.chatId,
-        roomName: resultJSON.name,
-        members: resultJSON.members,
-        messages: [],
-        sendMessage: ''
-      });
-    } catch (err) {
-      console.error(err);
+  componentDidMount() {
+    if (this.props.roomId) {
+      this.getData();
     }
   }
 
@@ -74,7 +48,7 @@ export default class MessageArea extends React.Component {
 
   render() {
     const { userName, userId } = this.props.user;
-    const { roomId, members } = this.state;
+    const { roomId, roomMembers, roomName } = this.props;
     return (
         <div className="message-area">
           <div className="message-area-header">
@@ -82,19 +56,19 @@ export default class MessageArea extends React.Component {
               <a href="#">
                 <i className="fas fa-angle-left back-arrow"></i>
               </a>
-              <h1>{this.state.roomName}</h1>
-              <ChatDetailsDrawer
+              <h1>{roomId ? this.props.roomName : 'No room selected'}</h1>
+              {/* <ChatDetailsDrawer
               updateUser={this.props.userUpdate}
               userName={userName}
               userId={userId}
-              id={roomId}
-              members={members}/>
+              id={roomId || null }
+              members={roomId ? members : null}/> */}
             </div>
           </div>
-          <Messages user={userName} messages={this.state.messages} />
+          {roomId ? <Messages user={userName} messages={this.props.roomMessages} /> : ''}
           <TextAreaInput
             onSend={this.sendMessage}
-            messageValue={this.state.sendMessage}
+            messageValue={this.props.sendMessage}
             onInputChange={this.getMessageInput}
           />
         </div>

@@ -71,10 +71,10 @@ export default class ChatDetailsDrawer extends React.Component {
             <div className='drawer-contents'>
               <div className="chat-id-wrapper">
                 <h3 className="id-label">Chat Room ID:</h3>
-                <p className="room-id">{this.props.id}</p>
+                <p className="room-id">{this.props.id ? this.props.id : ''}</p>
               </div>
               <h3 className="members-label">Room Members:</h3>
-              <MembersList members={this.props.members}/>
+              {this.props.members ? <MembersList members={this.props.members}/> : ''}
               <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
             </div>
           </div>
