@@ -70,16 +70,20 @@ export default class App extends React.Component {
 
   render() {
     const { route, user } = this.state;
+    let roomId = null;
+    if (route.path) roomId = route.params.get('roomId');
     if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
-    if (route.path === '') {
-      return <Home
-      userUpdate={this.updateUser}
-      onRoomCreation={this.addRoom}
-      user={this.state.user}/>;
-    }
-    if (route.path === 'rooms') {
-      const roomId = route.params.get('roomId');
-      return <MessageArea userUpdate={this.updateUser} user={this.state.user} roomId={roomId} />;
-    }
+    return (
+      <>
+        <Home
+        userUpdate={this.updateUser}
+        onRoomCreation={this.addRoom}
+        user={this.state.user}/>
+        <MessageArea
+        userUpdate={this.updateUser}
+        user={this.state.user}
+        roomId={roomId} />
+      </>
+    );
   }
 }
