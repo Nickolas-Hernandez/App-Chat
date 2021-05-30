@@ -24,6 +24,7 @@ app.use(staticMiddleware);
 app.use(jsonMiddleware);
 
 io.on('connection', socket => {
+  console.log('connected');
   socket.on('join_chat', data => {
     socket.join(data.chatRoomId);
   });

@@ -1,21 +1,14 @@
 import React from 'react';
 import TextAreaInput from '../components/text-area-input';
 import Messages from '../components/messages';
-import ChatDetailsDrawer from '../components/chat-details-drawer';
+// import ChatDetailsDrawer from '../components/chat-details-drawer';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
     super(props);
     this.socket = null;
-    this.state = { };
     this.getMessageInput = this.getMessageInput.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.roomId) {
-      this.getData();
-    }
   }
 
   componentWillUnmount() {
@@ -50,7 +43,7 @@ export default class MessageArea extends React.Component {
     const { userName, userId } = this.props.user;
     const { roomId, roomMembers, roomName } = this.props;
     return (
-        <div className="message-area">
+        <div className={roomId ? 'message-area active' : 'message-area'}>
           <div className="message-area-header">
             <div className="wrapper">
               <a href="#">

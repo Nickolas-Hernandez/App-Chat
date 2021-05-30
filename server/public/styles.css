@@ -40,6 +40,8 @@ a {
 #root {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  overflow: hidden;
 }
 
 .overlay {
@@ -178,8 +180,15 @@ label,
   background-color: #edf0f4;
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
+  top: 0;
+  transform: translateX(100%);
+  transition: transform 0.12s linear;
   overflow: hidden;
+}
+
+.message-area.active {
+  transform: translateX(0%);
 }
 
 .messages-view {

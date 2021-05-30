@@ -2,8 +2,8 @@ import React from 'react';
 import Home from './pages/home';
 import MessageArea from './pages/message-area';
 import CreateUserForm from './components/create-user-form';
-import { parseRoute, decodeToken } from './lib';
 import { io } from 'socket.io-client';
+import { parseRoute, decodeToken } from './lib';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ export default class App extends React.Component {
     this.state = {
       route: parseRoute(window.location.hash),
       user: null,
-      roomId: null,
+      roomId: parseRoute(window.location.hash).params.get('roomId'),
       room: {
         roomName: '',
         members: [],
@@ -38,13 +38,20 @@ export default class App extends React.Component {
         this.getRoomData();
       }
     });
+    if (this.state.route.path === 'rooms') {
+      this.getRoomData();
+    }
     const token = window.localStorage.getItem('chat-app-jwt');
     const user = token ? decodeToken(token) : null;
     this.setState({ user: user });
+    this.initializeSocket();
+  }
+
+  initializeSocket() {
     this.socket = io();
     const { socket } = this;
     socket.emit('join_chat', {
-      chatRoomId: this.props.roomId
+      chatRoomId: this.state.roomId
     });
     socket.on('new_message', message => {
       const updateMessages = this.state.messages.slice();
@@ -111,10 +118,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { route, user, roomId } = this.state;
+    const { route, user } = this.state;
     const { roomName, members, messages, sendMessage } = this.state.room;
-    // let roomId = null;
-    // if (route.path === 'rooms') roomId = route.params.get('roomId');
+    let roomId = route.params.get('roomId');
+    if (roomId === '') {
+      roomId = null;
+    }
     if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
     return (
       <>
@@ -129,7 +138,7 @@ export default class App extends React.Component {
         roomMembers={members}
         roomMessages={messages}
         sendMessage={sendMessage}
-        roomId={roomId} />
+        roomId={roomId}/>
       </>
     );
   }
