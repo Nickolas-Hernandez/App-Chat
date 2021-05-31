@@ -12,7 +12,7 @@ function ChatListItem(props) {
 
 export default function ChatList(props) {
   const allRooms = props.rooms.map(room => {
-    return <ChatListItem key={room.id} roomId={room.id} roomTitle={room.name} onClick={props.roomUpdate}/>;
+    return <ChatListItem key={room.id} roomId={room.id} roomTitle={room.name} />;
   });
   return <ul className="chat-list">{allRooms}</ul>;
 }

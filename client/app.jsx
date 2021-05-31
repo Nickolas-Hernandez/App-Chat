@@ -19,6 +19,7 @@ export default class App extends React.Component {
         sendMessage: ''
       }
     };
+    this.socket = null;
     this.submitNewUser = this.submitNewUser.bind(this);
     this.addRoom = this.addRoom.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -36,10 +37,12 @@ export default class App extends React.Component {
       });
       if (parsedHash.path === 'rooms') {
         this.getRoomData();
+        this.connectToRoom(roomId);
       }
     });
     if (this.state.route.path === 'rooms') {
       this.getRoomData();
+      this.connectToRoom(this.state.route.params.get('roomId'));
     }
     const token = window.localStorage.getItem('chat-app-jwt');
     const user = token ? decodeToken(token) : null;
@@ -50,14 +53,24 @@ export default class App extends React.Component {
   initializeSocket() {
     this.socket = io();
     const { socket } = this;
-    socket.emit('join_chat', {
-      chatRoomId: this.state.roomId
-    });
     socket.on('new_message', message => {
       const updateMessages = this.state.messages.slice();
       updateMessages.push(message);
       this.setState({ messages: updateMessages });
     });
+  }
+
+  connectToRoom(id) {
+    const { socket } = this;
+    console.log(socket);
+    socket.emit('join_chat', {
+      chatRoomId: id
+    });
+  }
+
+  disconnectSocket(id) {
+    const { socket } = this;
+    socket.emit('leave_room', { roomId: id });
   }
 
   submitNewUser(user) {
@@ -130,7 +143,8 @@ export default class App extends React.Component {
         <Home
         userUpdate={this.updateUser}
         onRoomCreation={this.addRoom}
-        user={this.state.user}/>
+        user={this.state.user}
+        />
         <MessageArea
         userUpdate={this.updateUser}
         user={this.state.user}
@@ -138,7 +152,8 @@ export default class App extends React.Component {
         roomMembers={members}
         roomMessages={messages}
         sendMessage={sendMessage}
-        roomId={roomId}/>
+        roomId={roomId}
+        exitRoom={this.disconnectSocket}/>
       </>
     );
   }

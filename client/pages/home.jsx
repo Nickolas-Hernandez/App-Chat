@@ -131,7 +131,7 @@ export default class Home extends React.Component {
     const { formIsOpen, form: formInput, profileIsOpen } = this.state;
     const chatList = (this.props.user.chatRooms.length === 0
       ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
-      : <ChatList roomUpdate={this.props.roomUpdate} rooms={this.state.chatRooms} />);
+      : <ChatList rooms={this.state.chatRooms} />);
     return (
       <div className="chat-rooms">
         <NewChatForm
