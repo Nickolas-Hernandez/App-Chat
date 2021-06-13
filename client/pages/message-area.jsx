@@ -48,7 +48,7 @@ export default class MessageArea extends React.Component {
               <a href="#">
                 <i onClick={this.props.exitRoom} className="fas fa-angle-left back-arrow"></i>
               </a>
-              <h1>{roomId ? this.props.roomName : 'No room selected'}</h1>
+              <h1>{roomId ? roomName : 'No room selected'}</h1>
               <ChatDetailsDrawer
               updateUser={this.props.userUpdate}
               userName={userName}

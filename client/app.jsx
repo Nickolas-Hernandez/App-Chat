@@ -141,19 +141,20 @@ export default class App extends React.Component {
     return (
       <>
         <Home
-        userUpdate={this.updateUser}
-        onRoomCreation={this.addRoom}
-        user={this.state.user}
+          userUpdate={this.updateUser}
+          onRoomCreation={this.addRoom}
+          user={this.state.user}
         />
         <MessageArea
-        userUpdate={this.updateUser}
-        user={this.state.user}
-        roomName={roomName}
-        roomMembers={members}
-        roomMessages={messages}
-        sendMessage={sendMessage}
-        roomId={roomId}
-        exitRoom={this.disconnectSocket}/>
+          userUpdate={this.updateUser}
+          user={this.state.user}
+          roomName={roomName}
+          roomMembers={members}
+          roomMessages={messages}
+          sendMessage={sendMessage}
+          roomId={roomId}
+          exitRoom={this.disconnectSocket}
+        />
       </>
     );
   }
