@@ -2,6 +2,7 @@ import React from 'react';
 import NewChatForm from '../components/new-chat-form';
 import ChatList from '../components/chat-list';
 import UserProfile from '../components/user-profile';
+import SocketContext from '../lib/socket-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
+    console.log('home');
     try {
       const response = await fetch('/api/chatRooms');
       const resultJSON = await response.json();
@@ -161,3 +163,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.contextType = SocketContext;

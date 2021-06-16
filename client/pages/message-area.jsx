@@ -6,13 +6,14 @@ import ChatDetailsDrawer from '../components/chat-details-drawer';
 export default class MessageArea extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { sendMessage: '' };
     this.getMessageInput = this.getMessageInput.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
-  componentWillUnmount() {
-    this.socket.disconnect();
-  }
+  // componentWillUnmount() {
+  //   this.socket.disconnect();
+  // }
 
   getMessageInput(value) {
     this.setState({ sendMessage: value });
@@ -57,10 +58,10 @@ export default class MessageArea extends React.Component {
               members={roomId ? roomMembers : null}/>
             </div>
           </div>
-          {roomId ? <Messages user={userName} messages={this.props.roomMessages} /> : ''}
+          {roomId ? <Messages user={userName} messages={this.props.roomMessages} /> : <div className="messages-view"></div>}
           <TextAreaInput
             onSend={this.sendMessage}
-            messageValue={this.props.sendMessage}
+            messageValue={this.state.sendMessage}
             onInputChange={this.getMessageInput}
           />
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './pages/home';
 import MessageArea from './pages/message-area';
 import CreateUserForm from './components/create-user-form';
+import SocketContext from './lib/socket-context';
 import { io } from 'socket.io-client';
 import { parseRoute, decodeToken } from './lib';
 
@@ -63,6 +64,7 @@ export default class App extends React.Component {
   connectToRoom(id) {
     const { socket } = this;
     console.log(socket);
+    console.log(SocketContext);
     socket.emit('join_chat', {
       chatRoomId: id
     });
@@ -139,7 +141,7 @@ export default class App extends React.Component {
     }
     if (!user) return <CreateUserForm createUser={this.submitNewUser} />;
     return (
-      <>
+      <SocketContext.Provider value={this.socket}>
         <Home
           userUpdate={this.updateUser}
           onRoomCreation={this.addRoom}
@@ -155,7 +157,7 @@ export default class App extends React.Component {
           roomId={roomId}
           exitRoom={this.disconnectSocket}
         />
-      </>
+      </SocketContext.Provider>
     );
   }
 }

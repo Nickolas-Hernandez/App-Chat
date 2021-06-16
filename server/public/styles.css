@@ -419,7 +419,7 @@ label,
     display: flex;
     border-radius: 10px;
     box-shadow: 0 5px 10px 3px rgba(75, 75, 75, 0.3);
-    margin: .5rem auto;
+    margin: 0.5rem auto;
     height: 98vh;
   }
 
@@ -444,15 +444,9 @@ label,
     font-size: 30px;
   }
 
-  /* .chat-list-header,
-  .chat-list,
-  .empty-list-message {
-    width: 50%;
-    margin: 0 auto;
-  } */
-
   .chat-rooms {
     width: 25%;
+    border-right: 1px solid rgb(220, 226, 236, 0.5);
   }
 
   .chat-rooms,
@@ -462,7 +456,7 @@ label,
 
   .message-area {
     width: 75%;
-    padding-bottom: 16px;
+    padding-bottom: 2rem;
     margin: 0 auto;
     transform: translateX(0%);
     position: static;
@@ -519,6 +513,15 @@ label,
   .empty-list-message {
     font-size: 20px;
     margin: 1rem auto;
+  }
+
+  .leave-room {
+    bottom: 45px;
+  }
+
+  .chat-list-header {
+    height: 82px;
+    border-right: 1px solid rgba(220, 226, 236, 0.5);
   }
 }
 
