@@ -17,6 +17,7 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
+    this.setState({ drawerIsOpen: false });
     fetch(`/api/getRoomMembers/${this.props.id}`)
       .then(response => response.json())
       .then(result => {

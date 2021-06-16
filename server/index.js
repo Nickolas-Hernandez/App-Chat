@@ -24,14 +24,11 @@ app.use(staticMiddleware);
 app.use(jsonMiddleware);
 
 io.on('connection', socket => {
-  console.log('connected');
   socket.on('join_chat', data => {
     socket.join(data.chatRoomId);
-    console.log('joined chat: ', data.chatRoomId);
   });
   socket.on('leave_room', data => {
     socket.leave(data.roomID);
-    console.log('left room', data.roomId);
   });
 
 });

@@ -21,7 +21,6 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('home');
     try {
       const response = await fetch('/api/chatRooms');
       const resultJSON = await response.json();

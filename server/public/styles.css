@@ -523,6 +523,10 @@ label,
     height: 82px;
     border-right: 1px solid rgba(220, 226, 236, 0.5);
   }
+
+  .back-arrow {
+    display: none;
+  }
 }
 
 .hidden {

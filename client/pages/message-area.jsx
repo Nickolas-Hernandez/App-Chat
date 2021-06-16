@@ -11,10 +11,6 @@ export default class MessageArea extends React.Component {
     this.sendMessage = this.sendMessage.bind(this);
   }
 
-  // componentWillUnmount() {
-  //   this.socket.disconnect();
-  // }
-
   getMessageInput(value) {
     this.setState({ sendMessage: value });
   }
@@ -31,7 +27,7 @@ export default class MessageArea extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(message)
     };
-    fetch(`/api/chat/${this.state.roomId}`, init);
+    fetch(`/api/chat/${this.props.roomId}`, init);
     this.resetMessageBox();
   }
 
@@ -47,7 +43,7 @@ export default class MessageArea extends React.Component {
           <div className="message-area-header">
             <div className="wrapper">
               <a href="#">
-                <i onClick={this.props.exitRoom} className="fas fa-angle-left back-arrow"></i>
+                <i onClick={this.exitRoom} className="fas fa-angle-left back-arrow"></i>
               </a>
               <h1>{roomId ? roomName : 'No room selected'}</h1>
               <ChatDetailsDrawer

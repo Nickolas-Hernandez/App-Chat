@@ -16,11 +16,10 @@ export default class App extends React.Component {
       room: {
         roomName: '',
         members: [],
-        messages: [],
-        sendMessage: ''
+        messages: []
       }
     };
-    this.socket = null;
+    this.socket = io();
     this.submitNewUser = this.submitNewUser.bind(this);
     this.addRoom = this.addRoom.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -51,28 +50,34 @@ export default class App extends React.Component {
     this.initializeSocket();
   }
 
+  componentWillUnmount() {
+    this.socket.disconnect();
+  }
+
   initializeSocket() {
-    this.socket = io();
     const { socket } = this;
     socket.on('new_message', message => {
-      const updateMessages = this.state.messages.slice();
-      updateMessages.push(message);
-      this.setState({ messages: updateMessages });
+      if (message.chatId === this.state.roomId) {
+        const updateMessages = this.state.room.messages.slice();
+        updateMessages.push(message);
+        this.setState(state => {
+          return {
+            room: {
+              roomName: state.room.roomName,
+              members: state.room.roomMembers,
+              messages: updateMessages
+            }
+          };
+        });
+      }
     });
   }
 
   connectToRoom(id) {
     const { socket } = this;
-    console.log(socket);
-    console.log(SocketContext);
     socket.emit('join_chat', {
       chatRoomId: id
     });
-  }
-
-  disconnectSocket(id) {
-    const { socket } = this;
-    socket.emit('leave_room', { roomId: id });
   }
 
   submitNewUser(user) {
