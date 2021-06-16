@@ -24,8 +24,10 @@ io.on('connection', socket => {
   socket.on('join_chat', data => {
     socket.join(data.chatRoomId);
   });
-  socket.on('disconnect', socket => {
+  socket.on('leave_room', data => {
+    socket.leave(data.roomID);
   });
+
 });
 
 app.get('/api/chatRooms', (req, res, next) => {

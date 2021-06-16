@@ -2,6 +2,7 @@ import React from 'react';
 import NewChatForm from '../components/new-chat-form';
 import ChatList from '../components/chat-list';
 import UserProfile from '../components/user-profile';
+import SocketContext from '../lib/socket-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -161,3 +162,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.contextType = SocketContext;
