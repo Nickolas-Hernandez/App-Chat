@@ -2,7 +2,7 @@ import React from 'react';
 import NewChatForm from '../components/new-chat-form';
 import ChatList from '../components/chat-list';
 import UserProfile from '../components/user-profile';
-import SocketContext from '../lib/socket-context';
+import AppContext from '../lib/app-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -152,7 +152,7 @@ export default class Home extends React.Component {
             <UserProfile
               updateUser={this.props.userUpdate}
               user={this.props.user}
-              userName={this.props.user.userName}
+              username={this.props.user.username}
               handleDrawer={this.openUserProfile}
               isOpen={profileIsOpen}/>
           </div>
@@ -163,4 +163,4 @@ export default class Home extends React.Component {
   }
 }
 
-Home.contextType = SocketContext;
+Home.contextType = AppContext;

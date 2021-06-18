@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class UserProfileDrawer extends React.Component {
+export default class UserProfileDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       formIsOpen: false,
-      userName: null,
+      username: null,
       newUserName: ''
     };
     this.showForm = this.showForm.bind(this);
     this.getName = this.getName.bind(this);
-    this.updateUserName = this.updateUserName.bind(this);
+    this.updateUsername = this.updateUsername.bind(this);
   }
 
   componentDidMount() {
-    this.setState({ userName: this.props.user.userName });
+    this.setState({ username: this.props.user.username });
   }
 
   showForm(event) {
@@ -26,23 +26,23 @@ export default class UserProfileDrawer extends React.Component {
   }
 
   getName(event) {
-    this.setState({ newUserName: event.target.value });
+    this.setState({ newUsername: event.target.value });
   }
 
-  async updateUserName(event) {
+  async updateUsername(event) {
     event.preventDefault();
     const init = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userName: this.state.newUserName })
+      body: JSON.stringify({ username: this.state.newUsername })
     };
     try {
       const response = await fetch(`/api/username/${this.props.user.userId}`, init);
       const resultJSON = await response.json();
       const { token, user } = resultJSON;
-      this.updateNameInRooms(this.props.user.userName, user.userName);
+      this.updateNameInRooms(this.props.user.username, user.userame);
       window.localStorage.setItem('chat-app-jwt', token);
-      this.setState({ userName: user.userName });
+      this.setState({ username: user.username });
       this.props.updateUser(user);
       this.setState({ newUserName: '', formIsOpen: false });
     } catch (err) {
@@ -86,7 +86,7 @@ export default class UserProfileDrawer extends React.Component {
             <div className='drawer-contents'>
               <div className="chat-id-wrapper profile">
                 <h3 className="username-label">Username:</h3>
-                <p className="username">{this.state.userName}</p>
+                <p className="username">{this.state.username}</p>
                 <i className="fas fa-edit edit-icon" onClick={this.showForm}></i>
               </div>
               <form
