@@ -17,13 +17,15 @@ export default class App extends React.Component {
         roomName: '',
         members: [],
         messages: []
-      }
+      },
+      authError: false
     };
     this.socket = io();
     this.createUser = this.createUser.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
     this.addRoom = this.addRoom.bind(this);
     this.updateUser = this.updateUser.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentDidMount() {
@@ -83,6 +85,10 @@ export default class App extends React.Component {
       };
       const response = await fetch('/api/auth/sign-up', init);
       const result = await response.json();
+      if (result.error) {
+        this.setState({ authError: true });
+        return;
+      }
       const { user: retrievedUser, token } = result;
       window.localStorage.setItem('chat-app-jwt', token);
       this.setState({ user: retrievedUser });
@@ -100,6 +106,10 @@ export default class App extends React.Component {
       };
       const response = await fetch('/api/auth/sign-in', init);
       const result = await response.json();
+      if (result.error) {
+        this.setState({ authError: true });
+        return;
+      }
       const { user: retrievedUser, token } = result;
       window.localStorage.setItem('chat-app-jwt', token);
       this.setState({ user: retrievedUser });
@@ -138,8 +148,8 @@ export default class App extends React.Component {
   }
 
   async getRoomData() {
-    const roomId = this.state.route.params.get('roomId');
     try {
+      const roomId = this.state.route.params.get('roomId');
       const response = await fetch(`/api/rooms/${roomId}`);
       const resultJSON = await response.json();
       this.setState({
@@ -156,8 +166,13 @@ export default class App extends React.Component {
     }
   }
 
+  logOut() {
+    window.localStorage.removeItem('chat-app-jwt');
+    this.setState({ user: null });
+  }
+
   render() {
-    const { route, user } = this.state;
+    const { route, user, authError } = this.state;
     const { socket } = this;
     const { roomName, members, messages, sendMessage } = this.state.room;
     const context = { user, socket };
@@ -165,13 +180,22 @@ export default class App extends React.Component {
     if (roomId === '') {
       roomId = null;
     }
-    if (!user) return <Auth createUser={this.createUser} verifyUser={this.verifyUser} />;
+    if (!user) {
+      return (
+        <Auth
+          createUser={this.createUser}
+          verifyUser={this.verifyUser}
+          authError={authError}
+        />
+      );
+    }
     return (
       <AppContext.Provider value={context}>
         <Home
           userUpdate={this.updateUser}
           onRoomCreation={this.addRoom}
           user={this.state.user}
+          onLogOut={this.logOut}
         />
         <MessageArea
           userUpdate={this.updateUser}

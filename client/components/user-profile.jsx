@@ -95,6 +95,7 @@ export default class UserProfileDrawer extends Component {
                 <input type="text" onChange={this.getName} value={this.state.newUserName} className="name-input"/>
                 <input type="submit" className="submit-button"/>
               </form>
+              <a href="#" className="log-out" onClick={this.props.onLogOut}>Log out</a>
             </div>
           </div>
       </>

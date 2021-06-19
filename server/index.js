@@ -163,28 +163,43 @@ app.post('/api/chat/:chatId', (req, res, next) => {
 
 app.post('/api/auth/sign-up', (req, res, next) => {
   const { username, password } = req.body;
-  argon2.hash(password)
-    .then(hashedPassword => {
-      const sql = `
-        insert into "users" ("userName", "hashedPassword", "chatRooms")
-              values ($1, $2,$3)
-          returning *
-      `;
-      const chatRooms = [];
-      const params = [username, hashedPassword, JSON.stringify(chatRooms)];
-      db.query(sql, params)
-        .then(result => {
-          const user = result.rows[0];
-          const payload = {
-            userId: user.userId,
-            username: user.userName,
-            chatRooms: user.chatRooms
-          };
-          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-          res.status(201).json({ token: token, user: payload });
-        })
-        .catch(err => next(err));
-    });
+  const checkUsernames = `
+    select "userId"
+      from "users"
+     where "userName" = $1
+  `;
+  const param = [username];
+  db.query(checkUsernames, param)
+    .then(result => {
+      if (!result.rows[0]) {
+        argon2.hash(password)
+          .then(hashedPassword => {
+            const sql = `
+            insert into "users" ("userName", "hashedPassword", "chatRooms")
+                  values ($1, $2,$3)
+              returning *
+          `;
+            const chatRooms = [];
+            const params = [username, hashedPassword, JSON.stringify(chatRooms)];
+            db.query(sql, params)
+              .then(result => {
+                const user = result.rows[0];
+                const payload = {
+                  userId: user.userId,
+                  username: user.userName,
+                  chatRooms: user.chatRooms
+                };
+                const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+                res.status(201).json({ token: token, user: payload });
+              })
+              .catch(err => next(err));
+          });
+      } else {
+        throw new ClientError(401, 'Username already exists.');
+      }
+    })
+    .catch(err => next(err));
+
 });
 
 app.post('/api/auth/sign-in', (req, res, next) => {
@@ -200,6 +215,9 @@ app.post('/api/auth/sign-in', (req, res, next) => {
   const params = [username];
   db.query(sql, params)
     .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(401, 'Invalid log in');
+      }
       const { userName: username, hashedPassword, userId, chatRooms } = result.rows[0];
       argon2
         .verify(hashedPassword, providedPassword)

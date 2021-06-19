@@ -154,7 +154,8 @@ export default class Home extends React.Component {
               user={this.props.user}
               username={this.props.user.username}
               handleDrawer={this.openUserProfile}
-              isOpen={profileIsOpen}/>
+              isOpen={profileIsOpen}
+              onLogOut={this.props.onLogOut}/>
           </div>
         </div>
         { chatList }

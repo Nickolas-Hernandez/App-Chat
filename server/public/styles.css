@@ -112,6 +112,11 @@ label,
   font-size: 18px;
 }
 
+#user-name,
+#password {
+  transition: border 0.05s ease-in;
+}
+
 .name-input {
   margin: 1rem 0 0.5rem;
   background-color: #edf0f4;
@@ -291,7 +296,8 @@ label,
 .new-user-form label,
 .new-user-form input,
 .new-user-form button,
-.sign-up-link {
+.sign-up-link,
+.auth-error {
   margin-top: 1.2rem;
 }
 
@@ -374,6 +380,10 @@ label,
   position: relative;
   padding-left: 15px;
   padding-right: 20px;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .leave-room {
@@ -398,6 +408,25 @@ label,
   font-size: 18px;
   text-align: center;
   color: #8992a0;
+}
+
+a.log-out {
+  color: rgba(47, 47, 47, 0.6);
+  width: 100%;
+  text-align: center;
+}
+
+.update-username {
+  margin-bottom: auto;
+}
+
+.auth-error {
+  color: #d40101;
+}
+
+#user-name.error,
+#password.error {
+  border: 2px solid #d40101;
 }
 
 @media only screen and (min-width: 600px) {
@@ -496,8 +525,6 @@ label,
   .overlay.details-drawer {
     z-index: 2;
   }
-
-
 
   .new-user-form label,
   .new-user-form button {

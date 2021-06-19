@@ -13,6 +13,10 @@ export default class Auth extends Component {
     this.toggleSignUp = this.toggleSignUp.bind(this);
   }
 
+  componentWillUnmount() {
+    this.setState({ signUp: false, username: '', password: '' });
+  }
+
   handleChange(event) {
     if (event.target.id === 'user-name') {
       this.setState({ username: event.target.value });
@@ -30,7 +34,6 @@ export default class Auth extends Component {
     } else {
       this.props.verifyUser(userData);
     }
-    this.setState({ signUp: false, userName: '', password: '' });
   }
 
   toggleSignUp(event) {
@@ -41,6 +44,7 @@ export default class Auth extends Component {
 
   render() {
     const { signUp, username, password } = this.state;
+    const { authError } = this.props;
     return (
       <>
         <form
@@ -53,6 +57,7 @@ export default class Auth extends Component {
             type="text"
             name="user-name"
             id="user-name"
+            className={authError ? 'error' : ''}
             onChange={this.handleChange}
             value={username}
             placeholder="Username"
@@ -62,12 +67,14 @@ export default class Auth extends Component {
             type="password"
             name="password"
             id="password"
+            className={authError && !signUp ? 'error' : ''}
             onChange={this.handleChange}
             value={password}
             placeholder="Password"
             required
           />
           <button className="submit-button">Submit</button>
+          <p className={authError ? 'auth-error' : 'auth-error hidden'}>{signUp ? 'Username already exists' : 'Invalid log in'}</p>
           <p onClick={this.toggleSignUp} className="sign-up-link">
             {
               signUp
