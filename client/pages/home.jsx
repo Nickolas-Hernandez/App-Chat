@@ -2,7 +2,7 @@ import React from 'react';
 import NewChatForm from '../components/new-chat-form';
 import ChatList from '../components/chat-list';
 import UserProfile from '../components/user-profile';
-import SocketContext from '../lib/socket-context';
+import AppContext from '../lib/app-context';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -66,7 +66,7 @@ export default class Home extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chatName: this.state.form.chatName,
-          members: [this.props.user.userName]
+          members: [this.props.user.username]
         })
       };
       const response = await fetch('/api/newRoom', init);
@@ -94,7 +94,7 @@ export default class Home extends React.Component {
       const response = await fetch(`/api/newRoomMember/${id}`);
       const resultJSON = await response.json();
       const updatedMembers = resultJSON.members;
-      updatedMembers.push(this.props.user.userName);
+      updatedMembers.push(this.props.user.username);
       const init = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -152,9 +152,10 @@ export default class Home extends React.Component {
             <UserProfile
               updateUser={this.props.userUpdate}
               user={this.props.user}
-              userName={this.props.user.userName}
+              username={this.props.user.username}
               handleDrawer={this.openUserProfile}
-              isOpen={profileIsOpen}/>
+              isOpen={profileIsOpen}
+              onLogOut={this.props.onLogOut}/>
           </div>
         </div>
         { chatList }
@@ -163,4 +164,4 @@ export default class Home extends React.Component {
   }
 }
 
-Home.contextType = SocketContext;
+Home.contextType = AppContext;

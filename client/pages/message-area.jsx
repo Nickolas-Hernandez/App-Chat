@@ -17,17 +17,18 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
+    const { roomId, user } = this.props;
     if (sendMessage === '') return;
     const message = {
       message: sendMessage,
-      sender: this.props.user.userName
+      sender: user.username
     };
     const init = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(message)
     };
-    fetch(`/api/chat/${this.props.roomId}`, init);
+    fetch(`/api/chat/${roomId}`, init);
     this.resetMessageBox();
   }
 
@@ -36,8 +37,8 @@ export default class MessageArea extends React.Component {
   }
 
   render() {
-    const { userName, userId } = this.props.user;
-    const { roomId, roomMembers, roomName } = this.props;
+    const { username, userId } = this.props.user;
+    const { roomId, roomMembers, roomName, roomMessages, userUpdate } = this.props;
     return (
         <div className={roomId ? 'message-area active' : 'message-area'}>
           <div className="message-area-header">
@@ -47,14 +48,14 @@ export default class MessageArea extends React.Component {
               </a>
               <h1>{roomId ? roomName : 'No room selected'}</h1>
               <ChatDetailsDrawer
-              updateUser={this.props.userUpdate}
-              userName={userName}
+              updateUser={userUpdate}
+              username={username}
               userId={userId}
               id={roomId || null }
               members={roomId ? roomMembers : null}/>
             </div>
           </div>
-          {roomId ? <Messages user={userName} messages={this.props.roomMessages} /> : <div className="messages-view"></div>}
+          {roomId ? <Messages user={username} messages={roomMessages} /> : <div className="messages-view"></div>}
           <TextAreaInput
             onSend={this.sendMessage}
             messageValue={this.state.sendMessage}

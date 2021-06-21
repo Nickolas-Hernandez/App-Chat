@@ -98,16 +98,23 @@ label,
 #chat-name,
 #users-name,
 #user-name,
+#password,
 #new-chat-id,
 .name-input,
 .submit-button {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   width: 100%;
-  height: 30px;
+  max-width: 500px;
+  padding: 8px 0;
   text-align: center;
   border: none;
   font-size: 18px;
+}
+
+#user-name,
+#password {
+  transition: border 0.05s ease-in;
 }
 
 .name-input {
@@ -273,18 +280,12 @@ label,
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 6rem 1.8rem 1rem;
+  padding: 8rem 1.8rem;
 }
 
 .welcome-message {
   font-size: 24px;
   font-weight: 400;
-}
-
-.welcome-message,
-.app-chat {
-  align-self: flex-start;
 }
 
 .app-chat {
@@ -294,12 +295,19 @@ label,
 
 .new-user-form label,
 .new-user-form input,
-.new-user-form button {
-  margin-top: 1rem;
+.new-user-form button,
+.sign-up-link,
+.auth-error {
+  margin-top: 1.2rem;
 }
 
 .new-user-form label {
   font-size: 20px;
+}
+
+.sign-up-link {
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
 }
 
 .chat-details-drawer {
@@ -360,6 +368,7 @@ label,
 .members-list {
   margin-top: 1rem;
   font-size: 18px;
+  margin-bottom: auto;
 }
 
 .chat-details-drawer > p {
@@ -372,6 +381,13 @@ label,
   position: relative;
   padding-left: 15px;
   padding-right: 20px;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-contents {
+  justify-content: space-between;
 }
 
 .leave-room {
@@ -396,6 +412,25 @@ label,
   font-size: 18px;
   text-align: center;
   color: #8992a0;
+}
+
+a.log-out {
+  color: rgba(47, 47, 47, 0.6);
+  width: 100%;
+  text-align: center;
+}
+
+.update-username {
+  margin-bottom: auto;
+}
+
+.auth-error {
+  color: #d40101;
+}
+
+#user-name.error,
+#password.error {
+  border: 2px solid #d40101;
 }
 
 @media only screen and (min-width: 600px) {
@@ -495,19 +530,9 @@ label,
     z-index: 2;
   }
 
-  .new-user-form {
-    align-items: flex-start;
-  }
-
   .new-user-form label,
-  .new-user-form input,
   .new-user-form button {
-    max-width: 380px;
-  }
-
-  #user-name {
-    text-align: left;
-    padding-left: 1rem;
+    max-width: 500px;
   }
 
   .empty-list-message {

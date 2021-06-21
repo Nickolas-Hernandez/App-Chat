@@ -25,7 +25,8 @@ create table "messages" (
 
 create table "users" (
   "userId" serial,
-  "userName"  text not null,
+  "username"  text not null,
+  "hashedPassword"  text not null,
   "chatRooms" json not null,
   "createdAt" timestamptz(6) not null default now(),
   primary key ("userId")

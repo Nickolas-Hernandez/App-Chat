@@ -9,6 +9,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const jwt = require('jsonwebtoken');
 const pg = require('pg');
+const argon2 = require('argon2');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -160,25 +161,76 @@ app.post('/api/chat/:chatId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/createNewUser', (req, res, next) => {
-  const { userName } = req.body;
-  const sql = `
-    insert into "users" ("userName", "chatRooms")
-           values ($1, $2)
-      returning *
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password } = req.body;
+  const checkUsernames = `
+    select "userId"
+      from "users"
+     where "username" = $1
   `;
-  const chatRooms = [];
-  const params = [userName, JSON.stringify(chatRooms)];
+  const param = [username];
+  db.query(checkUsernames, param)
+    .then(result => {
+      if (!result.rows[0]) {
+        argon2.hash(password)
+          .then(hashedPassword => {
+            const sql = `
+            insert into "users" ("username", "hashedPassword", "chatRooms")
+                  values ($1, $2,$3)
+              returning *
+          `;
+            const chatRooms = [];
+            const params = [username, hashedPassword, JSON.stringify(chatRooms)];
+            db.query(sql, params)
+              .then(result => {
+                const user = result.rows[0];
+                const payload = {
+                  userId: user.userId,
+                  username: user.username,
+                  chatRooms: user.chatRooms
+                };
+                const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+                res.status(201).json({ token: token, user: payload });
+              })
+              .catch(err => next(err));
+          });
+      } else {
+        throw new ClientError(401, 'Username already exists.');
+      }
+    })
+    .catch(err => next(err));
+
+});
+
+app.post('/api/auth/sign-in', (req, res, next) => {
+  const { username, password: providedPassword } = req.body;
+  const sql = `
+    select *
+      from "users"
+     where "username" = $1
+  `;
+  const params = [username];
   db.query(sql, params)
     .then(result => {
-      const user = result.rows[0];
-      const payload = {
-        userId: user.userId,
-        userName: user.userName,
-        chatRooms: user.chatRooms
-      };
-      const token = jwt.sign(payload, process.env.TOKEN_SECRET);
-      res.status(201).json({ token: token, user: payload });
+      if (!result.rows[0]) {
+        throw new ClientError(401, 'Invalid log in');
+      }
+      const { username, hashedPassword, userId, chatRooms } = result.rows[0];
+      argon2
+        .verify(hashedPassword, providedPassword)
+        .then(verified => {
+          if (!verified) {
+            throw new ClientError(401, 'Invalid log in');
+          }
+          const payload = {
+            userId: userId,
+            username: username,
+            chatRooms: chatRooms
+          };
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+          res.status(201).json({ token: token, user: payload });
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
@@ -198,7 +250,7 @@ app.put('/api/users/:userId', (req, res, next) => {
       const user = result.rows[0];
       const payload = {
         userId: user.userId,
-        userName: user.userName,
+        username: user.username,
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
@@ -242,20 +294,20 @@ app.put('/api/updateRoomMembers/:chatId', (req, res, next) => {
 
 app.put('/api/username/:userId', (req, res, next) => {
   const { userId } = req.params;
-  const { userName } = req.body;
+  const { username } = req.body;
   const sql = `
     update "users"
-       set "userName" = $1
+       set "username" = $1
      where "userId" = $2
      returning *
   `;
-  const params = [userName, userId];
+  const params = [username, userId];
   db.query(sql, params)
     .then(result => {
       const user = result.rows[0];
       const payload = {
         userId: user.userId,
-        userName: user.userName,
+        username: user.username,
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);

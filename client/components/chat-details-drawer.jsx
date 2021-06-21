@@ -17,25 +17,25 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
+    const { id, username, userId } = this.props;
     this.setState({ drawerIsOpen: false });
-    fetch(`/api/getRoomMembers/${this.props.id}`)
+    fetch(`/api/getRoomMembers/${id}`)
       .then(response => response.json())
       .then(result => {
         const { members } = result;
-        const index = members.indexOf(this.props.userName);
+        const index = members.indexOf(username);
         members.splice(index, 1);
         const init = {
           method: 'PUT',
           headers: { 'Content-type': 'application/json' },
           body: JSON.stringify({ updatedMembers: members })
         };
-        fetch(`/api/updateRoomMembers/${this.props.id}`, init)
+        fetch(`/api/updateRoomMembers/${id}`, init)
           .then(() => {
-            const id = this.props.userId;
-            fetch(`/api/getUserRooms/${id}`)
+            fetch(`/api/getUserRooms/${userId}`)
               .then(response => response.json())
               .then(result => {
-                const roomId = this.props.id;
+                const roomId = id;
                 const rooms = result.chatRooms;
                 const index = rooms.indexOf(roomId);
                 rooms.splice(index, 1);
@@ -44,7 +44,7 @@ export default class ChatDetailsDrawer extends React.Component {
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ chatRooms: rooms })
                 };
-                fetch(`/api/users/${id}`, init)
+                fetch(`/api/users/${userId}`, init)
                   .then(response => response.json())
                   .then(result => {
                     const { token, user } = result;
@@ -64,6 +64,7 @@ export default class ChatDetailsDrawer extends React.Component {
 
   render() {
     const { drawerIsOpen } = this.state;
+    const { id, members } = this.props;
     return (
       <>
         <i onClick={this.openDrawer} className="fas fa-sign details-icon"></i>
@@ -72,10 +73,10 @@ export default class ChatDetailsDrawer extends React.Component {
             <div className='drawer-contents'>
               <div className="chat-id-wrapper">
                 <h3 className="id-label">Chat Room ID:</h3>
-                <p className="room-id">{this.props.id ? this.props.id : ''}</p>
+                <p className="room-id">{id || ''}</p>
               </div>
               <h3 className="members-label">Room Members:</h3>
-              {this.props.members ? <MembersList members={this.props.members}/> : ''}
+              {members ? <MembersList members={members}/> : ''}
               <button onClick={this.leaveRoom} className='leave-room'>Leave Room</button>
             </div>
           </div>
