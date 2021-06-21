@@ -66,7 +66,7 @@ export default class Home extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chatName: this.state.form.chatName,
-          members: [this.props.user.userName]
+          members: [this.props.user.username]
         })
       };
       const response = await fetch('/api/newRoom', init);
@@ -94,7 +94,7 @@ export default class Home extends React.Component {
       const response = await fetch(`/api/newRoomMember/${id}`);
       const resultJSON = await response.json();
       const updatedMembers = resultJSON.members;
-      updatedMembers.push(this.props.user.userName);
+      updatedMembers.push(this.props.user.username);
       const init = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

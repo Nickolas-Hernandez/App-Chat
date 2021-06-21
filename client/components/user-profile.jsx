@@ -51,7 +51,7 @@ export default class UserProfileDrawer extends Component {
   }
 
   updateNameInRooms(oldName, newName) {
-    const chatRooms = this.props.user.chatRooms;
+    const { chatRooms } = this.props.user;
     chatRooms.forEach(chatRoom => {
       fetch(`/api/getRoomMembers/${chatRoom}`)
         .then(response => response.json())

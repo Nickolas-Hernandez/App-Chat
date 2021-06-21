@@ -146,6 +146,7 @@ app.post('/api/newRoom', (req, res, next) => {
 
 app.post('/api/chat/:chatId', (req, res, next) => {
   const { message, sender } = req.body;
+  console.log(sender);
   const roomId = req.params.chatId;
   const sql = `
     insert into "messages" ("message", "chatId", "sender")
@@ -166,7 +167,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
   const checkUsernames = `
     select "userId"
       from "users"
-     where "userName" = $1
+     where "username" = $1
   `;
   const param = [username];
   db.query(checkUsernames, param)
@@ -175,7 +176,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
         argon2.hash(password)
           .then(hashedPassword => {
             const sql = `
-            insert into "users" ("userName", "hashedPassword", "chatRooms")
+            insert into "users" ("username", "hashedPassword", "chatRooms")
                   values ($1, $2,$3)
               returning *
           `;
@@ -186,7 +187,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
                 const user = result.rows[0];
                 const payload = {
                   userId: user.userId,
-                  username: user.userName,
+                  username: user.username,
                   chatRooms: user.chatRooms
                 };
                 const token = jwt.sign(payload, process.env.TOKEN_SECRET);
@@ -205,7 +206,7 @@ app.post('/api/auth/sign-up', (req, res, next) => {
 app.post('/api/auth/sign-in', (req, res, next) => {
   const { username, password: providedPassword } = req.body;
   const sql = `
-    select "userName",
+    select "username",
            "userId",
            "hashedPassword",
            "chatRooms"
@@ -218,7 +219,7 @@ app.post('/api/auth/sign-in', (req, res, next) => {
       if (!result.rows[0]) {
         throw new ClientError(401, 'Invalid log in');
       }
-      const { userName: username, hashedPassword, userId, chatRooms } = result.rows[0];
+      const { username, hashedPassword, userId, chatRooms } = result.rows[0];
       argon2
         .verify(hashedPassword, providedPassword)
         .then(verified => {
@@ -253,7 +254,7 @@ app.put('/api/users/:userId', (req, res, next) => {
       const user = result.rows[0];
       const payload = {
         userId: user.userId,
-        userName: user.userName,
+        username: user.username,
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);
@@ -300,7 +301,7 @@ app.put('/api/username/:userId', (req, res, next) => {
   const { username } = req.body;
   const sql = `
     update "users"
-       set "userName" = $1
+       set "username" = $1
      where "userId" = $2
      returning *
   `;
@@ -310,7 +311,7 @@ app.put('/api/username/:userId', (req, res, next) => {
       const user = result.rows[0];
       const payload = {
         userId: user.userId,
-        username: user.userName,
+        username: user.username,
         chatRooms: user.chatRooms
       };
       const token = jwt.sign(payload, process.env.TOKEN_SECRET);

@@ -368,6 +368,7 @@ label,
 .members-list {
   margin-top: 1rem;
   font-size: 18px;
+  margin-bottom: auto;
 }
 
 .chat-details-drawer > p {
