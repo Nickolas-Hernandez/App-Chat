@@ -83,7 +83,7 @@ export default class UserProfileDrawer extends Component {
         className="fas fa-cog details-icon"></i>
         <div id="profile" className={drawerIsOpen ? 'overlay details-drawer ' : 'hidden' }></div>
           <div className={drawerIsOpen ? 'chat-details-drawer active' : 'chat-details-drawer'}>
-            <div className='drawer-contents'>
+            <div className='drawer-contents profile-contents'>
               <div className="chat-id-wrapper profile">
                 <h3 className="username-label">Username:</h3>
                 <p className="username">{this.state.username}</p>

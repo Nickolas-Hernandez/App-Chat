@@ -384,6 +384,9 @@ label,
   padding-bottom: 2rem;
   display: flex;
   flex-direction: column;
+}
+
+.profile-contents {
   justify-content: space-between;
 }
 

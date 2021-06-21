@@ -146,7 +146,6 @@ app.post('/api/newRoom', (req, res, next) => {
 
 app.post('/api/chat/:chatId', (req, res, next) => {
   const { message, sender } = req.body;
-  console.log(sender);
   const roomId = req.params.chatId;
   const sql = `
     insert into "messages" ("message", "chatId", "sender")
@@ -206,12 +205,9 @@ app.post('/api/auth/sign-up', (req, res, next) => {
 app.post('/api/auth/sign-in', (req, res, next) => {
   const { username, password: providedPassword } = req.body;
   const sql = `
-    select "username",
-           "userId",
-           "hashedPassword",
-           "chatRooms"
+    select *
       from "users"
-     where "userName" = $1
+     where "username" = $1
   `;
   const params = [username];
   db.query(sql, params)
