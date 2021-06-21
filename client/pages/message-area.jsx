@@ -2,6 +2,7 @@ import React from 'react';
 import TextAreaInput from '../components/text-area-input';
 import Messages from '../components/messages';
 import ChatDetailsDrawer from '../components/chat-details-drawer';
+import AppContext from '../lib/app-context';
 
 export default class MessageArea extends React.Component {
   constructor(props) {
@@ -17,7 +18,8 @@ export default class MessageArea extends React.Component {
 
   sendMessage() {
     const { sendMessage } = this.state;
-    const { roomId, user } = this.props;
+    const { roomId } = this.props;
+    const { user } = this.context;
     if (sendMessage === '') return;
     const message = {
       message: sendMessage,
@@ -37,7 +39,7 @@ export default class MessageArea extends React.Component {
   }
 
   render() {
-    const { username, userId } = this.props.user;
+    const { username, userId } = this.context.user;
     const { roomId, roomMembers, roomName, roomMessages, userUpdate } = this.props;
     return (
         <div className={roomId ? 'message-area active' : 'message-area'}>
@@ -65,3 +67,5 @@ export default class MessageArea extends React.Component {
     );
   }
 }
+
+MessageArea.contextType = AppContext;

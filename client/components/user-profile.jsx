@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AppContext from '../lib/app-context';
 
 export default class UserProfileDrawer extends Component {
   constructor(props) {
@@ -14,7 +15,8 @@ export default class UserProfileDrawer extends Component {
   }
 
   componentDidMount() {
-    this.setState({ username: this.props.user.username });
+    const { user } = this.context;
+    this.setState({ username: user.username });
   }
 
   showForm(event) {
@@ -31,18 +33,19 @@ export default class UserProfileDrawer extends Component {
 
   async updateUsername(event) {
     event.preventDefault();
-    const init = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: this.state.newUsername })
-    };
     try {
-      const response = await fetch(`/api/username/${this.props.user.userId}`, init);
+      const { user } = this.context;
+      const init = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: this.state.newUsername })
+      };
+      const response = await fetch(`/api/username/${user.userId}`, init);
       const resultJSON = await response.json();
-      const { token, user } = resultJSON;
-      this.updateNameInRooms(this.props.user.username, user.userame);
+      const { token, user: newUsername } = resultJSON;
+      this.updateNameInRooms(user.username, newUsername.userame);
       window.localStorage.setItem('chat-app-jwt', token);
-      this.setState({ username: user.username });
+      this.setState({ username: newUsername.username });
       this.props.updateUser(user);
       this.setState({ newUserName: '', formIsOpen: false });
     } catch (err) {
@@ -102,3 +105,5 @@ export default class UserProfileDrawer extends Component {
     );
   }
 }
+
+UserProfileDrawer.contextType = AppContext;
