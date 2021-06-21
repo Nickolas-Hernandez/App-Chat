@@ -61,12 +61,13 @@ export default class Home extends React.Component {
 
   async createRoom() {
     try {
+      const { user } = this.context;
       const init = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chatName: this.state.form.chatName,
-          members: [this.props.user.username]
+          members: [user.username]
         })
       };
       const response = await fetch('/api/newRoom', init);
@@ -90,11 +91,12 @@ export default class Home extends React.Component {
 
   async addRoomMember() {
     try {
+      const { user } = this.context;
       const id = this.state.form.chatId;
       const response = await fetch(`/api/newRoomMember/${id}`);
       const resultJSON = await response.json();
       const updatedMembers = resultJSON.members;
-      updatedMembers.push(this.props.user.username);
+      updatedMembers.push(user.username);
       const init = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -107,14 +109,15 @@ export default class Home extends React.Component {
   }
 
   appendNewChatRoom(chatRoomDetails) {
+    const { user } = this.context;
     const chatRoom = {
       id: chatRoomDetails.chatId,
       name: chatRoomDetails.name
     };
     const updatedRooms = this.state.chatRooms.slice();
     updatedRooms.unshift(chatRoom);
-    const updatedUser = Object.assign({}, this.props.user);
-    updatedUser.chatRooms = this.props.user.chatRooms.slice();
+    const updatedUser = Object.assign({}, user);
+    updatedUser.chatRooms = user.chatRooms.slice();
     updatedUser.chatRooms.push(chatRoomDetails.chatId);
     this.props.onRoomCreation(updatedUser);
     this.setState({ chatRooms: updatedRooms });
@@ -129,8 +132,9 @@ export default class Home extends React.Component {
   }
 
   render() {
+    const { user } = this.context;
     const { formIsOpen, form: formInput, profileIsOpen } = this.state;
-    const chatList = (this.props.user.chatRooms.length === 0
+    const chatList = (user.chatRooms.length === 0
       ? <p className="empty-list-message">You don&apos;t belong to any chatrooms yet.</p>
       : <ChatList rooms={this.state.chatRooms} />);
     return (
@@ -151,7 +155,6 @@ export default class Home extends React.Component {
               className="fas fa-plus plus-icon"></i>
             <UserProfile
               updateUser={this.props.userUpdate}
-              user={this.props.user}
               username={this.props.user.username}
               handleDrawer={this.openUserProfile}
               isOpen={profileIsOpen}
