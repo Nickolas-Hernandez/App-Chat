@@ -22,9 +22,10 @@ export default class Home extends React.Component {
 
   async componentDidMount() {
     try {
+      const { user } = this.context;
       const response = await fetch('/api/chatRooms');
       const resultJSON = await response.json();
-      const userRooms = resultJSON.filter(room => this.props.user.chatRooms.includes(room.id));
+      const userRooms = resultJSON.filter(room => user.chatRooms.includes(room.id));
       this.setState({ chatRooms: userRooms });
     } catch (err) {
       console.error(err);
@@ -155,7 +156,7 @@ export default class Home extends React.Component {
               className="fas fa-plus plus-icon"></i>
             <UserProfile
               updateUser={this.props.userUpdate}
-              username={this.props.user.username}
+              username={user.username}
               handleDrawer={this.openUserProfile}
               isOpen={profileIsOpen}
               onLogOut={this.props.onLogOut}/>

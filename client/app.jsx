@@ -194,7 +194,6 @@ export default class App extends React.Component {
         <Home
           userUpdate={this.updateUser}
           onRoomCreation={this.addRoom}
-          user={this.state.user}
           onLogOut={this.logOut}
         />
         <MessageArea
