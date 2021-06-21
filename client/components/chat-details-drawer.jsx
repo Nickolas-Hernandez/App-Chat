@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class ChatDetailsDrawer extends React.Component {
   constructor(props) {
@@ -17,7 +18,8 @@ export default class ChatDetailsDrawer extends React.Component {
   }
 
   leaveRoom() {
-    const { id, username, userId } = this.props;
+    const { id } = this.props;
+    const { username, userId } = this.context.user;
     this.setState({ drawerIsOpen: false });
     fetch(`/api/getRoomMembers/${id}`)
       .then(response => response.json())
@@ -59,7 +61,6 @@ export default class ChatDetailsDrawer extends React.Component {
           .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
-
   }
 
   render() {
@@ -84,6 +85,8 @@ export default class ChatDetailsDrawer extends React.Component {
     );
   }
 }
+
+ChatDetailsDrawer.contextType = AppContext;
 
 function MembersList(props) {
   const allMembers = props.members.map(member => {
