@@ -37,8 +37,13 @@ export default class Auth extends Component {
   }
 
   toggleSignUp(event) {
+    this.props.removeError();
     this.setState(state => {
-      return { signUp: !state.signUp };
+      return ({
+        signUp: !state.signUp,
+        username: '',
+        password: ''
+      });
     });
   }
 
