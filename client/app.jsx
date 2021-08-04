@@ -26,6 +26,7 @@ export default class App extends React.Component {
     this.addRoom = this.addRoom.bind(this);
     this.updateUser = this.updateUser.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.removeAuthError = this.removeAuthError.bind(this);
   }
 
   componentDidMount() {
@@ -118,6 +119,12 @@ export default class App extends React.Component {
     }
   }
 
+  removeAuthError() {
+    if (this.state.authError === true) {
+      this.setState({ authError: false });
+    }
+  }
+
   connectToRoom(id) {
     const { socket } = this;
     socket.emit('join_chat', {
@@ -186,6 +193,7 @@ export default class App extends React.Component {
           createUser={this.createUser}
           verifyUser={this.verifyUser}
           authError={authError}
+          removeError={this.removeAuthError}
         />
       );
     }
